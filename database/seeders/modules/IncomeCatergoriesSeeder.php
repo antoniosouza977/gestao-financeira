@@ -2,8 +2,7 @@
 
 namespace Database\Seeders\modules;
 
-use App\Entities\IncomeCategory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\IncomeCategory;
 use Illuminate\Database\Seeder;
 
 class IncomeCatergoriesSeeder extends Seeder

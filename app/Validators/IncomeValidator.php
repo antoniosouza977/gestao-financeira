@@ -4,21 +4,30 @@ namespace App\Validators;
 
 use Illuminate\Validation\Rule;
 
-/**
- * Class IncomeValidator.
- *
- * @package namespace App\Validators;
- */
-class IncomeValidator extends BaseValidator
+class IncomeValidator extends AbstractSaveModelValidator
 {
-    protected $attributes = [
-        'amount'      => 'valor',
-        'category_id' => 'categoria',
-    ];
+
+    public function attributes(): array
+    {
+        return [
+            'amount'      => 'valor',
+            'category_id' => 'categoria',
+        ];
+    }
 
     public function updateRules(): array
     {
-        return [];
+        return [
+            'amount'         => 'numeric',
+            'category_id'    => Rule::exists('income_categories', 'id')
+                ->where(function ($query) {
+                    $query->where('user_id', auth()->id());
+                    $query->orWhereNull('user_id');
+                }),
+            'date'           => 'date_format:Y-m-d',
+            'description'    => 'string',
+            'monthly_income' => 'boolean',
+        ];
     }
 
     public function createRules(): array
@@ -31,8 +40,15 @@ class IncomeValidator extends BaseValidator
                     ->where('id', auth()->id())
             ],
             'amount'         => 'required|numeric',
-            'category_id'    => 'required|exists:income_categories,id',
-            'date'           => 'required|date',
+            'category_id'    => [
+                'required',
+                Rule::exists('income_categories', 'id')
+                    ->where(function ($query) {
+                        $query->where('user_id', auth()->id());
+                        $query->orWhereNull('user_id');
+                    })
+            ],
+            'date'           => 'required|date_format:Y-m-d',
             'description'    => 'string',
             'monthly_income' => 'boolean',
         ];

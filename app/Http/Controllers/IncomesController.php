@@ -2,66 +2,73 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\IncomeCategoryRepository;
-use App\Repositories\IncomeRepository;
-use App\Services\IncomeCategoryService;
+use App\Actions\Database\QueryModelByID;
+use App\Actions\Database\SaveModelAction;
+use App\Enums\ValidationType;
+use App\Models\Income;
+use App\Models\IncomeCategory;
 use App\Validators\IncomeValidator;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
 
-/**
- * Class IncomesController.
- *
- * @package namespace App\Http\Controllers;
- */
 class IncomesController extends Controller
 {
-    protected IncomeRepository $repository;
-    protected IncomeCategoryRepository $categoryRepository;
-    protected IncomeValidator $validator;
+    private SaveModelAction $saveModelAction;
+    private QueryModelByID $queryModelByID;
+    private IncomeValidator $validator;
 
     public function __construct
     (
-        IncomeRepository      $repository,
         IncomeValidator       $validator,
-        IncomeCategoryRepository $categoryRepository
+        SaveModelAction       $saveModelAction,
+        QueryModelByID       $queryModelByID
     )
     {
-        $this->repository = $repository;
-        $this->categoryRepository = $categoryRepository;
         $this->validator = $validator;
+        $this->saveModelAction = $saveModelAction;
+        $this->queryModelByID = $queryModelByID;
     }
 
     public function index(): Response
     {
-        $incomes = $this->repository->findByUser();
+        $incomes = auth()->user()->incomes;
         return Inertia::render('Incomes/IncomesIndex', compact('incomes'));
     }
 
     public function create(): Response
     {
-        $categories = $this->categoryRepository->findByUser();
+        $categories = IncomeCategory::query()
+            ->where('user_id', auth()->id())
+            ->orWhere('user_id', null)
+            ->get();
+
         return Inertia::render('Incomes/IncomesForm', compact('categories'));
     }
 
     public function store(Request $request): RedirectResponse
     {
         try {
-            $data = $this->repository->filterRequest($request);
-            $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
-            $this->repository->create($data);
+            $data = $request->only(['amount', 'category_id', 'date', 'description', 'monthly_income']);
+            $data['user_id'] = auth()->id();
+            $data['date'] = Carbon::make($data['date'])?->format('Y-m-d');
+            $data = array_filter($data);
+
+            $this->saveModelAction
+                ->setModel(new Income())
+                ->setData($data)
+                ->setValidator($this->validator)
+                ->validateData(ValidationType::CREATE)
+                ->execute();
 
             return Redirect::route('incomes.index');
-
-        } catch (ValidatorException $e) {
+        } catch (ValidationException $e) {
             return Redirect::back()
-                ->withErrors($e->getMessageBag())
+                ->withErrors($e->errors())
                 ->withInput();
         }
     }
@@ -75,16 +82,16 @@ class IncomesController extends Controller
      */
     public function show($id)
     {
-        $income = $this->repository->find($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $income,
-            ]);
-        }
-
-        return view('incomes.show', compact('income'));
+//        $income = $this->repository->find($id);
+//
+//        if (request()->wantsJson()) {
+//
+//            return response()->json([
+//                'data' => $income,
+//            ]);
+//        }
+//
+//        return view('incomes.show', compact('income'));
     }
 
     /**
@@ -92,55 +99,37 @@ class IncomesController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function edit($id)
-    {
-        $income = $this->repository->find($id);
+//    public function edit($id)
+//    {
+//        $income = $this->repository->find($id);
+//
+//        return view('incomes.edit', compact('income'));
+//    }
 
-        return view('incomes.edit', compact('income'));
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param IncomeUpdateRequest $request
-     * @param string $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         try {
+            $income = $this->queryModelByID->setModel(new Income())->setId($id)->execute();
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+            $data = $request->only(['amount', 'category_id', 'date', 'description', 'monthly_income']);
+            $data['date'] = Carbon::make($data['date'])?->format('Y-m-d');
+            $data = array_filter($data);
 
-            $income = $this->repository->update($request->all(), $id);
+            $this->saveModelAction
+                ->setModel($income)
+                ->setData($data)
+                ->setValidator($this->validator)
+                ->validateData(ValidationType::UPDATE)
+                ->execute();
 
-            $response = [
-                'message' => 'Income updated.',
-                'data'    => $income->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            return Redirect::route('incomes.index');
+        } catch (ValidationException $e) {
+            return Redirect::back()
+                ->withErrors($e->errors())
+                ->withInput();
         }
     }
 
@@ -152,18 +141,18 @@ class IncomesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $deleted = $this->repository->delete($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'message' => 'Income deleted.',
-                'deleted' => $deleted,
-            ]);
-        }
-
-        return redirect()->back()->with('message', 'Income deleted.');
-    }
+//    public function destroy($id)
+//    {
+//        $deleted = $this->repository->delete($id);
+//
+//        if (request()->wantsJson()) {
+//
+//            return response()->json([
+//                'message' => 'Income deleted.',
+//                'deleted' => $deleted,
+//            ]);
+//        }
+//
+//        return redirect()->back()->with('message', 'Income deleted.');
+//    }
 }

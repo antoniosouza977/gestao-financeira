@@ -1,30 +1,15 @@
 <?php
 
-namespace App\Entities;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Prettus\Repository\Contracts\Transformable;
-use Prettus\Repository\Traits\TransformableTrait;
 
-/**
- * Class Income.
- *
- * @package namespace App\Entities;
- */
-class Income extends Model implements Transformable
+class Income extends Model
 {
-    use TransformableTrait;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'amount',
         'user_id',
-        'amount',
         'category_id',
         'date',
         'description',
