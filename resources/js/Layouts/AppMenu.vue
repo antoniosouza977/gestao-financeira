@@ -9,33 +9,25 @@ const model = ref([
         items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
     },
     {
-        label: 'Menu 1',
-        items: [
-            { label: 'Example 1', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
-            { label: 'Example 2', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' },
-            { label: 'Example 3', icon: 'pi pi-fw pi-mobile', to: '/uikit/button', class: 'rotated-icon' },
-        ]
-    },
-    {
-        label: 'Hierarchy',
+        label: 'Minhas Finanças',
         items: [
             {
-                label: 'Submenu 1',
-                icon: 'pi pi-fw pi-bookmark',
+                label: 'Renda',
+                icon: 'pi pi-fw pi-money-bill',
                 items: [
                     {
-                        label: 'Submenu 1.1',
-                        icon: 'pi pi-fw pi-bookmark',
-                        items: [
-                            { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
-                            { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
-                            { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' }
-                        ]
+                        label: 'Minhas rendas',
+                        icon: 'pi pi-plus',
+                        to: route('incomes.index'),
+                    },
+                    {
+                        label: 'Cadastrar nova',
+                        icon: 'pi pi-plus',
+                        to: route('incomes.create'),
                     },
                     {
                         label: 'Submenu 1.2',
-                        icon: 'pi pi-fw pi-bookmark',
-                        items: [{ label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark' }]
+                        icon: 'pi pi-fw pi-bookmark'
                     }
                 ]
             },
@@ -58,6 +50,14 @@ const model = ref([
                     }
                 ]
             }
+        ]
+    },
+    {
+        label: 'Menu 1',
+        items: [
+            { label: 'Example 1', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
+            { label: 'Example 2', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' },
+            { label: 'Example 3', icon: 'pi pi-fw pi-mobile', to: '/uikit/button', class: 'rotated-icon' },
         ]
     }
 ]);
