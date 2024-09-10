@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Database\QueryModelByID;
 use App\Actions\Database\SaveModelAction;
 use App\Enums\ValidationType;
 use App\Models\Income;
 use App\Models\IncomeCategory;
 use App\Validators\IncomeValidator;
-use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -19,24 +17,24 @@ use Inertia\Response;
 class IncomesController extends Controller
 {
     private SaveModelAction $saveModelAction;
-    private QueryModelByID $queryModelByID;
     private IncomeValidator $validator;
 
     public function __construct
     (
-        IncomeValidator       $validator,
-        SaveModelAction       $saveModelAction,
-        QueryModelByID       $queryModelByID
+        IncomeValidator $validator,
+        SaveModelAction $saveModelAction
     )
     {
         $this->validator = $validator;
         $this->saveModelAction = $saveModelAction;
-        $this->queryModelByID = $queryModelByID;
     }
 
     public function index(): Response
     {
-        $incomes = auth()->user()->incomes;
+        $incomes = Income::query()
+            ->where('user_id', auth()->id())
+            ->get();
+
         return Inertia::render('Incomes/IncomesIndex', compact('incomes'));
     }
 
@@ -55,8 +53,7 @@ class IncomesController extends Controller
         try {
             $data = $request->only(['amount', 'category_id', 'date', 'description', 'monthly_income']);
             $data['user_id'] = auth()->id();
-            $data['date'] = Carbon::make($data['date'])?->format('Y-m-d');
-            $data = array_filter($data);
+//            $data['date'] = Carbon::make($data['date'])?->format('Y-m-d');
 
             $this->saveModelAction
                 ->setModel(new Income())
@@ -73,50 +70,28 @@ class IncomesController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit(Income $income): Response
     {
-//        $income = $this->repository->find($id);
-//
-//        if (request()->wantsJson()) {
-//
-//            return response()->json([
-//                'data' => $income,
-//            ]);
-//        }
-//
-//        return view('incomes.show', compact('income'));
+        $categories = IncomeCategory::query()
+            ->where('user_id', auth()->id())
+            ->orWhere('user_id', null)
+            ->get();
+
+        return Inertia::render('Incomes/IncomesForm', compact('income', 'categories'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     *
-     * @return RedirectResponse
-     */
-//    public function edit($id)
-//    {
-//        $income = $this->repository->find($id);
-//
-//        return view('incomes.edit', compact('income'));
-//    }
 
-
-    public function update(Request $request, int $id): RedirectResponse
+    public function update(Request $request, Income $income): RedirectResponse
     {
         try {
-            $income = $this->queryModelByID->setModel(new Income())->setId($id)->execute();
+
+            if ($income->user_id !== auth()->id()) {
+                throw ValidationException::withMessages([
+                    'user_id' => 'Incorrect user',
+                ]);
+            }
 
             $data = $request->only(['amount', 'category_id', 'date', 'description', 'monthly_income']);
-            $data['date'] = Carbon::make($data['date'])?->format('Y-m-d');
-            $data = array_filter($data);
 
             $this->saveModelAction
                 ->setModel($income)
@@ -134,25 +109,14 @@ class IncomesController extends Controller
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-//    public function destroy($id)
-//    {
-//        $deleted = $this->repository->delete($id);
-//
-//        if (request()->wantsJson()) {
-//
-//            return response()->json([
-//                'message' => 'Income deleted.',
-//                'deleted' => $deleted,
-//            ]);
-//        }
-//
-//        return redirect()->back()->with('message', 'Income deleted.');
-//    }
+    public function destroy(Income $income): RedirectResponse
+    {
+        if ($income->user_id !== auth()->id()) {
+            return Redirect::route('incomes.index');
+        }
+
+        $income->delete();
+
+        return Redirect::route('incomes.index');
+    }
 }

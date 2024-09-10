@@ -51,7 +51,7 @@ class NewIncomeTest extends TestCase
             ->post(route('incomes.store'), [
                 "amount"      => null,
                 "category_id" => null,
-                "date"        => null,
+                "date"        => 'invalid-date',
             ]);
 
         $response->assertSessionHasErrors(["amount", "category_id", "date"]);
@@ -67,7 +67,7 @@ class NewIncomeTest extends TestCase
             ->post(route('incomes.store'), [
                 "amount"      => 5000,
                 "category_id" => 1,
-                "date"        => Carbon::now(),
+                "date"        => Carbon::now()->format('Y-m-d'),
             ]);
 
         $response->assertSessionHasNoErrors();

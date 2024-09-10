@@ -18,6 +18,11 @@ class IncomeValidator extends AbstractSaveModelValidator
     public function updateRules(): array
     {
         return [
+            'user_id'        => [
+                'exists:users,id',
+                Rule::exists('users', 'id')
+                    ->where('id', auth()->id())
+            ],
             'amount'         => 'numeric',
             'category_id'    => Rule::exists('income_categories', 'id')
                 ->where(function ($query) {
@@ -25,7 +30,7 @@ class IncomeValidator extends AbstractSaveModelValidator
                     $query->orWhereNull('user_id');
                 }),
             'date'           => 'date_format:Y-m-d',
-            'description'    => 'string',
+            'description'    => 'max:255',
             'monthly_income' => 'boolean',
         ];
     }
@@ -49,7 +54,7 @@ class IncomeValidator extends AbstractSaveModelValidator
                     })
             ],
             'date'           => 'required|date_format:Y-m-d',
-            'description'    => 'string',
+            'description'    => 'max:255',
             'monthly_income' => 'boolean',
         ];
     }

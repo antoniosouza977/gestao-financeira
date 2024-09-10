@@ -3,7 +3,6 @@
 namespace App\Actions\Database;
 
 use App\Enums\ValidationType;
-use App\Exceptions\ValidatorException;
 use App\Validators\AbstractSaveModelValidator;
 use App\Validators\Contracts\SaveModelValidator;
 use BadMethodCallException;

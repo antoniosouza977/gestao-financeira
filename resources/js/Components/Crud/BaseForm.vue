@@ -1,14 +1,24 @@
 <script>
 import BackButton from "@/Components/Partials/BackButton.vue";
+import {useToast} from "vue-toastification";
+import {useForm} from "@inertiajs/vue3";
 
 export default {
     name: "BaseForm",
     props: ['form'],
     components: {BackButton},
+    data: () => {
+        return {
+            toast: useToast()
+        }
+    },
     methods: {
         submitForm() {
-            const form = this.form;
-            form.submit(form.method, form.url)
+            this.form.submit(this.form.method, this.form.url, {
+                onSuccess: () => {
+                    this.toast.success('Registro salvo com sucesso!')
+                }
+            })
         }
     }
 }

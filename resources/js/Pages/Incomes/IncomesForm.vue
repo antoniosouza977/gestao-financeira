@@ -7,7 +7,7 @@ import {useForm} from "@inertiajs/vue3";
 export default {
     name: "IncomesForm",
     components: {InputError, BaseForm, AppLayout},
-    props: ['categories'],
+    props: ['categories', 'income'],
     data: () => {
         return {
             form: useForm({
@@ -19,6 +19,15 @@ export default {
                 date: null,
                 monthly_income: null
             })
+        }
+    },
+    mounted() {
+        if (this.income) {
+            this.form = useForm({
+                method: "patch",
+                url: route('incomes.update', this.income.id),
+                ...this.income
+                });
         }
     }
 }
@@ -55,8 +64,7 @@ export default {
 
                         <div class="xl:w-1/3 lg:w-1/2 w-full flex flex-col gap-3">
                             <label for="date">Data</label>
-                            <DatePicker inputId="date" v-model="form.date" showIcon :invalid="Boolean(form.errors.date)"
-                                        dateFormat="dd/mm/yy" fluid :showOnFocus="false"/>
+                            <InputText type="date" inputId="date" v-model="form.date" showIcon :invalid="Boolean(form.errors.date)" fluid :showOnFocus="false"/>
                             <InputError class="mt-2" :message="form.errors.date"/>
                         </div>
 
