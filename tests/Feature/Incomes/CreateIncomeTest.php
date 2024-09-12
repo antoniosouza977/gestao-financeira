@@ -1,8 +1,10 @@
 <?php
+
 namespace Tests\Feature\Incomes;
 
 use App\Models\User;
 use Carbon\Carbon;
+use Faker\Core\Number;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,7 +12,7 @@ use Inertia\Testing\AssertableInertia;
 use JsonException;
 use Tests\TestCase;
 
-class NewIncomeTest extends TestCase
+class CreateIncomeTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -49,12 +51,12 @@ class NewIncomeTest extends TestCase
     {
         $response = $this->actingAs($this->user)
             ->post(route('incomes.store'), [
-                "amount"      => null,
-                "category_id" => null,
-                "date"        => 'invalid-date',
+                "value"        => null,
+                "category_id"  => null,
+                "payment_day" => null,
             ]);
 
-        $response->assertSessionHasErrors(["amount", "category_id", "date"]);
+        $response->assertSessionHasErrors(["value", "category_id", "payment_day"]);
         $response->assertStatus(302);
     }
 
@@ -65,9 +67,9 @@ class NewIncomeTest extends TestCase
     {
         $response = $this->actingAs($this->user)
             ->post(route('incomes.store'), [
-                "amount"      => 5000,
-                "category_id" => 1,
-                "date"        => Carbon::now()->format('Y-m-d'),
+                "value"        => fake()->randomFloat(2),
+                "category_id"  => 1,
+                "payment_day" => fake()->randomFloat(0,1,31),
             ]);
 
         $response->assertSessionHasNoErrors();

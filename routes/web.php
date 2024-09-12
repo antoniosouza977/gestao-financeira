@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\IncomeCategoriesController;
 use App\Http\Controllers\IncomesController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -19,6 +20,8 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
 
     Route::resource('incomes', IncomesController::class);
+    Route::resource('income-categories', IncomeCategoriesController::class);
+
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');

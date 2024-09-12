@@ -17,10 +17,9 @@ class IncomeFactory extends Factory
     public function definition(): array
     {
         return [
-            'amount'         => fake()->randomFloat(2, 1, 99999),
-            'date'           => fake()->date(),
+            'value'         => fake()->randomFloat(2, 1, 99999),
+            'payment_day'           => fake()->date(),
             'description'    => fake()->text(),
-            'monthly_income' => fake()->boolean()
         ];
     }
 }

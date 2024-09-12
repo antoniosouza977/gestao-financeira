@@ -15,7 +15,6 @@ export default {
             const app = this;
             router.delete(this.url, {
                 onSuccess: () => {
-                    console.log("teste");
                     app.toast.error('Registro removido.')
                 }
             })

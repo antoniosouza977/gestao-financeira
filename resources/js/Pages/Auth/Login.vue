@@ -43,7 +43,7 @@ const submit = () => {
                         <div class="mb-3">
                             <label for="email1"
                                    class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
-                            <InputText id="email1" type="text" placeholder="Endereço de email"
+                            <InputText inputId="email1" type="text" placeholder="Endereço de email"
                                        class="w-full md:w-[30rem]" v-model="form.email"/>
                             <InputError class="mt-2" :message="form.errors.email"/>
                         </div>
@@ -51,14 +51,14 @@ const submit = () => {
                         <div class="mb-3">
                             <label for="password1"
                                    class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Senha</label>
-                            <Password id="password1" v-model="form.password" placeholder="Senha" :toggleMask="true"
+                            <Password inputId="password1" v-model="form.password" placeholder="Senha" :toggleMask="true"
                                        fluid :feedback="false"/>
                             <InputError class="mt-2" :message="form.errors.password"/>
                         </div>
 
                         <div class="flex items-center justify-between mt-2 mb-8 gap-8">
                             <div class="flex items-center">
-                                <Checkbox v-model="form.remember" id="rememberme1" binary class="mr-2"></Checkbox>
+                                <Checkbox v-model="form.remember" inputId="rememberme1" binary class="mr-2"></Checkbox>
                                 <label for="rememberme1">Lembrar de mim</label>
                             </div>
                             <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Esqueceu a senha?</span>

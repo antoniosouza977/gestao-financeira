@@ -12,22 +12,12 @@ const model = ref([
         label: 'Minhas Finanças',
         items: [
             {
-                label: 'Renda',
+                label: 'Receitas',
                 icon: 'pi pi-fw pi-money-bill',
                 items: [
                     {
-                        label: 'Minhas rendas',
-                        icon: 'pi pi-plus',
+                        label: 'Rendas Mensais',
                         to: route('incomes.index'),
-                    },
-                    {
-                        label: 'Cadastrar nova',
-                        icon: 'pi pi-plus',
-                        to: route('incomes.create'),
-                    },
-                    {
-                        label: 'Submenu 1.2',
-                        icon: 'pi pi-fw pi-bookmark'
                     }
                 ]
             },

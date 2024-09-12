@@ -1,11 +1,10 @@
 <script>
 import BackButton from "@/Components/Partials/BackButton.vue";
 import {useToast} from "vue-toastification";
-import {useForm} from "@inertiajs/vue3";
 
 export default {
     name: "BaseForm",
-    props: ['form'],
+    props: ['form', 'back_url'],
     components: {BackButton},
     data: () => {
         return {
@@ -28,7 +27,7 @@ export default {
     <Fluid>
         <div class="card flex flex-col w-full crud-container">
             <div class="w-full flex justify-end items-center mb-3">
-                <BackButton/>
+                <BackButton :back_url="back_url"/>
             </div>
             <form @submit.prevent="submitForm">
                 <slot></slot>

@@ -11,12 +11,12 @@ class Income extends Model
     use HasFactory;
 
     protected $fillable = [
-        'amount',
+        'value',
         'user_id',
         'category_id',
-        'date',
         'description',
-        'monthly_income'
+        'monthly_payment',
+        'payment_day'
     ];
 
     protected $with = [
@@ -25,7 +25,7 @@ class Income extends Model
 
     protected $casts = [
         'amount' => 'float',
-        'monthly_income' => 'boolean'
+        'monthly_payment' => 'boolean'
     ];
 
     public function category(): HasOne

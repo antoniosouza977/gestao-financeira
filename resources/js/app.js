@@ -11,6 +11,9 @@ import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
 import "vue-toastification/dist/index.css";
 import Toast from "vue-toastification";
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
 
 import '@/Assets/styles.scss';
 import '@/Assets/tailwind.css';
@@ -35,6 +38,7 @@ createInertiaApp({
             .use(ToastService)
             .use(ConfirmationService)
             .use(Toast)
+            .use(VueSweetalert2)
             .mount(el);
     },
     progress: {

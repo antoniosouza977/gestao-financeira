@@ -51,9 +51,8 @@ class IncomesController extends Controller
     public function store(Request $request): RedirectResponse
     {
         try {
-            $data = $request->only(['amount', 'category_id', 'date', 'description', 'monthly_income']);
+            $data = $request->only(['value', 'category_id', 'payment_day', 'description']);
             $data['user_id'] = auth()->id();
-//            $data['date'] = Carbon::make($data['date'])?->format('Y-m-d');
 
             $this->saveModelAction
                 ->setModel(new Income())
@@ -91,7 +90,7 @@ class IncomesController extends Controller
                 ]);
             }
 
-            $data = $request->only(['amount', 'category_id', 'date', 'description', 'monthly_income']);
+            $data = $request->only(['value', 'category_id', 'payment_day', 'description']);
 
             $this->saveModelAction
                 ->setModel($income)

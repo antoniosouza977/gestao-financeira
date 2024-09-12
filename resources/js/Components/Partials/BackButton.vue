@@ -1,18 +1,19 @@
 <script>
-import {router} from "@inertiajs/vue3";
+import {Link, router} from "@inertiajs/vue3";
 
 export default {
     name: "BackButton",
-    methods: {
-        back: function() {
-            router.get("/dashboard");
-        }
-    }
+    components: {
+        Link,
+    },
+    props: ['back_url'],
 }
 </script>
 
 <template>
-    <Button @click.prevent="back" style="width: fit-content;" icon="pi pi-arrow-left" label="Voltar" rounded />
+    <Link :href="back_url || route('dashboard')">
+        <Button style="width: fit-content;" icon="pi pi-arrow-left" label="Voltar" outlined severity="secondary"/>
+    </Link>
 </template>
 
 <style scoped lang="scss">

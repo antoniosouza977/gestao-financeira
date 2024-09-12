@@ -3,31 +3,35 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import BaseForm from "@/Components/Crud/BaseForm.vue";
 import InputError from "@/Components/InputError.vue";
 import {useForm} from "@inertiajs/vue3";
+import CategorySelect from "@/Components/Incomes/CategorySelect.vue";
 
 export default {
     name: "IncomesForm",
-    components: {InputError, BaseForm, AppLayout},
+    components: {CategorySelect, InputError, BaseForm, AppLayout},
     props: ['categories', 'income'],
     data: () => {
         return {
-            form: useForm({
+            incomeForm: useForm({
                 method: "post",
                 url: route('incomes.store'),
-                amount: null,
+                value: null,
                 category_id: null,
                 description: null,
-                date: null,
-                monthly_income: null
+                payment_day: 5,
             })
         }
     },
+
     mounted() {
         if (this.income) {
-            this.form = useForm({
+            const income = this.income;
+            income.value = Number(income.value);
+
+            this.incomeForm = useForm({
                 method: "patch",
-                url: route('incomes.update', this.income.id),
-                ...this.income
-                });
+                url: route('incomes.update', income.id),
+                ...income
+            });
         }
     }
 }
@@ -35,53 +39,41 @@ export default {
 
 <template>
     <AppLayout>
-        <BaseForm :form="form">
+        <BaseForm :form="incomeForm" :back_url="route('incomes.index')">
             <div>
                 <div class="font-semibold text-xl mb-3">Cadastrar nova renda</div>
                 <form>
-                    <div class="flex flex-col flex-wrap mb-3 gap-3">
+                    <div class="flex flex-col flex-wrap mb-3">
 
-                        <div class="xl:w-1/3 lg:w-1/2 w-full flex flex-col gap-3">
-                            <label for="amount">Valor</label>
-                            <InputNumber inputId="amount"
-                                         v-model="form.amount"
+                        <div class="lg:w-1/3 w-full flex flex-col p-3 gap-3">
+                            <label for="value">Valor</label>
+                            <InputNumber inputId="value"
+                                         v-model="incomeForm.value"
                                          :minFractionDigits="2"
-                                         fluid
-                                         :invalid="Boolean(form.errors.amount)"
+                                         style="width: fit-content"
+                                         :invalid="Boolean(incomeForm.errors.value)"
                                          class="w-full"/>
-                            <InputError class="mt-2" :message="form.errors.amount"/>
+                            <InputError class="mt-2" :message="incomeForm.errors.value"/>
                         </div>
 
-                        <div class="xl:w-1/3 lg:w-1/2 w-full flex flex-col gap-3">
-                            <label for="category">Categoria</label>
-                            <Select inputId="category" v-model="form.category_id" :options="categories"
-                                    optionLabel="name"
-                                    optionValue="id"
-                                    :invalid="Boolean(form.errors.category_id)"
-                                    placeholder="Selecione uma categoria" class="w-full"/>
-                            <InputError class="mt-2" :message="form.errors.category_id"/>
-                        </div>
+                        <CategorySelect :categories="categories" :income-form="incomeForm"/>
 
-                        <div class="xl:w-1/3 lg:w-1/2 w-full flex flex-col gap-3">
-                            <label for="date">Data</label>
-                            <InputText type="date" inputId="date" v-model="form.date" showIcon :invalid="Boolean(form.errors.date)" fluid :showOnFocus="false"/>
-                            <InputError class="mt-2" :message="form.errors.date"/>
-                        </div>
-
-
-                        <div class="xl:w-1/2 flex flex-col gap-3">
+                        <div class="xl:w-1/3 lg:w-1/2 w-full flex flex-col p-3 gap-3">
                             <label for="description">Descrição</label>
-                            <Textarea inputId="description" v-model="form.description"
-                                      :invalid="Boolean(form.errors.description)" cols="30"/>
-                            <InputError class="mt-2" :message="form.errors.description"/>
+                            <Textarea inputId="description" v-model="incomeForm.description"
+                                      :invalid="Boolean(incomeForm.errors.description)" cols="30"/>
+                            <InputError class="mt-2" :message="incomeForm.errors.description"/>
                         </div>
 
-                    </div>
+                        <div class="xl:w-1/3 lg:w-1/2 w-full flex flex-col p-3 gap-3">
+                            <label for="payment_day">Dia Pagamento</label>
+                            <InputNumber :min="1" :max="31" inputId="payment_day" v-model="incomeForm.payment_day"
+                                         showIcon
+                                         :invalid="Boolean(incomeForm.errors.payment_day)" style="width: fit-content"/>
+                            <InputError class="mt-2" :message="incomeForm.errors.payment_day"/>
+                            <p class="text-sm font-light">Data mensal prevista para o pagamento</p>
+                        </div>
 
-                    <div class="font-semibold text-lg mb-3">Informaçoes Adicionais:</div>
-                    <div class="flex items-center gap-3">
-                        <Checkbox inputId="monthly" v-model="form.monthly_income" :binary="true"/>
-                        <label for="monthly">Renda mensal</label>
                     </div>
 
                 </form>
