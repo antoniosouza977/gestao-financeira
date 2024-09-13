@@ -15,7 +15,6 @@ class Income extends Model
         'user_id',
         'category_id',
         'description',
-        'monthly_payment',
         'payment_day'
     ];
 
@@ -24,7 +23,9 @@ class Income extends Model
     ];
 
     protected $casts = [
-        'amount' => 'float',
+        'value'           => 'encrypted',
+        'description'     => 'encrypted',
+        'payment_day'     => 'encrypted',
         'monthly_payment' => 'boolean'
     ];
 

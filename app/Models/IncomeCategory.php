@@ -16,6 +16,10 @@ class IncomeCategory extends Model
         'user_id',
     ];
 
+    protected $casts = [
+        'name' => 'encrypted',
+    ];
+
     public function incomes(): HasMany
     {
         return $this->hasMany(Income::class, 'category_id', 'id');

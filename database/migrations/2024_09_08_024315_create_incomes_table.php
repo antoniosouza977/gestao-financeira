@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id');
-            $table->string('description')->nullable();
-            $table->decimal('value');
-            $table->unsignedTinyInteger('payment_day');
+            $table->text('description')->nullable();
+            $table->text('value');
+            $table->text('payment_day');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

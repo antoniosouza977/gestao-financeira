@@ -15,7 +15,7 @@ return new class extends Migration
 	{
 		Schema::create('income_categories', function(Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->text('name');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
 		});
