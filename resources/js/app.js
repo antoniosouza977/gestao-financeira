@@ -7,8 +7,6 @@ import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
 import {ZiggyVue} from '../../vendor/tightenco/ziggy';
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
-import ConfirmationService from 'primevue/confirmationservice';
-import ToastService from 'primevue/toastservice';
 import "vue-toastification/dist/index.css";
 import Toast from "vue-toastification";
 import VueSweetalert2 from 'vue-sweetalert2';
@@ -35,10 +33,14 @@ createInertiaApp({
                     }
                 }
             })
-            .use(ToastService)
-            .use(ConfirmationService)
             .use(Toast)
-            .use(VueSweetalert2)
+            .use(VueSweetalert2, {
+                confirmButtonColor: '#34D399',
+                cancelButtonColor: '#ff7674',
+                showCancelButton: true,
+                confirmButtonText: "Sim",
+                cancelButtonText: "Cancelar",
+            })
             .mount(el);
     },
     progress: {

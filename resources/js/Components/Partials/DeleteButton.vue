@@ -13,9 +13,15 @@ export default {
     methods: {
         deleteModel() {
             const app = this;
-            router.delete(this.url, {
-                onSuccess: () => {
-                    app.toast.error('Registro removido.')
+            this.$swal.fire({
+                title: "Tem certeza?",
+            }).then(result => {
+                if (result.isConfirmed) {
+                    router.delete(this.url, {
+                        onSuccess: () => {
+                            app.toast.success('Registro removido.')
+                        }
+                    })
                 }
             })
         }

@@ -41,13 +41,6 @@ export default {
             const app = this;
             this.$swal.fire({
                 title: "Tem certeza?",
-                text: "A categoria sera removida permanentemente!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Sim",
-                cancelButtonText: "Cancelar",
             }).then((result) => {
                 if (result.isConfirmed) {
                     const url = route('income-categories.destroy', category.id);
@@ -73,13 +66,14 @@ export default {
 </script>
 
 <template>
-    <div class="lg:w-2/3 w-full flex flex-col p-3 gap-3">
+    <div class="lg:w-1/3 md:w-1/2 w-full flex flex-col p-3 gap-3">
 
         <label for="category">Categoria</label>
         <div class="flex gap-3">
             <Select v-if="!categoryFormVisibility" v-model="incomeForm.category_id"
                     :options="categories" optionLabel="name"
                     optionValue="id"
+                    class="w-5/6"
                     :invalid="Boolean(incomeForm.errors.category_id)"
                     placeholder="Selecione...">
 
