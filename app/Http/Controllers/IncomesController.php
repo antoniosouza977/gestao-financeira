@@ -9,6 +9,7 @@ use App\Models\IncomeCategory;
 use App\Validators\IncomeValidator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -31,9 +32,7 @@ class IncomesController extends Controller
 
     public function index(): Response
     {
-        $incomes = Income::query()
-            ->where('user_id', auth()->id())
-            ->get();
+        $incomes = Auth::user()->incomes;
 
         return Inertia::render('Incomes/IncomesIndex', compact('incomes'));
     }
