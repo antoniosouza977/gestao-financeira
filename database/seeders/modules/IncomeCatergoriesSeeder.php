@@ -16,10 +16,5 @@ class IncomeCatergoriesSeeder extends Seeder
             'user_id' => null,
             'name' => 'Salário',
         ]);
-
-        IncomeCategory::query()->updateOrCreate([
-            'user_id' => null,
-            'name' => 'Pagamento Avulso',
-        ]);
     }
 }
