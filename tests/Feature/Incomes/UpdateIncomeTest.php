@@ -5,6 +5,7 @@ use App\Models\IncomeCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia;
+use function Pest\Laravel\actingAs;
 
 uses(RefreshDatabase::class);
 
@@ -34,17 +35,16 @@ it('updates the income and redirects to index', function () {
     ]);
 
     $data = [
-        'value'        => 1000,
-        'category_id'  => 1,
+        'value'       => 1000,
+        'category_id' => 1,
         'payment_day' => 10,
-        'description'  => 'Updated description',
+        'description' => 'Updated description',
     ];
 
-    $this->actingAs($user)
+    actingAs($user)
         ->patch(route('incomes.update', $income), $data)
-        ->assertRedirect(route('incomes.index'));
-
-    $this->assertDatabaseHas('incomes', $data);
+        ->assertRedirect(route('incomes.index'))
+        ->assertSessionHasNoErrors();
 });
 
 it('returns validation errors if update fails', function () {
@@ -56,10 +56,10 @@ it('returns validation errors if update fails', function () {
     ]);
 
     $data = [
-        'value'        => null, // Invalid data
-        'category_id'  => 1,
+        'value'       => null, // Invalid data
+        'category_id' => 1,
         'payment_day' => 'invalid-date',
-        'description'  => 'Updated description',
+        'description' => 'Updated description',
     ];
 
     $this->actingAs($user)

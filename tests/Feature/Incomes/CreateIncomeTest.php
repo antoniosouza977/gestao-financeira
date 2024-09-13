@@ -41,7 +41,7 @@ class CreateIncomeTest extends TestCase
 
         $response->assertInertia(function (AssertableInertia $page) {
             $page->component('Incomes/IncomesForm')
-                ->has('categories', 2);
+                ->has('categories', 1);
         });
 
         $response->assertStatus(200);

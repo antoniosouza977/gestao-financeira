@@ -5,7 +5,6 @@ use App\Models\IncomeCategory;
 use App\Models\User;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseCount;
-use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\seed;
 
 test('user can delete an income category', function () {
@@ -25,8 +24,10 @@ test('user cannot delete a default income category', function () {
     seed();
     $category = IncomeCategory::query()->first();
     expect($category->user_id)->toBeNull();
+    $categoriesCount = IncomeCategory::query()->count();
 
     $response = actingAs($user)->delete(route('income-categories.destroy', $category->id));
     $response->assertStatus(302);
-    assertDatabaseHas('income_categories', $category->only(['id', 'name', 'user_id']));
+
+    expect($categoriesCount === IncomeCategory::query()->count())->toBeTrue();
 });
