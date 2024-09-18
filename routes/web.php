@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ConfirmIncomePaymentController;
 use App\Http\Controllers\IncomeCategoriesController;
 use App\Http\Controllers\IncomesController;
+use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +23,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('incomes', IncomesController::class);
     Route::resource('income-categories', IncomeCategoriesController::class);
+    Route::resource('payments', PaymentsController::class);
+    Route::post('confirm-payment', ConfirmIncomePaymentController::class)->name('confirm-payment');
 
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');

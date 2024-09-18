@@ -1,12 +1,12 @@
 <script setup>
-import { ref } from 'vue';
+import {ref} from 'vue';
 
 import AppMenuItem from './AppMenuItem.vue';
 
 const model = ref([
     {
         label: 'Home',
-        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
+        items: [{label: 'Dashboard', icon: 'pi pi-fw pi-home', to: route('dashboard')}],
     },
     {
         label: 'Minhas Finanças',
@@ -17,7 +17,20 @@ const model = ref([
                 items: [
                     {
                         label: 'Rendas Mensais',
-                        to: route('incomes.index'),
+                        items: [
+                            {
+                                label: "Minhas Rendas",
+                                to: route('incomes.index')
+                            },
+                            {
+                                label: 'Categorias',
+                                to: route('income-categories.index'),
+                            },
+                        ],
+                    },
+                    {
+                        label: 'Pagamentos',
+                        to: route('payments.index'),
                     }
                 ]
             },
@@ -29,14 +42,14 @@ const model = ref([
                         label: 'Submenu 2.1',
                         icon: 'pi pi-fw pi-bookmark',
                         items: [
-                            { label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark' },
-                            { label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark' }
+                            {label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark'},
+                            {label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark'}
                         ]
                     },
                     {
                         label: 'Submenu 2.2',
                         icon: 'pi pi-fw pi-bookmark',
-                        items: [{ label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark' }]
+                        items: [{label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark'}]
                     }
                 ]
             }
@@ -45,9 +58,9 @@ const model = ref([
     {
         label: 'Menu 1',
         items: [
-            { label: 'Example 1', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
-            { label: 'Example 2', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' },
-            { label: 'Example 3', icon: 'pi pi-fw pi-mobile', to: '/uikit/button', class: 'rotated-icon' },
+            {label: 'Example 1', icon: 'pi pi-fw pi-id-card'},
+            {label: 'Example 2', icon: 'pi pi-fw pi-check-square'},
+            {label: 'Example 3', icon: 'pi pi-fw pi-mobile', class: 'rotated-icon'},
         ]
     }
 ]);

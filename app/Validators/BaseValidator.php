@@ -3,11 +3,11 @@
 namespace App\Validators;
 
 use App\Enums\ValidationType;
-use App\Validators\Contracts\SaveModelValidator;
-use Illuminate\Support\Facades\Validator;
+use App\Validators\Contracts\Validator;
+use Illuminate\Support\Facades\Validator as LaravelValidator;
 use Illuminate\Validation\ValidationException;
 
-abstract class AbstractSaveModelValidator implements SaveModelValidator
+abstract class BaseValidator implements Validator
 {
 
     /**
@@ -16,7 +16,7 @@ abstract class AbstractSaveModelValidator implements SaveModelValidator
     public function validate(array $data, ValidationType $type): array
     {
         $rules = $this->getRules($type);
-        $validator = Validator::make($data, $rules, $this->messages(), $this->attributes());
+        $validator = LaravelValidator::make($data, $rules, $this->messages(), $this->attributes());
 
         return $validator->validated();
     }

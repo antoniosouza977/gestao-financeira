@@ -3,8 +3,6 @@
 namespace Tests\Feature\Incomes;
 
 use App\Models\User;
-use Carbon\Carbon;
-use Faker\Core\Number;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -34,13 +32,13 @@ class CreateIncomeTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_form_has_two_categories(): void
+    public function test_form_has_one_category(): void
     {
         $response = $this->actingAs($this->user)
             ->get(route('incomes.create'));
 
         $response->assertInertia(function (AssertableInertia $page) {
-            $page->component('Incomes/IncomesForm')
+            $page->component('Incomes/Form')
                 ->has('categories', 1);
         });
 
@@ -69,6 +67,7 @@ class CreateIncomeTest extends TestCase
             ->post(route('incomes.store'), [
                 "value"        => fake()->randomFloat(2),
                 "category_id"  => 1,
+                "description"  => fake()->text,
                 "payment_day" => fake()->randomFloat(0,1,31),
             ]);
 

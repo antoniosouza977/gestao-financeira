@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('value');
             $table->text('payment_day');
-            $table->timestamps();
+            $table->boolean('active')->default(true);
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('category_id')->references('id')->on('income_categories');

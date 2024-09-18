@@ -1,21 +1,19 @@
-<script>
-import {Link, router} from "@inertiajs/vue3";
+<script setup>
+import {router, usePage} from "@inertiajs/vue3";
 
-export default {
-    name: "BackButton",
-    components: {
-        Link,
-    },
-    props: ['back_url'],
+const page = usePage();
+const prevUrl = page.props.previousUrl;
+
+const goBack = () => {
+    if (prevUrl === 'empty') {
+        router.get(route('dashboard'));
+    }
+    router.get(prevUrl);
 }
 </script>
 
 <template>
-    <Link :href="back_url || route('dashboard')">
-        <Button style="width: fit-content;" icon="pi pi-arrow-left" label="Voltar" outlined severity="secondary"/>
-    </Link>
+    <Button @click.prevent="goBack" style="width: fit-content;" icon="pi pi-arrow-left" label="Voltar" outlined
+            severity="secondary"/>
 </template>
 
-<style scoped lang="scss">
-
-</style>

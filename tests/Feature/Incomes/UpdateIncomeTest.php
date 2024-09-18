@@ -20,7 +20,7 @@ it('renders the edit income form with the correct data', function () {
     $this->actingAs($user)
         ->get(route('incomes.edit', $income))
         ->assertInertia(fn(AssertableInertia $page) => $page
-            ->component('Incomes/IncomesForm')
+            ->component('Incomes/Form')
             ->has('income')
             ->has('categories', 1)
         );

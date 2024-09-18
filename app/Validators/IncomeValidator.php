@@ -4,7 +4,7 @@ namespace App\Validators;
 
 use Illuminate\Validation\Rule;
 
-class IncomeValidator extends AbstractSaveModelValidator
+class IncomeValidator extends BaseValidator
 {
 
     public function attributes(): array
@@ -20,11 +20,6 @@ class IncomeValidator extends AbstractSaveModelValidator
     public function updateRules(): array
     {
         return [
-            'user_id'     => [
-                'exists:users,id',
-                Rule::exists('users', 'id')
-                    ->where('id', auth()->id())
-            ],
             'value'       => 'numeric',
             'category_id' => Rule::exists('income_categories', 'id')
                 ->where(function ($query) {
@@ -32,7 +27,7 @@ class IncomeValidator extends AbstractSaveModelValidator
                     $query->orWhereNull('user_id');
                 }),
             'payment_day' => 'digits_between:1,31',
-            'description' => 'max:255',
+            'description' => 'sometimes|required|max:255',
         ];
     }
 
@@ -55,7 +50,7 @@ class IncomeValidator extends AbstractSaveModelValidator
                     })
             ],
             'payment_day' => 'required|digits_between:1,31',
-            'description' => 'max:255',
+            'description' => 'required|max:255',
         ];
     }
 }

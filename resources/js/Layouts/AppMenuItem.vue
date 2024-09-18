@@ -2,6 +2,8 @@
 import {useLayout} from '@/Layouts/composables/layout';
 import {onBeforeMount, ref, watch} from 'vue';
 import {Link} from "@inertiajs/vue3";
+import {usePage} from "@inertiajs/vue3";
+const page = usePage();
 
 const {layoutState, setActiveMenuItem, onMenuToggle} = useLayout();
 
@@ -62,7 +64,7 @@ function itemClick(event, item) {
 }
 
 function checkActiveRoute(item) {
-    return route.path === item.to;
+    return page.url === new URL(item.to).pathname;
 }
 </script>
 

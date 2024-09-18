@@ -34,7 +34,7 @@ class IncomesController extends Controller
     {
         $incomes = Auth::user()->incomes;
 
-        return Inertia::render('Incomes/IncomesIndex', compact('incomes'));
+        return Inertia::render('Incomes/Index', compact('incomes'));
     }
 
     public function create(): Response
@@ -44,7 +44,7 @@ class IncomesController extends Controller
             ->orWhere('user_id', null)
             ->get();
 
-        return Inertia::render('Incomes/IncomesForm', compact('categories'));
+        return Inertia::render('Incomes/Form', compact('categories'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -75,14 +75,13 @@ class IncomesController extends Controller
             ->orWhere('user_id', null)
             ->get();
 
-        return Inertia::render('Incomes/IncomesForm', compact('income', 'categories'));
+        return Inertia::render('Incomes/Form', compact('income', 'categories'));
     }
 
 
     public function update(Request $request, Income $income): RedirectResponse
     {
         try {
-
             if ($income->user_id !== auth()->id()) {
                 throw ValidationException::withMessages([
                     'user_id' => 'Incorrect user',
@@ -113,8 +112,14 @@ class IncomesController extends Controller
             return Redirect::route('incomes.index');
         }
 
-        $income->delete();
+        if ($income->payments->count()) {
+            $income->update([
+                'active' => false
+            ]);
+            return Redirect::route('incomes.index');
+        }
 
+        $income->delete();
         return Redirect::route('incomes.index');
     }
 }

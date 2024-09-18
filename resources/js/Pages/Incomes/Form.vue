@@ -1,48 +1,53 @@
-<script>
+<script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import BaseForm from "@/Components/Crud/BaseForm.vue";
 import InputError from "@/Components/InputError.vue";
 import {useForm} from "@inertiajs/vue3";
-import CategorySelect from "@/Components/Incomes/CategorySelect.vue";
+import {Link} from "@inertiajs/vue3";
 
-export default {
-    name: "IncomesForm",
-    components: {CategorySelect, InputError, BaseForm, AppLayout},
-    props: ['categories', 'income'],
-    data: () => {
-        return {
-            incomeForm: useForm({
-                method: "post",
-                url: route('incomes.store'),
-                value: null,
-                category_id: null,
-                description: null,
-                payment_day: 5,
-            })
-        }
+import {onBeforeMount} from "vue";
+
+const props = defineProps({
+    categories: {
+        type: Array,
+        required: true,
     },
-
-    mounted() {
-        if (this.income) {
-            const income = this.income;
-            income.value = Number(income.value);
-
-            this.incomeForm = useForm({
-                method: "patch",
-                url: route('incomes.update', income.id),
-                ...income
-            });
-        }
+    income: {
+        type: Object,
+        required: false,
     }
-}
+})
+
+let incomeForm = useForm({
+    method: "post",
+    url: route('incomes.store'),
+    value: null,
+    category_id: null,
+    description: null,
+    payment_day: 5,
+})
+
+onBeforeMount(() => {
+    if (props.income) {
+        const income = {...props.income};
+        income.value = Number(income.value);
+
+        incomeForm = useForm({
+            method: "patch",
+            url: route('incomes.update', income.id),
+            ...income
+        });
+    }
+})
+
 </script>
 
 <template>
     <AppLayout>
-        <BaseForm :form="incomeForm" :back_url="route('incomes.index')">
+        <BaseForm :form="incomeForm" :back-url="route('incomes.index')">
             <div>
                 <div class="font-semibold text-xl mb-3">Cadastrar nova renda</div>
-                <form>
+
                     <div class="flex flex-col flex-wrap mb-3">
 
                         <div class="lg:w-1/3 w-full flex flex-col p-3 gap-3">
@@ -56,7 +61,26 @@ export default {
                             <InputError class="mt-2" :message="incomeForm.errors.value"/>
                         </div>
 
-                        <CategorySelect :categories="categories" :income-form="incomeForm"/>
+                        <div class="lg:w-1/3 md:w-1/2 w-full flex flex-col p-3 gap-3">
+
+                            <label for="category">Categoria</label>
+                            <div class="flex gap-3">
+                                <Select v-model="incomeForm.category_id"
+                                        :options="categories" optionLabel="name"
+                                        optionValue="id"
+                                        class="w-5/6"
+                                        :invalid="Boolean(incomeForm.errors.category_id)"
+                                        placeholder="Selecione...">
+                                </Select>
+                                <Link :href="route('income-categories.create')">
+                                    <Button icon="pi pi-plus" outlined title="Adicionar categoria"
+                                            />
+                                </Link>
+                            </div>
+                            <InputError class="mt-2" :message="incomeForm.errors.category_id"/>
+
+
+                        </div>
 
                         <div class="xl:w-1/3 lg:w-1/2 w-full flex flex-col p-3 gap-3">
                             <label for="description">Descrição</label>
@@ -76,7 +100,6 @@ export default {
 
                     </div>
 
-                </form>
             </div>
         </BaseForm>
     </AppLayout>

@@ -66,6 +66,8 @@ onMounted(() => {
         <app-sidebar></app-sidebar>
         <div class="layout-main-container">
             <div class="layout-main">
+                <Toast/>
+                <ConfirmDialog></ConfirmDialog>
                 <slot></slot>
             </div>
             <app-footer></app-footer>

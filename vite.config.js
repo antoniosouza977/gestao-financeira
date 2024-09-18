@@ -7,7 +7,16 @@ import Components from 'unplugin-vue-components/vite';
 
 export default defineConfig({
     server: {
-        host: true
+        host: true,
+        port: parseInt(process.env.VITE_HMR_PORT || '5173', 10),
+        strictPort: true,
+        watch: {
+            usePolling: true,
+        },
+        hmr: {
+            host: process.env.VITE_HMR_HOST || 'localhost',
+            port: parseInt(process.env.VITE_HMR_PORT || '5173', 10),
+        },
     },
     plugins: [
         laravel({

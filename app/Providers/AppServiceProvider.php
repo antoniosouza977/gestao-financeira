@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +12,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        Inertia::share([
+            'previousUrl' => function () {
+                if (url()->previous() === route('login') || url()->previous() === '') return 'empty';
+
+                if (url()->previous() === url()->current()) {
+                    return dirname(url()->previous());
+                }
+
+                return url()->previous();
+            },
+        ]);
     }
 
     /**

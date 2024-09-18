@@ -4,7 +4,7 @@ namespace App\Validators\Contracts;
 
 use App\Enums\ValidationType;
 
-interface SaveModelValidator
+interface Validator
 {
     public function validate(array $data, ValidationType $type): array;
 

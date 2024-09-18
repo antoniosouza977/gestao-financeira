@@ -21,6 +21,9 @@ services:
         image: node:latest
         container_name: node.${APP_NAME}
         restart: unless-stopped
+        environment:
+          - VITE_HMR_HOST=${VITE_HMR_HOST}
+          - VITE_HMR_PORT=${VITE_HMR_PORT}
         ports:
             - "5173:5173"
         volumes:

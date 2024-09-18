@@ -11,6 +11,8 @@ class IncomeCategory extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'name',
         'user_id',

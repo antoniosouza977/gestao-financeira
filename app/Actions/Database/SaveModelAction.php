@@ -3,8 +3,8 @@
 namespace App\Actions\Database;
 
 use App\Enums\ValidationType;
-use App\Validators\AbstractSaveModelValidator;
-use App\Validators\Contracts\SaveModelValidator;
+use App\Validators\BaseValidator;
+use App\Validators\Contracts\Validator;
 use BadMethodCallException;
 use Illuminate\Database\Eloquent\Model;
 use App\Actions\Action;
@@ -14,7 +14,7 @@ class SaveModelAction implements Action
 {
 
     private ?Model $model;
-    private ?AbstractSaveModelValidator $validator;
+    private ?BaseValidator $validator;
     private array $data = [];
     private array $validatedData = [];
     private bool $hasValidated = false;
@@ -33,7 +33,7 @@ class SaveModelAction implements Action
         return $this;
     }
 
-    public function setValidator(SaveModelValidator $validator): SaveModelAction
+    public function setValidator(Validator $validator): SaveModelAction
     {
         $this->validator = $validator;
 
@@ -45,7 +45,7 @@ class SaveModelAction implements Action
      */
     public function validateData(ValidationType $type): SaveModelAction
     {
-        if (!$this->validator instanceof SaveModelValidator) {
+        if (!$this->validator instanceof Validator) {
             throw new BadMethodCallException("Validator não definido");
         }
 

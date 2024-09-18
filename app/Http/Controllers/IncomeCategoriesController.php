@@ -10,6 +10,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class IncomeCategoriesController extends Controller
 {
@@ -25,6 +27,21 @@ class IncomeCategoriesController extends Controller
         $this->saveModelAction = $action;
     }
 
+    public function index(): Response
+    {
+        $categories = IncomeCategory::query()
+            ->where('user_id', auth()->id())
+            ->orWhere('user_id', null)
+            ->get();
+
+        return Inertia::render('IncomeCategories/Index', compact('categories'));
+    }
+
+    public function create(): Response
+    {
+        return Inertia::render('IncomeCategories/Form');
+    }
+
     public function store(Request $request): RedirectResponse
     {
         try {
@@ -37,7 +54,7 @@ class IncomeCategoriesController extends Controller
                 ->validateData(ValidationType::CREATE)
                 ->execute();
 
-            return Redirect::back();
+            return Redirect::route('income-categories.index');
 
         } catch (ValidationException $exception) {
             return Redirect::back()
@@ -46,14 +63,16 @@ class IncomeCategoriesController extends Controller
         }
     }
 
+    public function edit(IncomeCategory $incomeCategory): Response
+    {
+        return Inertia::render('IncomeCategories/Form', ['category' => $incomeCategory]);
+    }
+
     public function update(IncomeCategory $incomeCategory, Request $request): RedirectResponse
     {
         try {
-
             if ($incomeCategory->user_id !== auth()->id()) {
-                throw ValidationException::withMessages([
-                    'user_id' => 'Incorrect user',
-                ]);
+                return Redirect::back();
             }
 
             $data = $request->only(['name']);
@@ -65,7 +84,7 @@ class IncomeCategoriesController extends Controller
                 ->validateData(ValidationType::UPDATE)
                 ->execute();
 
-            return Redirect::back();
+            return Redirect::route('income-categories.index');
 
         } catch (ValidationException $e) {
             return Redirect::back()
@@ -89,6 +108,6 @@ class IncomeCategoriesController extends Controller
 
         $incomeCategory->delete();
 
-        return Redirect::back();
+        return Redirect::route('income-categories.index');
     }
 }

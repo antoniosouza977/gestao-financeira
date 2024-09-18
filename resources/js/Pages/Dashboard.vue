@@ -6,7 +6,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 <template>
     <AppLayout>
         <div class="flex items-center justify-center w-full h-full p-3">
-            <div>Sua proxima grande ideia...</div>
+<!--            <div>Sua proxima grande ideia...</div>-->
         </div>
     </AppLayout>
 </template>

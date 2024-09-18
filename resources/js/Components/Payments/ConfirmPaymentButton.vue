@@ -1,17 +1,25 @@
+<template>
+    <Button @click="confirmPayment()" label="Confirmar Pagamento" outlined></Button>
+</template>
+
 <script setup>
-import {router} from "@inertiajs/vue3";
 import {useConfirm} from "primevue/useconfirm";
 import {useToast} from "primevue/usetoast";
+import {router} from "@inertiajs/vue3";
+
+const emit = defineEmits(['paymentConfirmed'])
 
 const props = defineProps({
-    url: String,
-    icon: String,
+    income: {
+        required: true,
+        type: Object,
+    }
 })
 
 const confirm = useConfirm();
 const toast = useToast();
 
-const deleteModel = () => {
+const confirmPayment = () => {
     confirm.require({
         message: 'Tem certeza que deseja proceder?',
         header: 'Confirmação',
@@ -24,30 +32,24 @@ const deleteModel = () => {
             label: 'Confirmar'
         },
         accept: () => {
-            return router.delete(props.url, {
+            return router.post(route('confirm-payment'), {
+                income_id: props.income.id,
+                description: props.income.description,
+                value: props.income.value,
+                date: props.income.date
+            }, {
                 onSuccess: () => {
                     toast.add({
                         severity: 'success',
-                        summary: 'Sucesso',
-                        detail: 'Registro removido',
+                        summary: 'Confirmado',
+                        detail: 'O pagamento foi confirmado',
                         life: 3000
                     });
+                    emit('paymentConfirmed', props.income.id);
                 }
             })
         },
     });
-}
+};
 
 </script>
-
-<template>
-    <Button
-        :icon="icon ? 'pi pi-trash' : null"
-        :label="icon ? null : 'Remover'"
-        severity="danger"
-        outlined
-        @click="deleteModel"
-        title="Remover"
-    />
-</template>
-

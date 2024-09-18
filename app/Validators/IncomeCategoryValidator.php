@@ -4,7 +4,7 @@ namespace App\Validators;
 
 use Illuminate\Validation\Rule;
 
-class IncomeCategoryValidator extends AbstractSaveModelValidator
+class IncomeCategoryValidator extends BaseValidator
 {
 
     public function attributes(): array
@@ -17,12 +17,7 @@ class IncomeCategoryValidator extends AbstractSaveModelValidator
     public function updateRules(): array
     {
         return [
-            'name'    => [
-                'required' ,
-                Rule::unique('income_categories', 'name')
-                    ->where('user_id', auth()->id())
-                ->ignore(request('id'))
-            ],
+            'name' => ['required', Rule::unique('income_categories', 'name')->where('user_id', auth()->id())],
         ];
     }
 

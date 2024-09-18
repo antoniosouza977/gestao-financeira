@@ -48,6 +48,13 @@ class User extends Authenticatable
 
     public function incomes(): HasMany
     {
-        return $this->hasMany(Income::class);
+        return $this->hasMany(Income::class)
+            ->where('active', true);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class)
+            ->orderBy('date', 'desc');
     }
 }

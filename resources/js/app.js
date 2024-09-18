@@ -9,8 +9,10 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import "vue-toastification/dist/index.css";
 import Toast from "vue-toastification";
+import ToastService from 'primevue/toastservice';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import ConfirmationService from 'primevue/confirmationservice';
 
 
 import '@/Assets/styles.scss';
@@ -41,6 +43,8 @@ createInertiaApp({
                 confirmButtonText: "Sim",
                 cancelButtonText: "Cancelar",
             })
+            .use(ToastService)
+            .use(ConfirmationService)
             .mount(el);
     },
     progress: {

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->text('name');
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->timestamps();
 		});
 	}
 

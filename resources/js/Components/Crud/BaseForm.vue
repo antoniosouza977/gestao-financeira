@@ -1,33 +1,36 @@
-<script>
+<script setup>
 import BackButton from "@/Components/Partials/BackButton.vue";
-import {useToast} from "vue-toastification";
+import {useToast} from "primevue/usetoast";
 
-export default {
-    name: "BaseForm",
-    props: ['form', 'back_url'],
-    components: {BackButton},
-    data: () => {
-        return {
-            toast: useToast()
-        }
+const toast = useToast();
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true,
     },
-    methods: {
-        submitForm() {
-            this.form.submit(this.form.method, this.form.url, {
-                onSuccess: () => {
-                    this.toast.success('Registro salvo com sucesso!')
-                }
-            })
+    backUrl: String
+})
+
+const submitForm = () => {
+    props.form.submit(props.form.method, props.form.url, {
+        onSuccess: () => {
+            toast.add({
+                severity: 'success',
+                summary: 'Sucesso',
+                detail: 'Registro salvo com sucesso',
+                life: 3000
+            });
         }
-    }
+    })
 }
+
 </script>
 
 <template>
     <Fluid>
         <div class="card flex flex-col w-full crud-container">
             <div class="w-full flex justify-end items-center mb-3">
-                <BackButton :back_url="back_url"/>
+                <BackButton :back-url="backUrl"/>
             </div>
             <form @submit.prevent="submitForm">
                 <slot></slot>
