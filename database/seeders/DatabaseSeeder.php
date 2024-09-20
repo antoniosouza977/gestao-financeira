@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Database\Seeders\modules\ExpenseCategoriesSeeder;
 use Database\Seeders\modules\IncomeCatergoriesSeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +28,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            IncomeCatergoriesSeeder::class
+            IncomeCatergoriesSeeder::class,
+            ExpenseCategoriesSeeder::class
         ]);
     }
 }

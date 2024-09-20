@@ -57,4 +57,20 @@ class User extends Authenticatable
         return $this->hasMany(Payment::class)
             ->orderBy('date', 'desc');
     }
+
+    public function budgets(): HasMany
+    {
+        return $this->hasMany(Budget::class);
+    }
+
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(Expense::class);
+    }
+
+    public function outgoings(): HasMany
+    {
+        return $this->hasMany(Outgo::class)
+            ->orderBy('date', 'desc');
+    }
 }

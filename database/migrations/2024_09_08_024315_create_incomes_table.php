@@ -15,12 +15,12 @@ return new class extends Migration
     {
 		Schema::create('incomes', function(Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('category_id');
             $table->text('description')->nullable();
             $table->text('value');
             $table->text('payment_day');
             $table->boolean('active')->default(true);
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('category_id');
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('category_id')->references('id')->on('income_categories');

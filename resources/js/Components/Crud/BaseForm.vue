@@ -6,9 +6,12 @@ const toast = useToast();
 const props = defineProps({
     form: {
         type: Object,
-        required: true,
+        required: false,
     },
-    backUrl: String
+    title: {
+        type: String,
+        required: true,
+    }
 })
 
 const submitForm = () => {
@@ -29,14 +32,15 @@ const submitForm = () => {
 <template>
     <Fluid>
         <div class="card flex flex-col w-full crud-container">
-            <div class="w-full flex justify-end items-center mb-3">
-                <BackButton :back-url="backUrl"/>
+            <div class="w-full flex justify-between items-center mb-3">
+                <h1 class="text-2xl">{{ props.title }}</h1>
+                <BackButton/>
             </div>
             <form @submit.prevent="submitForm">
                 <slot></slot>
             </form>
-            <div class="mt-auto">
-                <Button @click.prevent="submitForm" style="width: fit-content" label="Salvar" rounded/>
+            <div v-if="props.form" class="mt-auto">
+                <Button :disabled="props.form.processing" @click.prevent="submitForm" style="width: fit-content" label="Salvar" rounded/>
             </div>
         </div>
     </Fluid>

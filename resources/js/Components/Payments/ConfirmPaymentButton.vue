@@ -1,5 +1,5 @@
 <template>
-    <Button @click="confirmPayment()" label="Confirmar Pagamento" outlined></Button>
+    <Button @click="confirmPayment()" label="Confirmar Pagamento"></Button>
 </template>
 
 <script setup>
@@ -25,8 +25,7 @@ const confirmPayment = () => {
         header: 'Confirmação',
         rejectProps: {
             label: 'Cancelar',
-            severity: 'secondary',
-            outlined: true
+            severity: 'secondary'
         },
         acceptProps: {
             label: 'Confirmar'

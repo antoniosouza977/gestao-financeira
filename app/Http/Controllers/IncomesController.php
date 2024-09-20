@@ -3,22 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Database\SaveModelAction;
-use App\Enums\ValidationType;
 use App\Models\Income;
 use App\Models\IncomeCategory;
+use App\Validators\BaseValidator;
 use App\Validators\IncomeValidator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Validation\ValidationException;
-use Inertia\Inertia;
 use Inertia\Response;
 
 class IncomesController extends Controller
 {
-    private SaveModelAction $saveModelAction;
-    private IncomeValidator $validator;
+    protected SaveModelAction $saveModelAction;
+    protected BaseValidator $validator;
+    protected string $indexRoute = 'incomes.index';
 
     public function __construct
     (
@@ -32,94 +29,63 @@ class IncomesController extends Controller
 
     public function index(): Response
     {
-        $incomes = Auth::user()->incomes;
+        $incomes = auth()->user()->incomes()->paginate(10);
 
-        return Inertia::render('Incomes/Index', compact('incomes'));
+        return inertia()->render('Incomes/Index', compact('incomes'));
     }
 
     public function create(): Response
     {
         $categories = IncomeCategory::query()
-            ->where('user_id', auth()->id())
-            ->orWhere('user_id', null)
-            ->get();
+            ->where(function ($query) {
+                $query->whereNull('user_id')->orWhere('user_id', auth()->id());
+            })->get();
 
-        return Inertia::render('Incomes/Form', compact('categories'));
+        return inertia()->render('Incomes/Form', compact('categories'));
     }
 
     public function store(Request $request): RedirectResponse
     {
-        try {
-            $data = $request->only(['value', 'category_id', 'payment_day', 'description']);
-            $data['user_id'] = auth()->id();
+        $data = $request->only(['value', 'category_id', 'payment_day', 'description']);
+        return $this->baseStore(new Income(), $data);
+    }
 
-            $this->saveModelAction
-                ->setModel(new Income())
-                ->setData($data)
-                ->setValidator($this->validator)
-                ->validateData(ValidationType::CREATE)
-                ->execute();
-
-            return Redirect::route('incomes.index');
-        } catch (ValidationException $e) {
-            return Redirect::back()
-                ->withErrors($e->errors())
-                ->withInput();
-        }
+    public function show(Income $income): Response
+    {
+        return $this->edit($income);
     }
 
     public function edit(Income $income): Response
     {
         $categories = IncomeCategory::query()
-            ->where('user_id', auth()->id())
-            ->orWhere('user_id', null)
-            ->get();
+            ->where(function ($query) {
+                $query->whereNull('user_id')->orWhere('user_id', auth()->id());
+            })->get();
 
-        return Inertia::render('Incomes/Form', compact('income', 'categories'));
+        return inertia()->render('Incomes/Form', compact('income', 'categories'));
     }
-
 
     public function update(Request $request, Income $income): RedirectResponse
     {
-        try {
-            if ($income->user_id !== auth()->id()) {
-                throw ValidationException::withMessages([
-                    'user_id' => 'Incorrect user',
-                ]);
-            }
-
-            $data = $request->only(['value', 'category_id', 'payment_day', 'description']);
-
-            $this->saveModelAction
-                ->setModel($income)
-                ->setData($data)
-                ->setValidator($this->validator)
-                ->validateData(ValidationType::UPDATE)
-                ->execute();
-
-            return Redirect::route('incomes.index');
-        } catch (ValidationException $e) {
-            return Redirect::back()
-                ->withErrors($e->errors())
-                ->withInput();
-        }
+        $data = $request->only(['value', 'category_id', 'payment_day', 'description']);
+        return $this->baseUpdate($income, $data);
     }
 
 
     public function destroy(Income $income): RedirectResponse
     {
         if ($income->user_id !== auth()->id()) {
-            return Redirect::route('incomes.index');
+            abort(403);
         }
 
         if ($income->payments->count()) {
             $income->update([
                 'active' => false
             ]);
-            return Redirect::route('incomes.index');
+            return redirect()->route($this->indexRoute);
         }
 
         $income->delete();
-        return Redirect::route('incomes.index');
+        return redirect()->route($this->indexRoute);
     }
 }

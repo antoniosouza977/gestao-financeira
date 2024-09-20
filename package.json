@@ -28,7 +28,7 @@
     },
     "dependencies": {
         "@primevue/themes": "^4.0.5",
-        "chart.js": "3.3.2",
+        "chart.js": "^3.3.2",
         "primeicons": "^7.0.0",
         "primevue": "^4.0.5",
         "vue-sweetalert2": "^5.0.11",

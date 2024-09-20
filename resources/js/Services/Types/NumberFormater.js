@@ -1,4 +1,4 @@
-class NumberFormater {
+class NumberFormatter {
     toLocalCurrency(float) {
         return  new Intl.NumberFormat('pt-BR', {
             style: 'currency',
@@ -7,4 +7,4 @@ class NumberFormater {
     }
 }
 
-export default new NumberFormater();
+export default new NumberFormatter();

@@ -12,7 +12,7 @@ class IncomeCatergoriesSeeder extends Seeder
      */
     public function run(): void
     {
-        if (IncomeCategory::query()->count() === 0) {
+        if (!IncomeCategory::query()->count()) {
             IncomeCategory::query()->updateOrCreate([
                 'user_id' => null,
                 'name'    => 'Salário',

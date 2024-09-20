@@ -17,8 +17,7 @@ const deleteModel = () => {
         header: 'Confirmação',
         rejectProps: {
             label: 'Cancelar',
-            severity: 'secondary',
-            outlined: true
+            severity: 'secondary'
         },
         acceptProps: {
             label: 'Confirmar'
@@ -45,7 +44,6 @@ const deleteModel = () => {
         :icon="icon ? 'pi pi-trash' : null"
         :label="icon ? null : 'Remover'"
         severity="danger"
-        outlined
         @click="deleteModel"
         title="Remover"
     />

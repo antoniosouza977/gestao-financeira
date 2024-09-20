@@ -26,7 +26,7 @@ test('cannot update default categories', function () {
         'name' => 'my category'
     ]);
 
-    $response->assertStatus(302);
+    $response->assertStatus(403);
 
     expect(IncomeCategory::query()->find(1)->name !== 'my category')->toBeTrue();
 });

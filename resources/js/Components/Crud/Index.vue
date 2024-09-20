@@ -9,6 +9,10 @@ const props = defineProps({
     createRoute: {
         type: String,
         required: true,
+    },
+    title: {
+        type: String,
+        required: true,
     }
 });
 
@@ -17,9 +21,10 @@ const props = defineProps({
 <template>
     <div class="card">
         <div class="flex flex-wrap items-center mb-3">
-            <div class="w-full flex justify-end items-center mb-3">
+            <div class="w-full flex justify-between items-center mb-3">
+                <h1 class="text-2xl">{{ props.title }}</h1>
                 <Link :href="createRoute">
-                    <Button outlined :label="buttonLabel || 'Novo'"/>
+                    <Button :label="buttonLabel || 'Novo'"/>
                 </Link>
             </div>
             <slot/>

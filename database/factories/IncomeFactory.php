@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Income>
  */
@@ -17,9 +16,9 @@ class IncomeFactory extends Factory
     public function definition(): array
     {
         return [
-            'value'         => fake()->randomFloat(2, 1, 99999),
-            'payment_day'           => fake()->date(),
-            'description'    => fake()->text(),
+            'value'       => fake()->randomFloat(2, 1, 10000),
+            'payment_day' => fake()->date('d'),
+            'description' => fake()->text(30),
         ];
     }
 }

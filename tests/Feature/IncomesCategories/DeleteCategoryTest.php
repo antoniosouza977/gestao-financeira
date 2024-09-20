@@ -27,7 +27,7 @@ test('user cannot delete a default income category', function () {
     $categoriesCount = IncomeCategory::query()->count();
 
     $response = actingAs($user)->delete(route('income-categories.destroy', $category->id));
-    $response->assertStatus(302);
+    $response->assertStatus(403);
 
     expect($categoriesCount === IncomeCategory::query()->count())->toBeTrue();
 });

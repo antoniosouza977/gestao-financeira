@@ -1,6 +1,6 @@
 <script setup>
 import {useForm} from "@inertiajs/vue3";
-import {onBeforeMount} from "vue";
+import {onBeforeMount, ref} from "vue";
 import BaseForm from "@/Components/Crud/BaseForm.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import InputError from "@/Components/InputError.vue";
@@ -18,33 +18,25 @@ const props = defineProps({
     }
 })
 
+const action = ref('Cadastrar');
+
 onBeforeMount(() => {
-        if (props.category) {
+    if (props.category) {
         categoryForm = useForm({
             method: "patch",
             url: route('income-categories.update', props.category.id),
             ...props.category
         });
+        action.value = 'Editar';
     }
 })
 
-// watch(() => props.category, (category) => {
-//     console.log(categoryForm)
-//     if (category && !categoryForm.hasErrors) {
-//         categoryForm = useForm({
-//             method: "patch",
-//             url: route('income-categories.update', category.id),
-//             ...category
-//         });
-//     }
-// }, {immediate: true});
 </script>
 
 <template>
     <AppLayout>
-        <BaseForm :form="categoryForm">
+        <BaseForm :title="action + ' categoria de despesa'" :form="categoryForm">
             <div>
-                <div class="font-semibold text-xl mb-3">Cadastrar nova categoria de renda</div>
                 <div class="flex flex-col flex-wrap mb-3">
 
                     <div class="lg:w-1/3 w-full flex flex-col p-3 gap-3">

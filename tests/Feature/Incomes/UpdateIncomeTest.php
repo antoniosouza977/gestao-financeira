@@ -80,9 +80,9 @@ it('user cannot update income from another user', function () {
         'value' => 1,
     ];
 
-    $this->actingAs($user2)
+    actingAs($user2)
         ->patch(route('incomes.update', $income), $data)
-        ->assertSessionHasErrors(['user_id']);
+        ->assertStatus(403);
 
     expect(Income::query()->find($income->id)->value === $income->value)->toBeTrue();
 });

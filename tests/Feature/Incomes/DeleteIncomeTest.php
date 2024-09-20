@@ -4,6 +4,7 @@ use App\Models\Income;
 use App\Models\IncomeCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use function Pest\Laravel\actingAs;
 
 uses(RefreshDatabase::class);
 
@@ -35,9 +36,9 @@ test('user cannot delete income from other user', function () {
 
     expect(Income::query()->count())->toBe(1);
 
-    $this->actingAs($user2)
+    actingAs($user2)
         ->delete(route('incomes.destroy', $income))
-        ->assertRedirect(route('incomes.index'));
+        ->assertStatus(403);
 
     expect(Income::query()->count())->toBe(1);
 });

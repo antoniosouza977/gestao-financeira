@@ -10,10 +10,8 @@ class PaymentValidator extends BaseValidator
     {
         return [
             'value'       => 'valor',
-            'category_id' => 'categoria',
             'description' => 'descrição',
             'date'        => 'data',
-            'month'       => 'mês',
         ];
     }
 
@@ -23,7 +21,6 @@ class PaymentValidator extends BaseValidator
             'value'       => 'sometimes|required|numeric',
             'description' => 'nullable|max:255',
             'date'        => 'sometimes|required|date',
-            'month'       => 'sometimes|required|digits_between:1,12',
             'income_id'   => ['nullable', Rule::exists('incomes', 'id')
                 ->where('user_id', auth()->id())],
         ];
@@ -42,7 +39,6 @@ class PaymentValidator extends BaseValidator
             'value'       => 'required|numeric',
             'description' => 'max:255',
             'date'        => 'required|date',
-            'month'       => 'required|digits_between:1,12',
         ];
     }
 }

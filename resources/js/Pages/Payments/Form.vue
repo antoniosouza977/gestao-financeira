@@ -3,7 +3,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import BaseForm from "@/Components/Crud/BaseForm.vue";
 import {useForm} from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
-import {onBeforeMount} from 'vue'
+import {onBeforeMount, ref} from 'vue'
 import DateFormater from "@/Services/Types/DateFormater.js";
 
 let paymentForm = useForm({
@@ -14,6 +14,8 @@ let paymentForm = useForm({
     description: null,
     date: DateFormater.todayStringDate(),
 });
+
+const action = ref('Cadastrar');
 
 const props = defineProps({
     payment: {
@@ -28,6 +30,7 @@ const props = defineProps({
 
 onBeforeMount(() => {
     if (props.payment) {
+        action.value = 'Editar';
         paymentForm = useForm({
             method: "patch",
             url: route('payments.update', props.payment.id),
@@ -39,10 +42,9 @@ onBeforeMount(() => {
 
 <template>
     <AppLayout>
-        <BaseForm :form="paymentForm">
+        <BaseForm :title="action + ' pagamento'" :form="paymentForm">
             <div>
-                <div class="font-semibold text-xl mb-3">Cadastrar novo pagamento</div>
-                <form>
+
                     <div class="flex flex-col flex-wrap mb-3">
 
                         <div class="lg:w-1/3 w-full flex flex-col p-3 gap-3">
@@ -85,7 +87,6 @@ onBeforeMount(() => {
 
                     </div>
 
-                </form>
             </div>
 
         </BaseForm>

@@ -1,12 +1,14 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Index from "@/Components/Crud/Index.vue";
-import {Link} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import NumberFormater from "../../Services/Types/NumberFormater.js";
 import DateFormater from "../../Services/Types/DateFormater.js";
 import IncomesToConfirmList from "@/Components/Payments/IncomesToConfirmList.vue";
 import DeleteButton from "@/Components/Partials/DeleteButton.vue";
-import Paginator from '@/Components/Crud/Paginator.vue'
+import CustomPaginator from '@/Components/Crud/CustomPaginator.vue'
+import EditButton from "@/Components/Partials/EditButton.vue";
+import LinkTag from "@/Components/Partials/LinkTag.vue";
 
 const props = defineProps({
     incomesWithNoPayment: {
@@ -22,17 +24,14 @@ const props = defineProps({
 
 <template>
     <AppLayout>
-        <Index :create-route="route('payments.create')">
+        <Head title="Pagamentos"/>
 
-            <IncomesToConfirmList :incomesWithNoPayment=incomesWithNoPayment></IncomesToConfirmList>
+        <Index title="Meus pagamentos" :create-route="route('payments.create')" button-label="Novo Pagamento">
+
+            <IncomesToConfirmList v-if="incomesWithNoPayment.length" :incomesWithNoPayment=incomesWithNoPayment></IncomesToConfirmList>
 
             <div class="mt-3" v-if="payments.data.length === 0">
-                <Badge severity="secondary" size="large">Nenhuma lançamento cadastrado</Badge>
-            </div>
-
-
-            <div v-if="payments.data.length" class="w-full mb-3">
-                <Badge size="large">Lançamentos:</Badge>
+                <Badge severity="secondary" size="large">Nenhum lançamento cadastrado</Badge>
             </div>
 
             <div v-for="payment in payments.data" :key="payment.id"
@@ -53,11 +52,7 @@ const props = defineProps({
                 <div class="xl:w-2/12 lg:w-1/3 sm:w-1/2 w-full flex flex-col gap-3 p-3 pl-0">
                     <span class="font-bold">Origem: </span>
                     <template v-if="payment.income_id">
-                        <Link v-if="payment.income.active" class="underline text-blue-400"
-                              :href="route('incomes.edit', payment.income_id)">
-                            {{ payment.income.description }}
-                            <i class="pi pi-link"></i>
-                        </Link>
+                        <LinkTag v-if="payment.income.active" :label="payment.income.description" :url="route('incomes.edit', payment.income_id)"/>
                         <span v-else>{{ payment.income.description }}</span>
                     </template>
                     <template v-else>
@@ -78,17 +73,14 @@ const props = defineProps({
                 <div class="xl:w-2/12 lg:w-1/3 sm:w-1/2 w-full flex flex-col flex-wrap gap-3 p-3 pl-0">
                     <label class="font-bold">Ações: </label>
                     <div class="flex gap-3">
-                        <Link :href="route('payments.edit', payment.id)">
-                            <Button icon="pi pi-pen-to-square" title="Editar" severity="warn" outlined/>
-                        </Link>
+                        <EditButton :href="route('payments.edit', payment.id)"/>
                         <DeleteButton icon="true" :url="route('payments.destroy', payment.id)"/>
                     </div>
                 </div>
 
                 <Divider/>
-
             </div>
-            <Paginator v-if="props.payments.total > props.payments.data.length" :links="props.payments.links"/>
+                <CustomPaginator :index-route="route('payments.index')" :laravel-paginator="payments"/>
         </Index>
     </AppLayout>
 </template>

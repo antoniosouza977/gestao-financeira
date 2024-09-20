@@ -13,7 +13,6 @@ const goBack = () => {
 </script>
 
 <template>
-    <Button @click.prevent="goBack" style="width: fit-content;" icon="pi pi-arrow-left" label="Voltar" outlined
-            severity="secondary"/>
+    <Button @click.prevent="goBack" style="width: fit-content;" icon="pi pi-arrow-left" label="Voltar" severity="secondary"/>
 </template>
 

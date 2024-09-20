@@ -12,55 +12,24 @@ const model = ref([
         label: 'Minhas Finanças',
         items: [
             {
-                label: 'Receitas',
+                label: 'Rendas',
                 icon: 'pi pi-fw pi-money-bill',
                 items: [
-                    {
-                        label: 'Rendas Mensais',
-                        items: [
-                            {
-                                label: "Minhas Rendas",
-                                to: route('incomes.index')
-                            },
-                            {
-                                label: 'Categorias',
-                                to: route('income-categories.index'),
-                            },
-                        ],
-                    },
-                    {
-                        label: 'Pagamentos',
-                        to: route('payments.index'),
-                    }
+                    {label: "Minhas Rendas Mensais", to: route('incomes.index')},
+                    {label: 'Categorias', to: route('income-categories.index')},
+                    {label: 'Pagamentos', to: route('payments.index')}
                 ]
             },
             {
-                label: 'Submenu 2',
-                icon: 'pi pi-fw pi-bookmark',
+                label: 'Despesas',
+                icon: 'pi pi-receipt',
                 items: [
-                    {
-                        label: 'Submenu 2.1',
-                        icon: 'pi pi-fw pi-bookmark',
-                        items: [
-                            {label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark'},
-                            {label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark'}
-                        ]
-                    },
-                    {
-                        label: 'Submenu 2.2',
-                        icon: 'pi pi-fw pi-bookmark',
-                        items: [{label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark'}]
-                    }
+                    {label: 'Minhas Despesas Mensais', to: route('expenses.index')},
+                    {label: 'Orçamentos', to: route('budgets.index')},
+                    {label: 'Categorias de Orçamento', to: route('expense-categories.index')},
+                    {label: 'Gastos', to: route('outgoings.index')},
                 ]
             }
-        ]
-    },
-    {
-        label: 'Menu 1',
-        items: [
-            {label: 'Example 1', icon: 'pi pi-fw pi-id-card'},
-            {label: 'Example 2', icon: 'pi pi-fw pi-check-square'},
-            {label: 'Example 3', icon: 'pi pi-fw pi-mobile', class: 'rotated-icon'},
         ]
     }
 ]);

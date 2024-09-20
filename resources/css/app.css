@@ -1,3 +1,4 @@
+@import "custom.css";
 
 @layer tailwind-base, primevue, tailwind-utilities;
 
@@ -9,3 +10,4 @@
     @tailwind components;
     @tailwind utilities;
 }
+

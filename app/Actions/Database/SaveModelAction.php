@@ -2,12 +2,13 @@
 
 namespace App\Actions\Database;
 
+use App\Actions\Action;
 use App\Enums\ValidationType;
 use App\Validators\BaseValidator;
 use App\Validators\Contracts\Validator;
 use BadMethodCallException;
 use Illuminate\Database\Eloquent\Model;
-use App\Actions\Action;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class SaveModelAction implements Action
@@ -26,14 +27,17 @@ class SaveModelAction implements Action
         return $this;
     }
 
-    public function setData(array $data): SaveModelAction
+    public function setData(array $data, bool $userRelated = true): SaveModelAction
     {
-        $this->data = $data;
+        if ($userRelated) {
+            $data['user_id'] = Auth::id();
+        }
 
+        $this->data = $data;
         return $this;
     }
 
-    public function setValidator(Validator $validator): SaveModelAction
+    public function setValidator(BaseValidator $validator): SaveModelAction
     {
         $this->validator = $validator;
 

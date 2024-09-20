@@ -20,13 +20,13 @@ class IncomeValidator extends BaseValidator
     public function updateRules(): array
     {
         return [
-            'value'       => 'numeric',
+            'value'       => 'sometimes|required|numeric',
             'category_id' => Rule::exists('income_categories', 'id')
                 ->where(function ($query) {
                     $query->where('user_id', auth()->id());
                     $query->orWhereNull('user_id');
                 }),
-            'payment_day' => 'digits_between:1,31',
+            'payment_day' => 'sometimes|required|digits_between:1,31',
             'description' => 'sometimes|required|max:255',
         ];
     }

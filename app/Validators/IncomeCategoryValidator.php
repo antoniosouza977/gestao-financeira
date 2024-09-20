@@ -17,7 +17,7 @@ class IncomeCategoryValidator extends BaseValidator
     public function updateRules(): array
     {
         return [
-            'name' => ['required', Rule::unique('income_categories', 'name')->where('user_id', auth()->id())],
+            'name' => 'required',
         ];
     }
 
@@ -30,7 +30,7 @@ class IncomeCategoryValidator extends BaseValidator
                 Rule::exists('users', 'id')
                     ->where('id', auth()->id())
             ],
-            'name'    => ['required', Rule::unique('income_categories', 'name')->where('user_id', auth()->id())],
+            'name'    => 'required',
         ];
     }
 }

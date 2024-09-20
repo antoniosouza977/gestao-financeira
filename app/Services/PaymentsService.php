@@ -3,19 +3,18 @@
 namespace App\Services;
 
 use App\Models\Income;
-use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Query\Builder;
 
 class PaymentsService
 {
-    private User $user;
+    private ?Authenticatable $user;
 
     public function __construct()
     {
-        $this->user = User::query()->find(auth()->id());
+        $this->user = auth()->user();
     }
 
     public function missingIncomePayments(): Collection
@@ -35,7 +34,22 @@ class PaymentsService
 
     public function userPayments(): LengthAwarePaginator
     {
-        return $this->user->payments()->paginate(5);
+        return $this->user->payments()->paginate(10);
+    }
+
+    public function monthlyPayments(array $columns = ['*']): Collection
+    {
+        return $this->user->payments()
+            ->whereBetween('date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+            ->get($columns);
+    }
+
+    public function monthlyPaymentsTotal(): string
+    {
+        $payments = $this->monthlyPayments(['value']);
+        $sum = $payments->sum('value');
+
+        return round($sum, 2);
     }
 
 }

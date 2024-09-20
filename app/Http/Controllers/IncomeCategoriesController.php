@@ -3,20 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Database\SaveModelAction;
-use App\Enums\ValidationType;
 use App\Models\IncomeCategory;
+use App\Validators\BaseValidator;
 use App\Validators\IncomeCategoryValidator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Validation\ValidationException;
-use Inertia\Inertia;
 use Inertia\Response;
 
 class IncomeCategoriesController extends Controller
 {
-    private IncomeCategoryValidator $validator;
-    private SaveModelAction $saveModelAction;
+    protected BaseValidator $validator;
+    protected SaveModelAction $saveModelAction;
+    protected string $indexRoute = 'income-categories.index';
 
     public function __construct
     (
@@ -30,84 +28,54 @@ class IncomeCategoriesController extends Controller
     public function index(): Response
     {
         $categories = IncomeCategory::query()
-            ->where('user_id', auth()->id())
-            ->orWhere('user_id', null)
-            ->get();
+            ->where(function ($query) {
+                $query->whereNull('user_id')->orWhere('user_id', auth()->id());
+            })->paginate(10);
 
-        return Inertia::render('IncomeCategories/Index', compact('categories'));
+        return inertia()->render('IncomeCategories/Index', compact('categories'));
     }
 
     public function create(): Response
     {
-        return Inertia::render('IncomeCategories/Form');
+        return inertia()->render('IncomeCategories/Form');
     }
 
     public function store(Request $request): RedirectResponse
     {
-        try {
-            $data = $request->only(['name']);
-            $data['user_id'] = auth()->id();
+        $data = $request->only(['name']);
+        return $this->baseStore(new IncomeCategory(), $data);
+    }
 
-            $this->saveModelAction->setModel(new IncomeCategory())
-                ->setData($data)
-                ->setValidator($this->validator)
-                ->validateData(ValidationType::CREATE)
-                ->execute();
-
-            return Redirect::route('income-categories.index');
-
-        } catch (ValidationException $exception) {
-            return Redirect::back()
-                ->withErrors($exception->errors())
-                ->withInput();
-        }
+    public function show(IncomeCategory $incomeCategory): Response
+    {
+        return $this->edit($incomeCategory);
     }
 
     public function edit(IncomeCategory $incomeCategory): Response
     {
-        return Inertia::render('IncomeCategories/Form', ['category' => $incomeCategory]);
+        return inertia()->render('IncomeCategories/Form', ['category' => $incomeCategory]);
     }
 
     public function update(IncomeCategory $incomeCategory, Request $request): RedirectResponse
     {
-        try {
-            if ($incomeCategory->user_id !== auth()->id()) {
-                return Redirect::back();
-            }
-
-            $data = $request->only(['name']);
-
-            $this->saveModelAction
-                ->setModel($incomeCategory)
-                ->setData($data)
-                ->setValidator($this->validator)
-                ->validateData(ValidationType::UPDATE)
-                ->execute();
-
-            return Redirect::route('income-categories.index');
-
-        } catch (ValidationException $e) {
-            return Redirect::back()
-                ->withErrors($e->errors())
-                ->withInput();
-        }
+        $data = $request->only(['name']);
+        return $this->baseUpdate($incomeCategory, $data);
     }
 
     public function destroy(IncomeCategory $incomeCategory): RedirectResponse
     {
         if ($incomeCategory->user_id !== auth()->id()) {
-            return Redirect::back();
+            abort(403);
         }
 
         $incomeCategory->load('incomes');
         if ($incomeCategory->incomes->isNotEmpty()) {
             $incomeCategory->incomes()->update([
-                'category_id' => 1 // salario
+                'category_id' => 1
             ]);
         }
 
         $incomeCategory->delete();
-
-        return Redirect::route('income-categories.index');
+        return redirect()->route($this->indexRoute);
     }
 }
