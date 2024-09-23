@@ -52,6 +52,7 @@ export function useLayout() {
     const executeDarkModeToggle = () => {
         layoutConfig.darkTheme = !layoutConfig.darkTheme;
         document.documentElement.classList.toggle('app-dark');
+        localStorage.setItem('darkTheme', JSON.stringify(document.documentElement.classList.contains('app-dark')));
     };
 
     const onMenuToggle = () => {

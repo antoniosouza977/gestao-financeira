@@ -24,7 +24,7 @@ const submitForm = () => {
                 severity: 'success',
                 summary: 'Sucesso',
                 detail: 'Registro salvo com sucesso',
-                life: 3000
+                life: 1000
             });
         }
     })

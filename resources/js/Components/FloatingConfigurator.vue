@@ -1,8 +1,18 @@
 <script setup>
 import AppConfigurator from '@/Layouts/AppConfigurator.vue';
 import { useLayout } from '@/Layouts/composables/layout';
+import {onMounted} from "vue";
 
 const { toggleDarkMode, isDarkTheme } = useLayout();
+
+onMounted(() => {
+    const isDarkModeSetted = localStorage.getItem('darkTheme') === 'true';
+
+    if (isDarkModeSetted && !document.documentElement.classList.contains('app-dark')) {
+        document.documentElement.classList.add('app-dark');
+    }
+
+});
 </script>
 
 <template>

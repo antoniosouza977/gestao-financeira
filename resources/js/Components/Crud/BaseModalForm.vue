@@ -21,7 +21,7 @@ const submitForm = () => {
                 severity: 'success',
                 summary: "Registrado",
                 detail: "Salvo com sucesso",
-                life: 3000
+                life: 1000
             })
             props.form.reset()
         }

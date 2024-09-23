@@ -47,7 +47,7 @@ const confirmPayment = () => {
                         severity: 'success',
                         summary: 'Transação',
                         detail: 'Confirmada',
-                        life: 3000
+                        life: 1000
                     });
                     emit('transactionConfirmed', props.promise.id);
                 }

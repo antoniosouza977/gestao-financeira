@@ -48,7 +48,7 @@ const deleteBudget = async () => {
                         severity: 'success',
                         summary: 'Sucesso',
                         detail: 'Registro removido',
-                        life: 3000
+                        life: 1000
                     });
                 }
             })
@@ -68,7 +68,7 @@ const deleteUsedBudget = () => {
                 severity: 'success',
                 summary: 'Sucesso',
                 detail: 'Registro removido',
-                life: 3000
+                life: 1000
             });
         }
     })

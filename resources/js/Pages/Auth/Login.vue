@@ -2,7 +2,7 @@
 import FloatingConfigurator from '@/Components/FloatingConfigurator.vue';
 import {useForm} from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
-
+import {Link} from "@inertiajs/vue3";
 
 defineProps({
     canResetPassword: {
@@ -61,7 +61,7 @@ const submit = () => {
                                 <Checkbox v-model="form.remember" inputId="rememberme1" binary class="mr-2"></Checkbox>
                                 <label for="rememberme1">Lembrar de mim</label>
                             </div>
-                            <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Esqueceu a senha?</span>
+                            <Link :href="route('register')" class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Registrar</Link>
                         </div>
                         <Button type="submit" label="Entrar" class="w-full"/>
                     </form>

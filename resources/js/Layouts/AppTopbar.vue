@@ -2,6 +2,7 @@
 import {useLayout} from '@/Layouts/composables/layout';
 import AppConfigurator from './AppConfigurator.vue';
 import {Link, usePage} from "@inertiajs/vue3";
+import LogoutButton from "@/Components/Auth/LogoutButton.vue";
 
 const {onMenuToggle, toggleDarkMode, isDarkTheme} = useLayout();
 
@@ -53,6 +54,7 @@ const page = usePage()
                             <span class="text-lg">{{ page.props.auth.user.name }}</span>
                         </div>
                     </Link>
+                    <LogoutButton/>
                 </div>
             </div>
         </div>

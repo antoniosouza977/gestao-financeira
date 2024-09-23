@@ -1,11 +1,11 @@
 <script setup>
-import { useLayout } from '@/Layouts/composables/layout';
+import {useLayout} from '@/Layouts/composables/layout';
 import {computed, onMounted, ref, watch} from 'vue';
 import AppFooter from './AppFooter.vue';
 import AppSidebar from './AppSidebar.vue';
 import AppTopbar from './AppTopbar.vue';
 
-const { layoutConfig, layoutState, isSidebarActive, resetMenu } = useLayout();
+const {layoutConfig, layoutState, isSidebarActive, resetMenu} = useLayout();
 
 const outsideClickListener = ref(null);
 
@@ -52,12 +52,7 @@ function isOutsideClicked(event) {
     return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
 }
 
-onMounted(() => {
-    // Todo : remover
-    if (!document.documentElement.classList.contains('app-dark')) {
-        document.documentElement.classList.toggle('app-dark');
-    }
-});
+
 </script>
 
 <template>
@@ -74,5 +69,5 @@ onMounted(() => {
         </div>
         <div class="layout-mask animate-fadein"></div>
     </div>
-    <Toast />
+    <Toast/>
 </template>

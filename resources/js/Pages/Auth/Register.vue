@@ -5,6 +5,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import FloatingConfigurator from "@/Components/FloatingConfigurator.vue";
 
 const form = useForm({
     name: '',
@@ -21,83 +22,62 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
         <Head title="Register" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
+        <FloatingConfigurator/>
+        <div
+            class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
+            <div class="flex flex-col items-center justify-center">
+                <div
+                    style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
+                    <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
+                        <div class="text-center mb-8">
+                            <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Registro</div>
+                            <span class="text-muted-color font-medium">Isira seus dados para continuar</span>
+                        </div>
 
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
+                        <form @submit.prevent="submit">
+                            <div class="mb-3">
+                                <label for="name"
+                                       class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Nome</label>
+                                <InputText inputId="name" type="text"
+                                           class="w-full md:w-[30rem]" v-model="form.name"/>
+                                <InputError class="mt-2" :message="form.errors.name"/>
+                            </div>
 
-                <InputError class="mt-2" :message="form.errors.name" />
+                            <div class="mb-3">
+                                <label for="email1"
+                                       class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
+                                <InputText inputId="email1" type="text" placeholder="Endereço de email"
+                                           class="w-full md:w-[30rem]" v-model="form.email"/>
+                                <InputError class="mt-2" :message="form.errors.email"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password1"
+                                       class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Senha</label>
+                                <Password inputId="password1" v-model="form.password" placeholder="Senha" :toggleMask="true"
+                                          fluid :feedback="true"/>
+                                <InputError class="mt-2" :message="form.errors.password"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password2"
+                                       class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Confirmação de Senha</label>
+                                <Password inputId="password2" v-model="form.password_confirmation" placeholder="Senha" :toggleMask="true"
+                                          fluid :feedback="true"/>
+                                <InputError class="mt-2" :message="form.errors.password_confirmation"/>
+                            </div>
+
+                            <div class="flex items-center justify-end mt-2 mb-8 gap-8">
+                                <Link :href="route('login')" class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Login</Link>
+                            </div>
+
+                            <Button type="submit" label="Registrar" class="w-full"/>
+                        </form>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link
-                    :href="route('login')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Already registered?
-                </Link>
-
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
 </template>
