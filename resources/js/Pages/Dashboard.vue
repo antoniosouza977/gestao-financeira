@@ -4,7 +4,6 @@ import {Head, Link} from "@inertiajs/vue3";
 import {onBeforeMount, ref} from "vue";
 import NumberFormater from "../Services/Types/NumberFormater.js";
 import DateFormater from "../Services/Types/DateFormater.js";
-import CustomLabel from "@/Components/Partials/CustomLabel.vue";
 import NewTransactionModal from "@/Components/Transactions/NewTransactionModal.vue";
 
 const props = defineProps({
@@ -58,79 +57,87 @@ function setChartData() {
             </div>
 
             <div class="col-span-12 lg:col-span-6 xl:col-span-3">
-                <div class="card mb-0">
-                    <div class="flex justify-between mb-4">
-                        <div>
-                            <Link class="block text-muted-color font-medium mb-4">
-                                Pagamentos
-                            </Link>
-                            <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-                                {{ NumberFormater.toLocalCurrency(incomesTotal) }}
+                <Link :href="route('incomes.index')">
+                    <div class="card mb-0">
+                        <div class="flex justify-between mb-4">
+                            <div>
+                            <span class="block text-muted-color font-medium mb-4">
+                                Receitas
+                            </span>
+                                <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
+                                    {{ NumberFormater.toLocalCurrency(incomesTotal) }}
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
+                                 style="width: 2.5rem; height: 2.5rem">
+                                <i class="pi pi-dollar text-green-500 !text-xl"></i>
                             </div>
                         </div>
-                        <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
-                             style="width: 2.5rem; height: 2.5rem">
-                            <i class="pi pi-dollar text-green-500 !text-xl"></i>
-                        </div>
                     </div>
-                </div>
+                </Link>
             </div>
 
             <div class="col-span-12 lg:col-span-6 xl:col-span-3">
                 <div class="card mb-0">
-                    <div class="flex justify-between mb-4">
-                        <div>
-                            <Link class="block text-muted-color font-medium mb-4">
-                                Despesas
-                            </Link>
-                            <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-                                {{ NumberFormater.toLocalCurrency(expensesTotal) }}
+                    <Link :href="route('expenses.index')">
+                        <div class="flex justify-between mb-4">
+                            <div>
+                                <span class="block text-muted-color font-medium mb-4">
+                                    Despesas
+                                </span>
+                                <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
+                                    {{ NumberFormater.toLocalCurrency(expensesTotal) }}
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
+                                 style="width: 2.5rem; height: 2.5rem">
+                                <i class="pi pi-dollar text-red-500 !text-xl"></i>
                             </div>
                         </div>
-                        <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
-                             style="width: 2.5rem; height: 2.5rem">
-                            <i class="pi pi-dollar text-red-500 !text-xl"></i>
-                        </div>
-                    </div>
+                    </Link>
                 </div>
             </div>
 
             <div class="col-span-12 lg:col-span-6 xl:col-span-3">
-                <div class="card mb-0">
-                    <div class="flex justify-between mb-4">
-                        <div>
-                            <Link class="block text-muted-color font-medium mb-4">Receitas
+                <Link :href="route('income-promises.index')">
+                    <div class="card mb-0">
+                        <div class="flex justify-between mb-4">
+                            <div>
+                            <span class="block text-muted-color font-medium mb-4">Receitas
                                 Agendada
-                            </Link>
-                            <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-                                {{ NumberFormater.toLocalCurrency(incomePromisesTotal) }}
+                            </span>
+                                <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
+                                    {{ NumberFormater.toLocalCurrency(incomePromisesTotal) }}
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
+                                 style="width: 2.5rem; height: 2.5rem">
+                                <i class="pi pi-wallet text-orange-500 !text-xl"></i>
                             </div>
                         </div>
-                        <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
-                             style="width: 2.5rem; height: 2.5rem">
-                            <i class="pi pi-wallet text-orange-500 !text-xl"></i>
-                        </div>
                     </div>
-                </div>
+                </Link>
             </div>
 
             <div class="col-span-12 lg:col-span-6 xl:col-span-3">
-                <div class="card mb-0">
-                    <div class="flex justify-between mb-4">
-                        <div>
-                            <Link class="block text-muted-color font-medium mb-4">Despesas
+                <Link :href="route('income-promises.index')">
+                    <div class="card mb-0">
+                        <div class="flex justify-between mb-4">
+                            <div>
+                            <span class="block text-muted-color font-medium mb-4">Despesas
                                 Agendadas
-                            </Link>
-                            <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-                                {{ NumberFormater.toLocalCurrency(expensePromisesTotal) }}
+                            </span>
+                                <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
+                                    {{ NumberFormater.toLocalCurrency(expensePromisesTotal) }}
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
+                                 style="width: 2.5rem; height: 2.5rem">
+                                <i class="pi pi-list-check text-orange-500 !text-xl"></i>
                             </div>
                         </div>
-                        <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
-                             style="width: 2.5rem; height: 2.5rem">
-                            <i class="pi pi-list-check text-orange-500 !text-xl"></i>
-                        </div>
                     </div>
-                </div>
+                </Link>
             </div>
 
             <div class="col-span-12 xl:col-span-6">
@@ -143,7 +150,7 @@ function setChartData() {
             <div class="col-span-12 xl:col-span-6">
                 <div class="card">
                     <div class="flex justify-between">
-                        <div class="font-semibold text-xl mb-4">Ultimos gastos</div>
+                        <div class="font-semibold text-xl mb-4">Ultimas despesas</div>
                         <NewTransactionModal :store-route="route('add-expense')" :categories :icon="true" type="2"/>
                     </div>
                     <div class="flex flex-col gap-1 min-h-80 mt-3">
@@ -159,7 +166,7 @@ function setChartData() {
                             </div>
                             <div class="sm:w-2/4 w-1/2">
                                 <label for="">Descrição</label>
-                                {{  transaction.description || 'Sem descrição'}}
+                                {{ transaction.description || 'Sem descrição' }}
                             </div>
                         </div>
                     </div>
