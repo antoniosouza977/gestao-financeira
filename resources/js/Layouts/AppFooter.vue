@@ -2,7 +2,7 @@
 
 <template>
     <div class="layout-footer">
-        SAKAI by
-        <a href="https://primevue.org" target="_blank" rel="noopener noreferrer" class="text-primary font-bold hover:underline">PrimeVue</a>
+        Desenvolvido por
+        <a href="https://www.linkedin.com/in/antonio-souza-305580324/" target="_blank" rel="noopener noreferrer" class="text-primary font-bold hover:underline">Antonio Souza</a>
     </div>
 </template>

@@ -1,11 +1,11 @@
 <script setup>
 import {useLayout} from '@/Layouts/composables/layout';
-import {computed, onMounted, ref, watch} from 'vue';
+import {computed, onBeforeMount, onMounted, ref, watch} from 'vue';
 import AppFooter from './AppFooter.vue';
 import AppSidebar from './AppSidebar.vue';
 import AppTopbar from './AppTopbar.vue';
 
-const {layoutConfig, layoutState, isSidebarActive, resetMenu} = useLayout();
+const {layoutConfig, layoutState, isSidebarActive, resetMenu, checkTheme} = useLayout();
 
 const outsideClickListener = ref(null);
 
@@ -52,7 +52,9 @@ function isOutsideClicked(event) {
     return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
 }
 
-
+onBeforeMount(() => {
+    checkTheme()
+})
 </script>
 
 <template>

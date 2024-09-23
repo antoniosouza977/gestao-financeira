@@ -28,15 +28,15 @@ class DashboardController extends Controller
         $incomesTotal = $this->transactionService->currentMonthTotal(Transaction::INCOME);
         $expensesTotal = $this->transactionService->currentMonthTotal(Transaction::EXPENSE);
 
-        $incomePromisesTotal = $this->transactionPromisesService->totalCurrentMonthPromises(Transaction::INCOME);
+        $wallet = round($incomesTotal - $expensesTotal,2);
         $expensePromisesTotal = $this->transactionPromisesService->totalCurrentMonthPromises(Transaction::EXPENSE);
 
-        $latestsExpenses = $this->transactionService->getLatestTransactions(Transaction::EXPENSE);
+        $latestsExpenses = $this->transactionService->getLatestTransactions(Transaction::EXPENSE,6);
         $categories = Category::query()
             ->where('user_id', auth()->id())
             ->where('type', Category::EXPENSE)
             ->get();
 
-        return inertia()->render('Dashboard', compact('incomesTotal', 'expensesTotal', 'incomePromisesTotal', 'expensePromisesTotal', 'latestsExpenses', 'startPeriod', 'endPeriod', 'categories'));
+        return inertia()->render('Dashboard', compact('incomesTotal', 'expensesTotal', 'wallet', 'expensePromisesTotal', 'latestsExpenses', 'startPeriod', 'endPeriod', 'categories'));
     }
 }

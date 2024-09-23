@@ -88,6 +88,7 @@ class TransactionPromisesService
         return Transaction::query()
             ->where('user_id', auth()->id())
             ->where('type', $type)
+            ->orderBy('date', 'desc')
             ->paginate(10);
     }
 

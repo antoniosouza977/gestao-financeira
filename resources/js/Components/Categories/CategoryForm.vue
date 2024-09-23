@@ -12,7 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <BaseModalForm :form="form" @saved="$emit('saved')" @close-modal="$emit('close-modal')">
+    <BaseModalForm :form="form" @close-modal="$emit('close-modal')">
         <template v-slot:form>
             <div class="flex flex-col gap-1 mb-4">
                 <label for="name">Nome</label>

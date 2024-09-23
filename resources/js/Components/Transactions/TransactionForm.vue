@@ -15,11 +15,19 @@ const props = defineProps({
     type: String
 })
 
+function handleNewCategory(item) {
+    const lastCat = props.categories[props.categories.length - 1];
+
+    if (lastCat.name === item.name) {
+        props.form.category_id = lastCat.id;
+    }
+}
+
 </script>
 
 <template>
 
-    <BaseModalForm :form="form" @saved="$emit('saved')" @close-modal="$emit('close-modal')">
+    <BaseModalForm :form="form" @saved="$emit('saved', $event)" @close-modal="$emit('close-modal')">
         <template v-slot:form>
             <div class="flex flex-col gap-1 mb-4">
                 <label for="value" class="font-semibold">Valor</label>
@@ -64,8 +72,12 @@ const props = defineProps({
                         showClear
                         filter
                         :invalid="Boolean(form.errors.category_id)"
-                        autocomplete="off"/>
-                    <NewCategoryModal :icon="true" :type/>
+                        autocomplete="off">
+                        <template #empty>
+                            <p>Nenhuma categoria cadastrada</p>
+                        </template>
+                    </Select>
+                    <NewCategoryModal @new-category="handleNewCategory" :icon="true" :type/>
                 </div>
                 <InputError class="mt-2" :message="form.errors.category_id"/>
             </div>

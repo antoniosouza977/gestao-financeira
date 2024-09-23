@@ -1,4 +1,4 @@
-import { computed, reactive, readonly } from 'vue';
+import {computed, reactive, readonly} from 'vue';
 
 const layoutConfig = reactive({
     preset: 'Aura',
@@ -37,6 +37,14 @@ export function useLayout() {
 
     const setMenuMode = (mode) => {
         layoutConfig.menuMode = mode;
+    };
+
+    const checkTheme = () => {
+        const isDarkModeSetted = localStorage.getItem('darkTheme') === 'true';
+
+        if (isDarkModeSetted && !document.documentElement.classList.contains('app-dark')) {
+            document.documentElement.classList.add('app-dark');
+        }
     };
 
     const toggleDarkMode = () => {
@@ -81,5 +89,21 @@ export function useLayout() {
 
     const getSurface = computed(() => layoutConfig.surface);
 
-    return { layoutConfig: readonly(layoutConfig), layoutState: readonly(layoutState), onMenuToggle, isSidebarActive, isDarkTheme, getPrimary, getSurface, setActiveMenuItem, toggleDarkMode, setPrimary, setSurface, setPreset, resetMenu, setMenuMode };
+    return {
+        layoutConfig: readonly(layoutConfig),
+        layoutState: readonly(layoutState),
+        onMenuToggle,
+        isSidebarActive,
+        isDarkTheme,
+        getPrimary,
+        getSurface,
+        setActiveMenuItem,
+        toggleDarkMode,
+        checkTheme,
+        setPrimary,
+        setSurface,
+        setPreset,
+        resetMenu,
+        setMenuMode
+    };
 }

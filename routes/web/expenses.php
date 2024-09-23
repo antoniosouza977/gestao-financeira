@@ -10,5 +10,6 @@ Route::prefix('despesas')->group(function () {
     Route::post('/', [ExpensesController::class, 'store'])->name('expenses.store');
     Route::delete('/{transaction}', [ExpensesController::class, 'destroy'])->name('expenses.destroy');
 
-    Route::post('/add}', [AddExpenseFromDashboardController::class, 'store'])->name('add-expense');
+    Route::post('dash/add', [AddExpenseFromDashboardController::class, 'store'])->name('add-expense');
+    Route::patch('dash/update/{transaction}', [AddExpenseFromDashboardController::class, 'update'])->name('update-expense');
 });

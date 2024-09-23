@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import BaseForm from "@/Components/Crud/BaseForm.vue";
-import {useForm} from "@inertiajs/vue3";
+import {Head, useForm} from "@inertiajs/vue3";
 import {onBeforeMount, ref} from "vue";
 import TransactionPromiseForm from "@/Components/TransactionPromises/TransactionPromiseForm.vue";
 
@@ -48,6 +48,8 @@ onBeforeMount(() => {
 
 <template>
     <AppLayout>
+        <Head title="Agendamento"/>
+
         <BaseForm :title="action + ' Despesa Recorrente'" :form="form">
             <TransactionPromiseForm :form :categories type="2"/>
         </BaseForm>

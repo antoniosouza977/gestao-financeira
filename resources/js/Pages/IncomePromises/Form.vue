@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import BaseForm from "@/Components/Crud/BaseForm.vue";
-import {useForm} from "@inertiajs/vue3";
+import {useForm, Head} from "@inertiajs/vue3";
 import {onBeforeMount, ref} from "vue";
 import TransactionPromiseForm from "@/Components/TransactionPromises/TransactionPromiseForm.vue";
 
@@ -43,6 +43,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
+    <Head title="Agendamento"/>
     <AppLayout>
         <BaseForm title="Agendamento de Receita" :form="form" :back-url="route('income-promises.index')">
             <TransactionPromiseForm type="1" :form :categories/>

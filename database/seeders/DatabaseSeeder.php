@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
+use App\Models\Transaction;
 use App\Models\User;
-use Database\Seeders\modules\ExpenseCategoriesSeeder;
-use Database\Seeders\modules\IncomeCatergoriesSeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        User::query()->updateOrCreate([
+        $user = User::query()->updateOrCreate([
             'name'  => 'Test',
             'email' => 'test@example.com'
         ], [
@@ -27,9 +27,25 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('Password'),
         ]);
 
-//        $this->call([
-//            IncomeCatergoriesSeeder::class,
-//            ExpenseCategoriesSeeder::class
-//        ]);
+        $incomeCategories = Category::factory(10)->create([
+            'user_id' => $user->id,
+            'type'    => Category::INCOME
+        ]);
+
+        $expenseCategories = Category::factory(10)->create([
+            'user_id' => $user->id,
+            'type'    => Category::EXPENSE
+        ]);
+
+        $categories = $incomeCategories->merge($expenseCategories);
+
+        foreach ($categories as $category) {
+            Transaction::factory(5)->create([
+                'category_id' => $category->id,
+                'user_id'     => $user->id,
+                'type'        => $category->type,
+            ]);
+        }
+
     }
 }

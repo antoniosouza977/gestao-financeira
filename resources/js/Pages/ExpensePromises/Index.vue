@@ -36,7 +36,7 @@ const types = [
             <template v-slot:content>
 
                 <Help
-                    text="Cadestre suas Despesas Recorrentes como contas mensais, parcelas anuais e gastos diários. Confirme o pagamentos na aba de pagamentos."/>
+                    text="Agende suas Despesas Recorrentes como contas mensais, parcelas anuais e gastos diários. Confirme o pagamentos na aba de pagamentos."/>
 
                 <EmptyListAlert v-if="promisses.data.length === 0"/>
 

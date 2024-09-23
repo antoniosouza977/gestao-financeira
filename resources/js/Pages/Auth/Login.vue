@@ -1,6 +1,6 @@
 <script setup>
 import FloatingConfigurator from '@/Components/FloatingConfigurator.vue';
-import {useForm} from "@inertiajs/vue3";
+import {Head, useForm} from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
 import {Link} from "@inertiajs/vue3";
 
@@ -27,6 +27,8 @@ const submit = () => {
 </script>
 
 <template>
+    <Head title="Login" />
+
     <FloatingConfigurator/>
     <div
         class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">

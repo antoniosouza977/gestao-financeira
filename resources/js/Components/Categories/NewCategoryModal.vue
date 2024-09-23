@@ -1,7 +1,7 @@
 <template>
     <Button :icon="icon ? 'pi pi-plus' : ''" :label title="Nova categoria" @click="visible = true"/>
     <Dialog v-model:visible="visible" modal header="Nova categoria" :style="{ width: '25rem' }">
-        <CategoryForm @saved="$emit('saved')" :form="form" @close-modal="visible = false"/>
+        <CategoryForm :form="form" @saved="alertNewCategory" @close-modal="visible = false"/>
     </Dialog>
 </template>
 
@@ -18,6 +18,12 @@ const props = defineProps({
     label: String,
     icon: Boolean,
 })
+
+const emit = defineEmits(['new-category']);
+
+function alertNewCategory(ev) {
+    emit('new-category', ev);
+}
 
 const form = useForm({
     method: "post",

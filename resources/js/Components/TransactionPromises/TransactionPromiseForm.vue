@@ -141,6 +141,9 @@ const handleNewCategory = () => {
                             showClear
                             :invalid="Boolean(form.errors.category_id)"
                             placeholder="Selecione...">
+                        <template #empty>
+                            <p>Nenhuma categoria cadastrada</p>
+                        </template>
                     </Select>
                     <NewCategoryModal :icon="true" @saved="handleNewCategory" :type="type" />
                 </div>

@@ -35,7 +35,8 @@ abstract class TransactionsController extends Controller
         $transactions = $this->promisesService->paginatedUserTransactions($this->type);
         $categories = Category::query()
             ->where('user_id', auth()->id())
-            ->where('type', $this->type)->get();
+            ->where('type', $this->type)
+            ->get();
         $type = $this->type;
 
         return inertia()->render($this->indexComponent, compact('promisesMissingConfirmation', 'transactions', 'categories', 'type'));

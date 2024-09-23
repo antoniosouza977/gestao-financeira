@@ -33,6 +33,9 @@ const labels = ['Receitas', 'Despesas'];
 
             <template v-slot:content>
 
+                <div class="mt-3" v-if="categories.data.length === 0">
+                    <Badge severity="secondary" size="large">Nenhuma categoria cadastrada</Badge>
+                </div>
 
                 <div v-for="category in categories.data" :key="category.id"
                      class="flex flex-wrap items-center justify-between w-full rounded">
