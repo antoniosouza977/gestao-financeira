@@ -13,7 +13,7 @@ const props = defineProps({
     <div class="card">
         <div class="flex flex-wrap items-center mb-3">
             <div class="w-full flex justify-between items-center mb-3">
-                <h1 class="text-2xl">{{ props.title }}</h1>
+                <h1 class="text-xl">{{ props.title }}</h1>
                 <slot name="new-btn"></slot>
             </div>
             <slot name="content"/>

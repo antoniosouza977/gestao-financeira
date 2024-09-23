@@ -23,7 +23,7 @@ const props = defineProps({
     <AppLayout>
         <Head title="Despesas"/>
 
-        <Index title="Minhas despesas">
+        <Index title="Despesas">
 
             <template v-slot:new-btn>
                 <NewTransactionModal :type="type" :store-route="route('expenses.store')" :categories/>

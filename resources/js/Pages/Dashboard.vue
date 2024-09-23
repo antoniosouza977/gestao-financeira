@@ -120,7 +120,7 @@ function setChartData() {
             </div>
 
             <div class="col-span-12 lg:col-span-6 xl:col-span-3">
-                <Link :href="route('income-promises.index')">
+                <Link :href="route('expense-promises.index')">
                     <div class="card mb-0">
                         <div class="flex justify-between mb-4">
                             <div>

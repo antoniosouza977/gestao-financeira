@@ -22,10 +22,10 @@ const types = [
 </script>
 
 <template>
-    <Head title="Despesas recorrentes"/>
+    <Head title="Despesas Agendas"/>
 
     <AppLayout>
-        <Index title="Despesas recorrentes">
+        <Index title="Despesas Agendas">
 
             <template v-slot:new-btn>
                 <Link :href="route('expense-promises.create')">
