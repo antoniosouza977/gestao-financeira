@@ -15,19 +15,42 @@ const model = ref([
                 label: 'Rendas',
                 icon: 'pi pi-fw pi-money-bill',
                 items: [
-                    {label: "Minhas Rendas Mensais", to: route('incomes.index')},
-                    {label: 'Categorias', to: route('income-categories.index')},
-                    {label: 'Pagamentos', to: route('payments.index')}
+                    {
+                        label: 'Agendar Receitas',
+                        icon: 'pi pi-calendar-clock',
+                        to: route('income-promises.index')
+                    },
+                    {
+                        label: 'Entradas',
+                        icon: 'pi pi-wallet',
+                        to: route('incomes.index')
+                    },
+                    {
+                        label: 'Categorias',
+                        icon: 'pi pi-hashtag',
+                        to: route('income-categories.index')
+                    }
                 ]
             },
             {
                 label: 'Despesas',
                 icon: 'pi pi-receipt',
                 items: [
-                    {label: 'Minhas Despesas Mensais', to: route('expenses.index')},
-                    {label: 'Orçamentos', to: route('budgets.index')},
-                    {label: 'Categorias de Orçamento', to: route('expense-categories.index')},
-                    {label: 'Gastos', to: route('outgoings.index')},
+                    {
+                        label: 'Agendar Despesas',
+                        icon: 'pi pi-calendar-clock',
+                        to: route('expense-promises.index')
+                    },
+                    {
+                        label: 'Saidas',
+                        icon: 'pi pi-dollar',
+                        to: route('expenses.index')
+                    },
+                    {
+                        label: 'Categorias',
+                        icon: 'pi pi-hashtag',
+                        to: route('expense-categories.index')
+                    }
                 ]
             }
         ]

@@ -3,89 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Database\SaveModelAction;
-use App\Models\Income;
-use App\Models\IncomeCategory;
+use App\Models\TransactionPromise;
+use App\Services\TransactionPromisesService;
 use App\Validators\BaseValidator;
-use App\Validators\IncomeValidator;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Inertia\Response;
+use App\Validators\TransactionValidator;
 
-class IncomesController extends Controller
+class IncomesController extends TransactionsController
 {
-    protected SaveModelAction $saveModelAction;
+
+    protected TransactionPromisesService $promisesService;
     protected BaseValidator $validator;
+    protected SaveModelAction $saveModelAction;
     protected string $indexRoute = 'incomes.index';
+    protected int $type = TransactionPromise::INCOME;
+    protected string $indexComponent = 'Incomes/Index';
 
-    public function __construct
-    (
-        IncomeValidator $validator,
-        SaveModelAction $saveModelAction
-    )
+
+    public function __construct(TransactionPromisesService $paymentsService, TransactionValidator $validator, SaveModelAction $saveModelAction)
     {
-        $this->validator = $validator;
-        $this->saveModelAction = $saveModelAction;
-    }
-
-    public function index(): Response
-    {
-        $incomes = auth()->user()->incomes()->paginate(10);
-
-        return inertia()->render('Incomes/Index', compact('incomes'));
-    }
-
-    public function create(): Response
-    {
-        $categories = IncomeCategory::query()
-            ->where(function ($query) {
-                $query->whereNull('user_id')->orWhere('user_id', auth()->id());
-            })->get();
-
-        return inertia()->render('Incomes/Form', compact('categories'));
-    }
-
-    public function store(Request $request): RedirectResponse
-    {
-        $data = $request->only(['value', 'category_id', 'payment_day', 'description']);
-        return $this->baseStore(new Income(), $data);
-    }
-
-    public function show(Income $income): Response
-    {
-        return $this->edit($income);
-    }
-
-    public function edit(Income $income): Response
-    {
-        $categories = IncomeCategory::query()
-            ->where(function ($query) {
-                $query->whereNull('user_id')->orWhere('user_id', auth()->id());
-            })->get();
-
-        return inertia()->render('Incomes/Form', compact('income', 'categories'));
-    }
-
-    public function update(Request $request, Income $income): RedirectResponse
-    {
-        $data = $request->only(['value', 'category_id', 'payment_day', 'description']);
-        return $this->baseUpdate($income, $data);
+        parent::__construct($paymentsService, $validator, $saveModelAction);
     }
 
 
-    public function destroy(Income $income): RedirectResponse
-    {
-        if ($income->user_id !== auth()->id()) {
-            abort(403);
-        }
-
-        if ($income->payments->count()) {
-            $income->update([
-                'active' => false
-            ]);
-            return redirect()->route($this->indexRoute);
-        }
-
-        $income->delete();
-        return redirect()->route($this->indexRoute);
-    }
 }

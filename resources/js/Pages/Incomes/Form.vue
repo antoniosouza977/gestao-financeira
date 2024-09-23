@@ -1,113 +1,95 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import BaseForm from "@/Components/Crud/BaseForm.vue";
-import InputError from "@/Components/InputError.vue";
 import {useForm} from "@inertiajs/vue3";
-import {Link} from "@inertiajs/vue3";
+import InputError from "@/Components/InputError.vue";
+import {onBeforeMount, ref} from 'vue'
+import DateFormater from "@/Services/Types/DateFormater.js";
 
-import {onBeforeMount, ref} from "vue";
-
-const props = defineProps({
-    categories: {
-        type: Array,
-        required: true,
-    },
-    income: {
-        type: Object,
-        required: false,
-    }
-})
-
-const action = ref('Cadastrar');
-
-let incomeForm = useForm({
+let paymentForm = useForm({
     method: "post",
     url: route('incomes.store'),
     value: null,
-    category_id: null,
+    income_id: null,
     description: null,
-    payment_day: 10,
-})
+    date: DateFormater.todayStringDate(),
+});
 
-onBeforeMount(() => {
-    if (props.income) {
-        action.value = 'Editar';
-        const income = {...props.income};
-        income.value = Number(income.value);
+const action = ref('Cadastrar');
 
-        incomeForm = useForm({
-            method: "patch",
-            url: route('incomes.update', income.id),
-            ...income
-        });
+const props = defineProps({
+    payment: {
+        required: false,
+        type: Object,
+    },
+    incomes: {
+        required: true,
+        type: Array,
     }
 })
 
+onBeforeMount(() => {
+    if (props.payment) {
+        action.value = 'Editar';
+        paymentForm = useForm({
+            method: "patch",
+            url: route('incomes.update', props.payment.id),
+            ...props.payment
+        });
+    }
+})
 </script>
 
 <template>
     <AppLayout>
-        <BaseForm :title="action + ' Renda'" :form="incomeForm" :back-url="route('incomes.index')">
+        <BaseForm :title="action + ' pagamento'" :form="paymentForm">
             <div>
+
                     <div class="flex flex-col flex-wrap mb-3">
 
-                        <div class="income-form-group">
+                        <div class="lg:w-1/3 w-full flex flex-col p-3 gap-3">
                             <label for="value">Valor</label>
                             <InputNumber inputId="value"
-                                         v-model="incomeForm.value"
+                                         v-model="paymentForm.value"
                                          :minFractionDigits="2"
                                          style="width: fit-content"
-                                         :invalid="Boolean(incomeForm.errors.value)"
+                                         :invalid="Boolean(paymentForm.errors.value)"
                                          class="w-full"/>
-                            <InputError class="mt-2" :message="incomeForm.errors.value"/>
+                            <InputError class="mt-2" :message="paymentForm.errors.value"/>
                         </div>
 
-                        <div class="income-form-group">
-
-                            <label for="category">Categoria</label>
-                            <div class="flex gap-3">
-                                <Select v-model="incomeForm.category_id"
-                                        :options="categories" optionLabel="name"
-                                        optionValue="id"
-                                        class="w-5/6"
-                                        :invalid="Boolean(incomeForm.errors.category_id)"
-                                        placeholder="Selecione...">
-                                </Select>
-                                <Link :href="route('income-categories.create')">
-                                    <Button icon="pi pi-plus" title="Adicionar categoria"
-                                            />
-                                </Link>
-                            </div>
-                            <InputError class="mt-2" :message="incomeForm.errors.category_id"/>
-
-                        </div>
-
-                        <div class="income-form-group">
+                        <div class="xl:w-1/3 lg:w-1/2 w-full flex flex-col p-3 gap-3">
                             <label for="description">Descrição</label>
-                            <Textarea inputId="description" v-model="incomeForm.description"
-                                      :invalid="Boolean(incomeForm.errors.description)" cols="30"/>
-                            <InputError class="mt-2" :message="incomeForm.errors.description"/>
+                            <Textarea inputId="description" v-model="paymentForm.description"
+                                      :invalid="Boolean(paymentForm.errors.description)" cols="30"/>
+                            <InputError class="mt-2" :message="paymentForm.errors.description"/>
                         </div>
 
-                        <div class="income-form-group">
-                            <label for="payment_day">Dia Pagamento</label>
-                            <InputNumber :min="1" :max="31" inputId="payment_day" v-model="incomeForm.payment_day"
-                                         showIcon
-                                         :invalid="Boolean(incomeForm.errors.payment_day)" style="width: fit-content"/>
-                            <InputError class="mt-2" :message="incomeForm.errors.payment_day"/>
-                            <p class="text-sm font-light">Data mensal prevista para o pagamento</p>
+                        <div class="xl:w-1/3 lg:w-1/2 w-full flex flex-col p-3 gap-3">
+                            <label for="income">Renda</label>
+                            <Select v-model="paymentForm.income_id"
+                                    :options="incomes" optionLabel="description"
+                                    showClear
+                                    optionValue="id"
+                                    :invalid="Boolean(paymentForm.errors.income_id)"
+                                    placeholder="Selecione..."/>
+                            <InputError class="mt-2" :message="paymentForm.errors.income_id"/>
+                        </div>
+
+
+                        <div class="xl:w-1/3 lg:w-1/2 w-full flex flex-col p-3 gap-3">
+                            <label for="payment_date">Data</label>
+                            <InputText type="date" inputId="payment_date" v-model="paymentForm.date"
+                                       showIcon
+                                       :invalid="Boolean(paymentForm.errors.date)" style="width: fit-content"/>
+                            <InputError class="mt-2" :message="paymentForm.errors.date"/>
                         </div>
 
                     </div>
 
             </div>
+
         </BaseForm>
     </AppLayout>
 </template>
-
-<style>
-.income-form-group{
-    @apply lg:w-1/3 md:w-1/2 w-full flex flex-col p-3 gap-3;
-}
-</style>
 

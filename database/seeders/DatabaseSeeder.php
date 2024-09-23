@@ -27,9 +27,9 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('Password'),
         ]);
 
-        $this->call([
-            IncomeCatergoriesSeeder::class,
-            ExpenseCategoriesSeeder::class
-        ]);
+//        $this->call([
+//            IncomeCatergoriesSeeder::class,
+//            ExpenseCategoriesSeeder::class
+//        ]);
     }
 }

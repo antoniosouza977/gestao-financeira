@@ -5,15 +5,11 @@ const props = defineProps({
     laravelPaginator: {
         type: Object,
         required: true,
-    },
-    indexRoute: {
-        type: String,
-        required: true,
     }
 })
 
 const onPageChange = (event) => {
-    return router.get(props.indexRoute, {page: event.page + 1});
+    return router.get(window.location.href, {page: event.page + 1});
 }
 </script>
 

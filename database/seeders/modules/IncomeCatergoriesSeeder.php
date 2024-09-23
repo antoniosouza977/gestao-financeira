@@ -2,7 +2,7 @@
 
 namespace Database\Seeders\modules;
 
-use App\Models\IncomeCategory;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class IncomeCatergoriesSeeder extends Seeder
@@ -12,8 +12,8 @@ class IncomeCatergoriesSeeder extends Seeder
      */
     public function run(): void
     {
-        if (!IncomeCategory::query()->count()) {
-            IncomeCategory::query()->updateOrCreate([
+        if (!Category::query()->count()) {
+            Category::query()->updateOrCreate([
                 'user_id' => null,
                 'name'    => 'Salário',
             ]);

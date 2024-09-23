@@ -2,32 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\BudgetsService;
-use App\Services\IncomesService;
-use App\Services\OutgoingsService;
-use App\Services\PaymentsService;
+use App\Models\Category;
+use App\Models\Transaction;
+use App\Services\TransactionPromisesService;
+use App\Services\TransactionService;
 use Carbon\Carbon;
 use Inertia\Response;
 
 class DashboardController extends Controller
 {
-    private PaymentsService $paymentsService;
-    private OutgoingsService $outgoingsService;
-    private IncomesService $incomesService;
-    private BudgetsService  $budgetsService;
+    private TransactionService $transactionService;
+    private TransactionPromisesService $transactionPromisesService;
 
-    public function __construct
-    (
-        PaymentsService  $paymentsService,
-        OutgoingsService $outgoingsService,
-        IncomesService   $incomesService,
-        BudgetsService   $budgetsService
-    )
+    public function __construct(TransactionService $transactionService, TransactionPromisesService $transactionPromisesService)
     {
-        $this->paymentsService = $paymentsService;
-        $this->outgoingsService = $outgoingsService;
-        $this->incomesService = $incomesService;
-        $this->budgetsService = $budgetsService;
+        $this->transactionService = $transactionService;
+        $this->transactionPromisesService = $transactionPromisesService;
     }
 
     public function index(): Response
@@ -35,15 +25,18 @@ class DashboardController extends Controller
         $startPeriod = Carbon::now()->startOfMonth()->format('d/m');
         $endPeriod = Carbon::now()->endOfMonth()->format('d/m');
 
-        $paymentsTotal = $this->paymentsService->monthlyPaymentsTotal();
-        $outgoingsTotal = $this->outgoingsService->monthlyOutgoingsTotal();
-        $incomesTotal = $this->incomesService->monthlyIncomesTotal();
-        $budgetsTotal = $this->budgetsService->monthlyBudgetsTotal();
-        $latestsOutgoings = $this->outgoingsService->latestsOutgoings();
+        $incomesTotal = $this->transactionService->currentMonthTotal(Transaction::INCOME);
+        $expensesTotal = $this->transactionService->currentMonthTotal(Transaction::EXPENSE);
 
+        $incomePromisesTotal = $this->transactionPromisesService->totalCurrentMonthPromises(Transaction::INCOME);
+        $expensePromisesTotal = $this->transactionPromisesService->totalCurrentMonthPromises(Transaction::EXPENSE);
 
-        return inertia()->render('Dashboard',
-            compact('startPeriod', 'endPeriod', 'paymentsTotal',
-                'outgoingsTotal', 'incomesTotal', 'budgetsTotal', 'latestsOutgoings'));
+        $latestsExpenses = $this->transactionService->getLatestTransactions(Transaction::EXPENSE);
+        $categories = Category::query()
+            ->where('user_id', auth()->id())
+            ->where('type', Category::EXPENSE)
+            ->get();
+
+        return inertia()->render('Dashboard', compact('incomesTotal', 'expensesTotal', 'incomePromisesTotal', 'expensePromisesTotal', 'latestsExpenses', 'startPeriod', 'endPeriod', 'categories'));
     }
 }

@@ -4,17 +4,18 @@ import {Head, Link} from "@inertiajs/vue3";
 import {onBeforeMount, ref} from "vue";
 import NumberFormater from "../Services/Types/NumberFormater.js";
 import DateFormater from "../Services/Types/DateFormater.js";
-import LinkTag from "@/Components/Partials/LinkTag.vue";
 import CustomLabel from "@/Components/Partials/CustomLabel.vue";
+import NewTransactionModal from "@/Components/Transactions/NewTransactionModal.vue";
 
 const props = defineProps({
     startPeriod: String,
     endPeriod: String,
-    paymentsTotal: String,
-    outgoingsTotal: String,
     incomesTotal: String,
-    budgetsTotal: String,
-    latestsOutgoings: Array
+    expensesTotal: String,
+    incomePromisesTotal: String,
+    expensePromisesTotal: String,
+    latestsExpenses: Array,
+    categories: Array
 })
 
 const chartData = ref(null)
@@ -25,13 +26,13 @@ onBeforeMount(() => {
 
 function setChartData() {
     return {
-        labels: ['Pagamentos', 'Renda Prevista', 'Gastos', 'Orçamentos'],
+        labels: ['Pagamentos', 'Receita Agendada', 'Gastos', 'Orçamentos'],
         datasets: [
             {
                 label: 'Total',
                 type: 'bar',
                 backgroundColor: ['#42A5F5', '#66BB6A', '#FFA726', '#FF7043'],
-                data: [props.paymentsTotal, props.incomesTotal, props.outgoingsTotal, props.budgetsTotal],
+                data: [props.incomesTotal, props.incomePromisesTotal, props.expensesTotal, props.expensePromisesTotal],
                 borderRadius: {
                     topLeft: 8,
                     topRight: 8
@@ -60,11 +61,11 @@ function setChartData() {
                 <div class="card mb-0">
                     <div class="flex justify-between mb-4">
                         <div>
-                            <Link :href="route('payments.index')" class="block text-muted-color font-medium mb-4">
+                            <Link class="block text-muted-color font-medium mb-4">
                                 Pagamentos
                             </Link>
                             <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-                                {{ NumberFormater.toLocalCurrency(paymentsTotal) }}
+                                {{ NumberFormater.toLocalCurrency(incomesTotal) }}
                             </div>
                         </div>
                         <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
@@ -79,11 +80,11 @@ function setChartData() {
                 <div class="card mb-0">
                     <div class="flex justify-between mb-4">
                         <div>
-                            <Link :href="route('outgoings.index')" class="block text-muted-color font-medium mb-4">
-                                Gastos
+                            <Link class="block text-muted-color font-medium mb-4">
+                                Despesas
                             </Link>
                             <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-                                {{ NumberFormater.toLocalCurrency(outgoingsTotal) }}
+                                {{ NumberFormater.toLocalCurrency(expensesTotal) }}
                             </div>
                         </div>
                         <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
@@ -98,11 +99,11 @@ function setChartData() {
                 <div class="card mb-0">
                     <div class="flex justify-between mb-4">
                         <div>
-                            <Link :href="route('incomes.index')" class="block text-muted-color font-medium mb-4">Renda
-                                Prevista
+                            <Link class="block text-muted-color font-medium mb-4">Receitas
+                                Agendada
                             </Link>
                             <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-                                {{ NumberFormater.toLocalCurrency(incomesTotal) }}
+                                {{ NumberFormater.toLocalCurrency(incomePromisesTotal) }}
                             </div>
                         </div>
                         <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
@@ -117,11 +118,11 @@ function setChartData() {
                 <div class="card mb-0">
                     <div class="flex justify-between mb-4">
                         <div>
-                            <Link :href="route('budgets.index')" class="block text-muted-color font-medium mb-4">Gastos
-                                Orçados
+                            <Link class="block text-muted-color font-medium mb-4">Despesas
+                                Agendadas
                             </Link>
                             <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-                                {{ NumberFormater.toLocalCurrency(budgetsTotal) }}
+                                {{ NumberFormater.toLocalCurrency(expensePromisesTotal) }}
                             </div>
                         </div>
                         <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
@@ -143,30 +144,22 @@ function setChartData() {
                 <div class="card">
                     <div class="flex justify-between">
                         <div class="font-semibold text-xl mb-4">Ultimos gastos</div>
-                        <Link :href="route('outgoings.create')">
-                            <Button icon="pi pi-plus" size="small"></Button>
-                        </Link>
+                        <NewTransactionModal :store-route="route('add-expense')" :categories :icon="true" type="2"/>
                     </div>
-                    <div class="flex flex-col gap-1 min-h-80">
-                        <div v-for="outgo in latestsOutgoings" class="flex flex-wrap w-full items-center justify-between bg-emphasis p-2 rounded">
-                            <div class="sm:w-1/3 w-1/2">
-                                <CustomLabel value="Valor: "/>
-                                {{ NumberFormater.toLocalCurrency(outgo.value) }}
+                    <div class="flex flex-col gap-1 min-h-80 mt-3">
+                        <div v-for="transaction in latestsExpenses"
+                             class="flex flex-wrap w-full items-center justify-between bg-emphasis p-2 rounded text-sm">
+                            <div class="sm:w-1/4 w-1/2">
+                                <label>Valor:</label>
+                                {{ NumberFormater.toLocalCurrency(transaction.value) }}
                             </div>
-                            <div class="sm:w-1/3 w-1/2">
-                                <CustomLabel value="Data: "/>
-                                {{ DateFormater.toLocaleDateString(outgo.date) }}
+                            <div class="sm:w-1/4 w-1/2">
+                                <label for="">Data: </label>
+                                {{ DateFormater.toLocaleDateString(transaction.date) }}
                             </div>
-                            <div class="sm:w-1/3 w-full">
-                                <template v-if="outgo.budget_id">
-                                    <LinkTag :label="outgo.budget.name" :url="route('budgets.edit', outgo.budget_id)"/>
-                                </template>
-                                <template v-else-if="outgo.expense_id">
-                                    <LinkTag :label="outgo.expense.description" :url="route('expenses.edit', outgo.expense_id)"/>
-                                </template>
-                                <template v-else>
-                                    <Badge class="w-fit" severity="secondary" size="large">Gasto Avulso</Badge>
-                                </template>
+                            <div class="sm:w-2/4 w-1/2">
+                                <label for="">Descrição</label>
+                                {{  transaction.description || 'Sem descrição'}}
                             </div>
                         </div>
                     </div>

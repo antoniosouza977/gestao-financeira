@@ -25,6 +25,10 @@ abstract class Controller
                 ->validateData(ValidationType::CREATE)
                 ->execute();
 
+            if (!$this->indexRoute) {
+                return redirect()->back();
+            }
+
             return redirect()->route($this->indexRoute);
         } catch (ValidationException $exception) {
             return redirect()->back()
@@ -46,6 +50,10 @@ abstract class Controller
                 ->setValidator($this->validator)
                 ->validateData(ValidationType::UPDATE)
                 ->execute();
+
+            if (!$this->indexRoute) {
+                return redirect()->back();
+            }
 
             return redirect()->route($this->indexRoute);
         } catch (ValidationException $exception) {

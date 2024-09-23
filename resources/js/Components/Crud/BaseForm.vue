@@ -11,6 +11,9 @@ const props = defineProps({
     title: {
         type: String,
         required: true,
+    },
+    saveButtonLabel: {
+        type: String,
     }
 })
 
@@ -33,14 +36,14 @@ const submitForm = () => {
     <Fluid>
         <div class="card flex flex-col w-full crud-container">
             <div class="w-full flex justify-between items-center mb-3">
-                <h1 class="text-2xl">{{ props.title }}</h1>
+                <h1 class="text-xl">{{ props.title }}</h1>
                 <BackButton/>
             </div>
             <form @submit.prevent="submitForm">
                 <slot></slot>
             </form>
             <div v-if="props.form" class="mt-auto">
-                <Button :disabled="props.form.processing" @click.prevent="submitForm" style="width: fit-content" label="Salvar" rounded/>
+                <Button :disabled="props.form.processing" :loading="props.form.processing" @click.prevent="submitForm" style="width: fit-content" :label="saveButtonLabel || 'Salvar'" rounded/>
             </div>
         </div>
     </Fluid>
