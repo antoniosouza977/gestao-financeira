@@ -1,4 +1,4 @@
-FROM php:8.3-cli
+FROM php:8.3-php-fpm
 
 RUN apt-get update && apt-get install -y \
     libzip-dev \
@@ -20,6 +20,6 @@ COPY ./docker/scripts/install-app.sh /usr/local/bin/install-app
 COPY ./docker/php/xdebug.ini /etc/php/8.3/mods-available/xdebug.ini
 
 
-EXPOSE 8000
+EXPOSE 9000
 
 CMD ["/usr/local/bin/install-app"]
