@@ -6,4 +6,4 @@ chmod 775 -R /var/www/storage /var/www/bootstrap
 php artisan migrate
 php artisan db:seed
 
-php-fpm
+exec php-fpm
