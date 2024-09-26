@@ -145,7 +145,7 @@ const handleNewCategory = () => {
                             <p>Nenhuma categoria cadastrada</p>
                         </template>
                     </Select>
-                    <NewCategoryModal :icon="true" @saved="handleNewCategory" :type="type" />
+                    <NewCategoryModal :icon="true" @new-category="handleNewCategory" :type="type" />
                 </div>
                 <InputError class="mt-2" :message="form.errors.category_id"/>
 

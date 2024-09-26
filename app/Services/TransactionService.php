@@ -3,10 +3,26 @@
 namespace App\Services;
 
 use App\Models\Transaction;
+use App\Services\QueryBuilders\Transactions\TransactionBuilder;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 class TransactionService
 {
+
+    private TransactionBuilder $transactionBuilder;
+
+    public function __construct(TransactionBuilder $transactionBuilder)
+    {
+        $this->transactionBuilder = $transactionBuilder;
+    }
+
+    public function paginatedUserTransactions(string $type, array $filters): Collection|LengthAwarePaginator
+    {
+        $filters['type'] = $type;
+
+        return $this->transactionBuilder->doQuery($filters);
+    }
 
     public function getMonthlyTransactions(int $type): Collection
     {

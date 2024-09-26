@@ -10,6 +10,7 @@ import NewTransactionModal from "@/Components/Transactions/NewTransactionModal.v
 import EditTransactionModal from "@/Components/Transactions/EditTransactionModal.vue";
 import DeleteButton from "@/Components/Partials/DeleteButton.vue";
 import TransactionsIndex from "@/Components/Transactions/TransactionsIndex.vue";
+import SearchForm from "@/Components/Transactions/SearchForm.vue";
 
 const props = defineProps({
     promisesMissingConfirmation: Array,
@@ -25,7 +26,9 @@ const props = defineProps({
         <Head title="Pagamentos"/>
 
         <Index title="Receitas">
-
+            <template v-slot:search-form>
+                <SearchForm :categories/>
+            </template>
             <template v-slot:new-btn>
                 <NewTransactionModal :type="type" :store-route="route('incomes.store')" :categories/>
             </template>
@@ -35,7 +38,7 @@ const props = defineProps({
                                    :confirm-route="route('incomes.store')"
                                    :promises=promisesMissingConfirmation></PromisesToConfirm>
 
-                <TransactionsIndex destroy-route="incomes.update" update-route="incomes.update" :transactions value-severity="success"/>
+                <TransactionsIndex destroy-route="incomes.update" update-route="incomes.update" :transactions value-severity="success" :categories/>
 
             </template>
         </Index>

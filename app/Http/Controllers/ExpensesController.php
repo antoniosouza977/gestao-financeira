@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Database\SaveModelAction;
 use App\Models\TransactionPromise;
 use App\Services\TransactionPromisesService;
+use App\Services\TransactionService;
 use App\Validators\BaseValidator;
 use App\Validators\TransactionValidator;
 
@@ -19,9 +20,15 @@ class ExpensesController extends TransactionsController
     protected string $indexComponent = 'Expenses/Index';
 
 
-    public function __construct(TransactionPromisesService $paymentsService, TransactionValidator $validator, SaveModelAction $saveModelAction)
+    public function __construct
+    (
+        TransactionPromisesService $paymentsService,
+        TransactionService         $transactionService,
+        TransactionValidator       $validator,
+        SaveModelAction            $saveModelAction
+    )
     {
-        parent::__construct($paymentsService, $validator, $saveModelAction);
+        parent::__construct($paymentsService, $validator, $saveModelAction, $transactionService);
     }
 
 

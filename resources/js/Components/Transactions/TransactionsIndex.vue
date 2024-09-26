@@ -10,6 +10,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    categories: {
+        type: Array,
+        required: true,
+    },
     updateRoute: {
         type: String,
         required: true,

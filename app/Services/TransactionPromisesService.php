@@ -83,15 +83,6 @@ class TransactionPromisesService
         });
     }
 
-    public function paginatedUserTransactions(string $type): LengthAwarePaginator
-    {
-        return Transaction::query()
-            ->where('user_id', auth()->id())
-            ->where('type', $type)
-            ->orderBy('date', 'desc')
-            ->paginate(10);
-    }
-
     public function currentMonthTotal(int $type): Collection
     {
         return TransactionPromise::query()
