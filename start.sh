@@ -1,5 +1,5 @@
 #!/bin/bash
-
+docker compose down
 # Function to update or add environment variable in .env file
 update_env_var() {
     local var_name=$1

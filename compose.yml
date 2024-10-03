@@ -41,7 +41,6 @@ services:
     node:
         image: node:18
         container_name: node.${APP_NAME}
-        restart: unless-stopped
         environment:
           - VITE_HMR_HOST=${VITE_HMR_HOST}
           - VITE_HMR_PORT=${VITE_HMR_PORT}
