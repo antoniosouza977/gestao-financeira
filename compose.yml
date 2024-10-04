@@ -3,11 +3,10 @@ networks:
         external: true
 
 services:
-    app:
+    gestao-financeira:
         build:
             context: .
             dockerfile: docker/php/Dockerfile
-        container_name: php.${APP_NAME}
         restart: unless-stopped
         volumes:
             - .:/var/www
@@ -15,28 +14,26 @@ services:
         networks:
             - proxy
 
-    nginx:
+    nginx-gestao-financeira:
       image: nginx:stable-alpine
       restart: unless-stopped
-      ports:
-        - "80:80"
       volumes:
         - ./:/var/www
         - ./docker/nginx/:/etc/nginx/conf.d/
       networks:
         - proxy
 
-    mariadb:
-      image: mariadb:latest
-      container_name: mariadb
-      environment:
-        MYSQL_ROOT_PASSWORD: "kJ047R;l*:5v"
-      ports:
-        - "3306:3306"
-      volumes:
-        - mariadb_data:/var/lib/mysql
-      networks:
-        - proxy
+#    mariadb:
+#      image: mariadb:latest
+#      container_name: mariadb
+#      environment:
+#        MYSQL_ROOT_PASSWORD: "kJ047R;l*:5v"
+#      ports:
+#        - "3306:3306"
+#      volumes:
+#        - mariadb_data:/var/lib/mysql
+#      networks:
+#        - proxy
 
     node:
         image: node:18
@@ -51,7 +48,7 @@ services:
         working_dir: /var/www
         entrypoint: /var/www/docker/scripts/node.sh
         depends_on:
-            - app
+            - gestao-financeira
         networks:
             - proxy
 volumes:
