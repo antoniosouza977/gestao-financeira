@@ -2,7 +2,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import {Head, Link} from "@inertiajs/vue3";
 import {onBeforeMount, ref} from "vue";
-import NumberFormater from "../Services/Types/NumberFormater.js";
+import NumberFormatter from "../Services/Types/NumberFormatter.js";
 import DateFormater from "../Services/Types/DateFormater.js";
 import NewTransactionModal from "@/Components/Transactions/NewTransactionModal.vue";
 import EditTransactionModal from "@/Components/Transactions/EditTransactionModal.vue";
@@ -66,7 +66,7 @@ function setChartData() {
                                 Entradas
                             </span>
                                 <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-                                    {{ NumberFormater.toLocalCurrency(incomesTotal) }}
+                                    {{ NumberFormatter.toLocalCurrency(incomesTotal) }}
                                 </div>
                             </div>
                             <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
@@ -87,7 +87,7 @@ function setChartData() {
                                     Saídas
                                 </span>
                                 <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-                                    {{ NumberFormater.toLocalCurrency(expensesTotal) }}
+                                    {{ NumberFormatter.toLocalCurrency(expensesTotal) }}
                                 </div>
                             </div>
                             <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
@@ -107,7 +107,7 @@ function setChartData() {
                             <span class="block text-muted-color font-medium mb-4">Carteira
                             </span>
                                 <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-                                    {{ NumberFormater.toLocalCurrency(wallet) }}
+                                    {{ NumberFormatter.toLocalCurrency(wallet) }}
                                 </div>
                             </div>
                             <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
@@ -128,7 +128,7 @@ function setChartData() {
                                 Agendadas
                             </span>
                                 <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">
-                                    {{ NumberFormater.toLocalCurrency(expensePromisesTotal) }}
+                                    {{ NumberFormatter.toLocalCurrency(expensePromisesTotal) }}
                                 </div>
                             </div>
                             <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
@@ -158,7 +158,7 @@ function setChartData() {
                              class="flex flex-wrap w-full items-center justify-between bg-emphasis p-2 rounded text-sm">
                             <div class="sm:w-2/12 w-1/2">
                                 <label>Valor:</label>
-                                {{ NumberFormater.toLocalCurrency(transaction.value) }}
+                                {{ NumberFormatter.toLocalCurrency(transaction.value) }}
                             </div>
                             <div class="sm:w-2/12 w-1/2">
                                 <label for="">Data: </label>

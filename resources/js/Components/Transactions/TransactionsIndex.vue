@@ -1,5 +1,5 @@
 <script setup>
-import NumberFormater from "@/Services/Types/NumberFormater.js";
+import NumberFormatter from "@/Services/Types/NumberFormatter.js";
 import DateFormater from "@/Services/Types/DateFormater.js";
 import EditTransactionModal from "@/Components/Transactions/EditTransactionModal.vue";
 import DeleteButton from "@/Components/Partials/DeleteButton.vue";
@@ -53,7 +53,7 @@ const props = defineProps({
         <div class="xl:w-2/12 lg:w-1/3 w-1/2 flex flex-col gap-3 p-3 pl-0">
             <span class="font-bold">Valor: </span>
             <Badge size="large" :severity="valueSeverity" class="w-fit">
-                {{ NumberFormater.toLocalCurrency(transaction.value) }}
+                {{ NumberFormatter.toLocalCurrency(transaction.value) }}
             </Badge>
         </div>
 

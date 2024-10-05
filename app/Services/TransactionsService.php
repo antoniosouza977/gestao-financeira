@@ -5,9 +5,10 @@ namespace App\Services;
 use App\Models\Transaction;
 use App\Services\QueryBuilders\Transactions\TransactionBuilder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-class TransactionService
+class TransactionsService
 {
 
     private TransactionBuilder $transactionBuilder;
@@ -24,13 +25,12 @@ class TransactionService
         return $this->transactionBuilder->doQuery($filters);
     }
 
-    public function getMonthlyTransactions(int $type): Collection
+    public function getMonthlyTransactionsBuilder(int $type): Builder
     {
         return Transaction::query()
             ->where('type', $type)
             ->where('user_id', auth()->id())
-            ->whereBetween('date', [now()->startOfMonth(), now()->endOfMonth()])
-            ->get();
+            ->whereBetween('date', [now()->startOfMonth(), now()->endOfMonth()]);
     }
 
     public function getLatestTransactions(int $type, int $count = 5): Collection
@@ -46,7 +46,7 @@ class TransactionService
 
     public function currentMonthTotal($type): float
     {
-        $total = $this->getMonthlyTransactions($type)->sum('value');
+        $total = $this->getMonthlyTransactionsBuilder($type)->get()->sum('value');
 
         return round($total, 2);
     }

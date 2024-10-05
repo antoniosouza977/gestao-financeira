@@ -13,5 +13,4 @@ class ExpensePromisesController extends TransactionPromisesController
     protected string $indexRoute = 'expense-promises.index';
     protected string $componentPath = 'ExpensePromises';
     protected int $type = TransactionPromise::EXPENSE;
-
 }

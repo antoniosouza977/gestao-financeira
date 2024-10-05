@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Database\SaveModelAction;
-use App\Models\Category;
 use App\Models\TransactionPromise;
+use App\Services\CategoriesService;
 use App\Validators\BaseValidator;
 use App\Validators\TransactionPromiseValidator;
 use Illuminate\Http\RedirectResponse;
@@ -16,14 +16,21 @@ abstract class TransactionPromisesController extends Controller
 {
     protected SaveModelAction $saveModelAction;
     protected BaseValidator $validator;
+    protected CategoriesService $categoriesService;
     protected string $indexRoute = '';
     protected string $componentPath;
     protected int $type;
 
-    public function __construct(SaveModelAction $saveModelAction, TransactionPromiseValidator $validator)
+    public function __construct
+    (
+        SaveModelAction             $saveModelAction,
+        TransactionPromiseValidator $validator,
+        CategoriesService           $categoriesService,
+    )
     {
         $this->saveModelAction = $saveModelAction;
         $this->validator = $validator;
+        $this->categoriesService = $categoriesService;
     }
 
     public function index(): Response|ResponseFactory
@@ -38,10 +45,7 @@ abstract class TransactionPromisesController extends Controller
 
     public function create(): Response|ResponseFactory
     {
-        $categories = Category::query()
-            ->where('user_id', auth()->id())
-            ->where('type', $this->type)
-            ->get();
+        $categories = $this->categoriesService->getAll($this->type);
 
         return inertia($this->componentPath . '/Form', compact("categories"));
     }
@@ -56,10 +60,7 @@ abstract class TransactionPromisesController extends Controller
 
     public function edit(TransactionPromise $promise): Response|ResponseFactory
     {
-        $categories = Category::query()
-            ->where('user_id', auth()->id())
-            ->where('type', $this->type)
-            ->get();
+        $categories = $this->categoriesService->getAll($this->type);
 
         return inertia($this->componentPath . '/Form', compact('promise', 'categories'));
     }

@@ -27,25 +27,25 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('UDK66mSJOy'),
         ]);
 
-//        $incomeCategories = Category::factory(10)->create([
-//            'user_id' => $user->id,
-//            'type'    => Category::INCOME
-//        ]);
-//
-//        $expenseCategories = Category::factory(10)->create([
-//            'user_id' => $user->id,
-//            'type'    => Category::EXPENSE
-//        ]);
-//
-//        $categories = $incomeCategories->merge($expenseCategories);
-//
-//        foreach ($categories as $category) {
-//            Transaction::factory(5)->create([
-//                'category_id' => $category->id,
-//                'user_id'     => $user->id,
-//                'type'        => $category->type,
-//            ]);
-//        }
+        $incomeCategories = Category::factory(10)->create([
+            'user_id' => $user->id,
+            'type'    => Category::INCOME
+        ]);
+
+        $expenseCategories = Category::factory(10)->create([
+            'user_id' => $user->id,
+            'type'    => Category::EXPENSE
+        ]);
+
+        $categories = $incomeCategories->merge($expenseCategories);
+
+        foreach ($categories as $category) {
+            Transaction::factory(5)->create([
+                'category_id' => $category->id,
+                'user_id'     => $user->id,
+                'type'        => $category->type,
+            ]);
+        }
 
     }
 }

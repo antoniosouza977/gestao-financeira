@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import NumberFormater from "@/Services/Types/NumberFormater.js";
+import NumberFormatter from "@/Services/Types/NumberFormatter.js";
 import Index from "@/Components/Crud/Index.vue";
 import CustomPaginator from "@/Components/Crud/CustomPaginator.vue";
 import EmptyListAlert from "@/Components/Partials/EmptyListAlert.vue";
@@ -46,7 +46,7 @@ const types = [
                     <div class="xl:w-1/6 w-1/2 p-3 pl-0 flex flex-col gap-1">
                         <label>Valor: </label>
                         <Badge size="large" severity="danger" class="w-fit">
-                            {{ NumberFormater.toLocalCurrency(promise.value) }}
+                            {{ NumberFormatter.toLocalCurrency(promise.value) }}
                         </Badge>
                     </div>
 

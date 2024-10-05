@@ -13,5 +13,4 @@ class IncomePromisesController extends TransactionPromisesController
     protected string $indexRoute = 'income-promises.index';
     protected string $componentPath = 'IncomePromises';
     protected int $type = TransactionPromise::INCOME;
-
 }

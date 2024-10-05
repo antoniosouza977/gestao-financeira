@@ -2,13 +2,8 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Index from "@/Components/Crud/Index.vue";
 import {Head} from "@inertiajs/vue3";
-import NumberFormater from "../../Services/Types/NumberFormater.js";
-import DateFormater from "../../Services/Types/DateFormater.js";
-import CustomPaginator from '@/Components/Crud/CustomPaginator.vue'
 import PromisesToConfirm from "@/Components/TransactionPromises/PromisesToConfirm.vue";
 import NewTransactionModal from "@/Components/Transactions/NewTransactionModal.vue";
-import EditTransactionModal from "@/Components/Transactions/EditTransactionModal.vue";
-import DeleteButton from "@/Components/Partials/DeleteButton.vue";
 import TransactionsIndex from "@/Components/Transactions/TransactionsIndex.vue";
 import SearchForm from "@/Components/Transactions/SearchForm.vue";
 
@@ -38,7 +33,8 @@ const props = defineProps({
                                    :confirm-route="route('incomes.store')"
                                    :promises=promisesMissingConfirmation></PromisesToConfirm>
 
-                <TransactionsIndex destroy-route="incomes.update" update-route="incomes.update" :transactions value-severity="success" :categories/>
+                <TransactionsIndex destroy-route="incomes.update" update-route="incomes.update" :transactions
+                                   value-severity="success" :categories/>
 
             </template>
         </Index>

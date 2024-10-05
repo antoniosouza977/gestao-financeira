@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Database\SaveModelAction;
-use App\Models\Category;
 use App\Models\Transaction;
+use App\Services\CategoriesService;
 use App\Services\TransactionPromisesService;
-use App\Services\TransactionService;
+use App\Services\TransactionsService;
 use App\Validators\BaseValidator;
 use App\Validators\TransactionValidator;
 use Illuminate\Http\RedirectResponse;
@@ -17,34 +17,34 @@ abstract class TransactionsController extends Controller
 {
 
     protected TransactionPromisesService $promisesService;
-    protected TransactionService $transactionService;
+    protected TransactionsService $transactionService;
     protected BaseValidator $validator;
     protected SaveModelAction $saveModelAction;
+    protected CategoriesService $categoriesService;
     protected int $type;
     protected string $indexComponent;
 
     public function __construct
     (
         TransactionPromisesService $transactionsService,
+        TransactionsService        $transactionService,
         TransactionValidator       $validator,
         SaveModelAction            $saveModelAction,
-        TransactionService         $transactionService,
+        CategoriesService          $categoriesService,
     )
     {
         $this->promisesService = $transactionsService;
+        $this->transactionService = $transactionService;
         $this->validator = $validator;
         $this->saveModelAction = $saveModelAction;
-        $this->transactionService = $transactionService;
+        $this->categoriesService = $categoriesService;
     }
 
     public function index(Request $request): Response
     {
         $promisesMissingConfirmation = $this->promisesService->missingConfirmation($this->type);
         $transactions = $this->transactionService->paginatedUserTransactions($this->type, $request->all());
-        $categories = Category::query()
-            ->where('user_id', auth()->id())
-            ->where('type', $this->type)
-            ->get();
+        $categories = $this->categoriesService->getAll($this->type);
         $type = $this->type;
 
         return inertia()->render($this->indexComponent, compact('promisesMissingConfirmation', 'transactions', 'categories', 'type'));

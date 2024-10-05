@@ -6,10 +6,11 @@ import EditCategoryModal from "@/Components/Categories/EditCategoryModal.vue";
 import DeleteCategoryButton from "@/Components/Categories/DeleteCategoryButton.vue";
 import NewCategoryModal from "@/Components/Categories/NewCategoryModal.vue";
 import {Head} from "@inertiajs/vue3";
+import NumberFormatter from "../../Services/Types/NumberFormatter.js";
 
 const props = defineProps({
     categories: {
-        type: Array,
+        type: Object,
         required: false,
     },
     type: {
@@ -43,6 +44,21 @@ const labels = ['Receitas', 'Despesas'];
                     <div class="xl:w-1/5 sm:w-1/2 w-full p-3 pl-0 flex flex-col gap-1">
                         <label class="font-bold" for="">Nome da Categoria: </label>
                         {{ category.name }}
+                    </div>
+
+                    <div class="xl:w-1/5 sm:w-1/2 w-full p-3 pl-0 flex flex-col gap-1">
+                        <label class="font-bold" for="">Qnt Transações neste mês: </label>
+                        {{ category.monthTransactionsCount }}
+                    </div>
+
+                    <div class="xl:w-1/5 sm:w-1/2 w-full p-3 pl-0 flex flex-col gap-1">
+                        <label class="font-bold" for="">R$ Transações neste mês: </label>
+                        {{ NumberFormatter.toLocalCurrency(category.monthTransactionsTotal) }}
+                    </div>
+
+                    <div class="xl:w-1/5 sm:w-1/2 w-full p-3 pl-0 flex flex-col gap-1">
+                        <label class="font-bold" for="">Média por Transação neste mês: </label>
+                        {{ NumberFormatter.toLocalCurrency(category.monthTransactionsAverage) }}
                     </div>
 
                     <div class="xl:w-1/5 sm:w-1/2 w-full p-3 pl-0 flex flex-col gap-1">
