@@ -23,18 +23,6 @@ services:
       networks:
         - proxy
 
-#    mariadb:
-#      image: mariadb:latest
-#      container_name: mariadb
-#      environment:
-#        MYSQL_ROOT_PASSWORD: "kJ047R;l*:5v"
-#      ports:
-#        - "3306:3306"
-#      volumes:
-#        - mariadb_data:/var/lib/mysql
-#      networks:
-#        - proxy
-
     node:
         image: node:18
         container_name: node.${APP_NAME}

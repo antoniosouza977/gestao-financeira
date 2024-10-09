@@ -32,12 +32,13 @@ function handleNewCategory(item) {
             <div class="flex flex-col gap-1 mb-4">
                 <label for="value" class="font-semibold">Valor</label>
                 <InputNumber
+                    mode="currency"
+                    currency="BRL"
+                    locale="pt-BR"
                     id="value"
                     class="w-fit"
                     v-model="form.value"
-                    :invalid="Boolean(form.errors.value)"
-                    :min-fraction-digits="2"
-                    autocomplete="off"/>
+                    :invalid="Boolean(form.errors.value)"/>
                 <InputError class="mt-2" :message="form.errors.value"/>
             </div>
 
