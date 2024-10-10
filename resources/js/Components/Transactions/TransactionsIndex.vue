@@ -45,9 +45,7 @@ const props = defineProps({
 
         <div class="xl:w-2/12 lg:w-1/3 sm:w-1/2 w-full flex flex-col gap-3 p-3 pl-0">
             <span class="font-bold">Categoria: </span>
-            <Badge class="w-fit" severity="secondary" size="large">
-                {{ transaction.category_id ? transaction.category.name : 'Sem Categoria' }}
-            </Badge>
+            <Chip class="w-fit" :label="transaction.category_id ? transaction.category.name : 'Sem Categoria'"></Chip>
         </div>
 
         <div class="xl:w-2/12 lg:w-1/3 w-1/2 flex flex-col gap-3 p-3 pl-0">

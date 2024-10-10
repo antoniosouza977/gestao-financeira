@@ -35,12 +35,12 @@ abstract class TransactionPromisesController extends Controller
 
     public function index(): Response|ResponseFactory
     {
-        $promisses = TransactionPromise::query()
+        $promises = TransactionPromise::query()
             ->where('user_id', auth()->id())
             ->where('type', $this->type)
             ->paginate(10);
 
-        return inertia($this->componentPath . '/Index', compact("promisses"));
+        return inertia($this->componentPath . '/Index', compact("promises"));
     }
 
     public function create(): Response|ResponseFactory
