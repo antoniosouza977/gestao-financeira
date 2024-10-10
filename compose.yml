@@ -3,7 +3,8 @@ networks:
         external: true
 
 services:
-    gestao-financeira:
+    app:
+        container_name: gestao-financeira
         build:
             context: .
             dockerfile: docker/php/Dockerfile
@@ -36,7 +37,7 @@ services:
         working_dir: /var/www
         entrypoint: /var/www/docker/scripts/node.sh
         depends_on:
-            - gestao-financeira
+            - app
         networks:
             - proxy
 volumes:
