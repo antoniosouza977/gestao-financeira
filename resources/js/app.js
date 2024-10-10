@@ -13,7 +13,7 @@ import ToastService from 'primevue/toastservice';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import ConfirmationService from 'primevue/confirmationservice';
-
+import { Money3Directive } from 'v-money3'
 
 import '@/Assets/styles.scss';
 import '@/Assets/tailwind.css';
@@ -45,6 +45,7 @@ createInertiaApp({
             })
             .use(ToastService)
             .use(ConfirmationService)
+            .directive('money3', Money3Directive)
             .mount(el);
     },
     progress: {

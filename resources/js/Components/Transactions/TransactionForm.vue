@@ -2,6 +2,8 @@
 import InputError from "@/Components/InputError.vue";
 import BaseModalForm from "@/Components/Crud/BaseModalForm.vue";
 import NewCategoryModal from "@/Components/Categories/NewCategoryModal.vue";
+import {Money3} from "v-money3";
+import {moneyMaskConfig} from "@/Services/constants.js";
 
 const props = defineProps({
     form: {
@@ -31,14 +33,11 @@ function handleNewCategory(item) {
         <template v-slot:form>
             <div class="flex flex-col gap-1 mb-4">
                 <label for="value" class="font-semibold">Valor</label>
-                <InputNumber
-                    mode="currency"
-                    currency="BRL"
-                    locale="pt-BR"
-                    id="value"
-                    class="w-fit"
+                <money3
+                    class="p-inputtext p-component p-filled w-fit"
+                    :class="{'p-invalid': Boolean(form.errors.value)}"
                     v-model="form.value"
-                    :invalid="Boolean(form.errors.value)"/>
+                    v-bind="moneyMaskConfig"/>
                 <InputError class="mt-2" :message="form.errors.value"/>
             </div>
 

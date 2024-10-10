@@ -1,6 +1,8 @@
 <script setup>
 import InputError from "@/Components/InputError.vue";
 import NewCategoryModal from "@/Components/Categories/NewCategoryModal.vue";
+import {moneyMaskConfig} from "@/Services/constants.js";
+import {Money3} from "v-money3";
 
 const period_types = [
     {label: 'Diária', value: '1'},
@@ -68,11 +70,11 @@ const handleNewCategory = () => {
 
             <div class="promise-form-group">
                 <label for="value">Valor</label>
-                <InputNumber inputId="value"
-                             v-model="form.value"
-                             :minFractionDigits="2"
-                             :invalid="Boolean(form.errors.value)"
-                             class="w-full"/>
+                <money3
+                    class="p-inputtext p-component p-filled"
+                    :class="{'p-invalid': Boolean(form.errors.value)}"
+                    v-model="form.value"
+                    v-bind="moneyMaskConfig"/>
                 <InputError class="mt-2" :message="form.errors.value"/>
             </div>
 
