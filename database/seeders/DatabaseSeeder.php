@@ -27,6 +27,10 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('UDK66mSJOy'),
         ]);
 
+        $user->categories()->delete();
+        $user->transactionPromisses()->delete();
+        $user->transactions()->delete();
+
         $incomeCategories = Category::factory(10)->create([
             'user_id' => $user->id,
             'type'    => Category::INCOME
