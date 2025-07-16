@@ -1,4 +1,7 @@
 #!/bin/bash
+sudo chmod 777 -R storage/
+sudo chmod 777 -R bootstrap/
+
 docker compose down
 # Function to update or add environment variable in .env file
 update_env_var() {
