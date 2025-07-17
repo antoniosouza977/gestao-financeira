@@ -3,6 +3,8 @@ FROM php:8.4-fpm
 RUN apt-get update && apt-get install -y \
     libzip-dev \
     unzip \
+    aspell \
+    aspell-en \
     && docker-php-ext-install zip pdo_mysql pcntl
 
 RUN docker-php-ext-configure pcntl --enable-pcntl

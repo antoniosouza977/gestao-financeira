@@ -1,0 +1,32 @@
+{
+    "preset": "laravel",
+    "ignore": {
+        "words": [
+            "php",
+            "validators",
+            "config",
+            "debugbar",
+            "filesystems",
+            "nginx",
+            "dockerfile",
+            "xdebug",
+            "jsconfig",
+            "postcss",
+            "jsconfig",
+            "favicon",
+            "js",
+            "mixins",
+            "preloading",
+            "topbar",
+            "utils",
+            "paginator",
+            "dropdown",
+            "configurator",
+            "nav",
+            "composables",
+            "configurator",
+            "configurator"
+        ],
+        "paths": []
+    }
+}
