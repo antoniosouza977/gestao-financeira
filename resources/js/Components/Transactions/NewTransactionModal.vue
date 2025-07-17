@@ -9,7 +9,7 @@
 import {useForm} from "@inertiajs/vue3";
 import {ref} from "vue";
 import TransactionForm from "@/Components/Transactions/TransactionForm.vue";
-import DateFormater from "@/Services/Types/DateFormater.js";
+import DateFormater from "@/Services/Types/DateFormatter.js";
 
 const visible = ref(false);
 const props = defineProps({

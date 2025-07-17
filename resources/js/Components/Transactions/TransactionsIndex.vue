@@ -1,6 +1,6 @@
 <script setup>
 import NumberFormatter from "@/Services/Types/NumberFormatter.js";
-import DateFormater from "@/Services/Types/DateFormater.js";
+import DateFormater from "@/Services/Types/DateFormatter.js";
 import EditTransactionModal from "@/Components/Transactions/EditTransactionModal.vue";
 import DeleteButton from "@/Components/Partials/DeleteButton.vue";
 import CustomPaginator from "@/Components/Crud/CustomPaginator.vue";

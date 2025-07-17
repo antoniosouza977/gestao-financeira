@@ -4,7 +4,7 @@ import BaseForm from "@/Components/Crud/BaseForm.vue";
 import {useForm} from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
 import {onBeforeMount, ref} from 'vue'
-import DateFormater from "@/Services/Types/DateFormater.js";
+import DateFormater from "@/Services/Types/DateFormatter.js";
 
 let paymentForm = useForm({
     method: "post",

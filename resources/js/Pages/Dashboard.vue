@@ -3,7 +3,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import {Head, Link} from "@inertiajs/vue3";
 import {onBeforeMount, ref} from "vue";
 import NumberFormatter from "../Services/Types/NumberFormatter.js";
-import DateFormater from "../Services/Types/DateFormater.js";
+import DateFormater from "../Services/Types/DateFormatter.js";
 import NewTransactionModal from "@/Components/Transactions/NewTransactionModal.vue";
 import EditTransactionModal from "@/Components/Transactions/EditTransactionModal.vue";
 

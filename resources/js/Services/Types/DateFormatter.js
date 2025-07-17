@@ -1,4 +1,4 @@
-class DateFormater {
+class DateFormatter {
 
     toLocaleDateString(dateString) {
         if (dateString.length < 11) {
@@ -24,4 +24,4 @@ class DateFormater {
     }
 }
 
-export default new DateFormater();
+export default new DateFormatter();

@@ -57,7 +57,7 @@ class User extends Authenticatable
         return $this->hasMany(Transaction::class);
     }
 
-    public function transactionPromisses(): HasMany
+    public function transactionPromises(): HasMany
     {
         return $this->hasMany(TransactionPromise::class);
     }

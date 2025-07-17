@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->categories()->delete();
-        $user->transactionPromisses()->delete();
+        $user->transactionPromises()->delete();
         $user->transactions()->delete();
 
         $incomeCategories = Category::factory(10)->create([
