@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\Months;
@@ -60,18 +62,15 @@ class TransactionPromise extends Model
 
     public function getPeriodValueLabelAttribute()
     {
-        switch ($this['period_type']) {
-            case self::DAILY:
-                return 'Todos os dias';
-            case self::WEEKLY:
-                return WeekDays::$labels[$this['period_value']];
-            case self::MONTHLY:
-                return "Dia $this[period_value]";
-            case self::ANNUALLY:
-                return Months::$labels[$this['period_value']];
-            case self::INSTALLMENT:
-                return "$this[period_value] parcelas";
-        }
+        return match ($this['period_type']) {
+            self::DAILY => 'Todos os dias',
+            self::WEEKLY => WeekDays::$labels[$this['period_value']],
+            self::MONTHLY => "Dia $this[period_value]",
+            self::ANNUALLY => Months::$labels[$this['period_value']],
+            self::INSTALLMENT => "$this[period_value] parcelas",
+            default => null,
+        };
+
     }
 
     public function category(): BelongsTo

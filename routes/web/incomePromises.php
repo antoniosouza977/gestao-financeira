@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\IncomePromisesController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'receitas-recorrentes'], function () {
+Route::group(['prefix' => 'receitas-recorrentes'], function (): void {
     Route::get('/', [IncomePromisesController::class, 'index'])->name('income-promises.index');
     Route::get('/criar', [IncomePromisesController::class, 'create'])->name('income-promises.create');
     Route::post('/criar', [IncomePromisesController::class, 'store'])->name('income-promises.store');

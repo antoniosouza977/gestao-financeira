@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Transaction;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
 
-test('user cant create a zero value transaction', function () {
+test('user cant create a zero value transaction', function (): void {
     $user = User::factory()->create();
 
     actingAs($user)
@@ -25,7 +27,7 @@ test('user cant create a zero value transaction', function () {
         ->assertSessionHasErrors(['value']);
 });
 
-test('user cant create a negative value transaction', function () {
+test('user cant create a negative value transaction', function (): void {
     $user = User::factory()->create();
 
     actingAs($user)
@@ -45,7 +47,7 @@ test('user cant create a negative value transaction', function () {
         ->assertSessionHasErrors(['value']);
 });
 
-test('user can create a transaction', function () {
+test('user can create a transaction', function (): void {
     $user = User::factory()->create();
 
     actingAs($user)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Actions\Database\SaveModelAction;
@@ -16,14 +18,12 @@ class CategoriesController extends Controller
 
     protected SaveModelAction $saveModelAction;
 
-    protected string $indexRoute = '';
-
     public function __construct(
-        CategoryValidator $validator,
-        SaveModelAction $action
+        CategoryValidator $categoryValidator,
+        SaveModelAction $saveModelAction
     ) {
-        $this->validator = $validator;
-        $this->saveModelAction = $action;
+        $this->validator = $categoryValidator;
+        $this->saveModelAction = $saveModelAction;
     }
 
     public function store(Request $request): RedirectResponse

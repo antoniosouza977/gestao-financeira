@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Validators;
 
 use App\Enums\ValidationType;
@@ -12,9 +14,9 @@ abstract class BaseValidator implements Validator
     /**
      * @throws ValidationException
      */
-    public function validate(array $data, ValidationType $type): array
+    public function validate(array $data, ValidationType $validationType): array
     {
-        $rules = $this->getRules($type);
+        $rules = $this->getRules($validationType);
         $validator = LaravelValidator::make($data, $rules, $this->messages(), $this->attributes());
 
         return $validator->validated();
@@ -40,10 +42,10 @@ abstract class BaseValidator implements Validator
         return [];
     }
 
-    public function getRules(ValidationType $type): array
+    public function getRules(ValidationType $validationType): array
     {
 
-        if ($type->value === ValidationType::UPDATE->value) {
+        if ($validationType->value === ValidationType::UPDATE->value) {
             return $this->updateRules();
         }
 

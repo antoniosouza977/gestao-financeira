@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Models\TransactionPromise;
@@ -9,79 +11,79 @@ use Illuminate\Database\Eloquent\Collection;
 
 class TransactionPromisesService
 {
-    public function missingConfirmation(string $type): Collection
+    public function missingConfirmation(int $type): Collection
     {
         $promises = TransactionPromise::query()
             ->where('user_id', auth()->id())
             ->where('type', $type)
             ->where('active', true)
-            ->where(function ($query) {
-                $query->where(function ($query) {
+            ->where(function ($query): void {
+                $query->where(function ($query): void {
                     $query->where('period_type', TransactionPromise::DAILY);
-                    $query->whereDoesntHave('transactions', function ($query) {
+                    $query->whereDoesntHave('transactions', function ($query): void {
                         $query->whereBetween('date', [Carbon::now()->startOfDay(), Carbon::now()->endOfDay()]);
                     });
                 });
-                $query->orWhere(function ($query) {
+                $query->orWhere(function ($query): void {
                     $query->where('period_type', TransactionPromise::WEEKLY);
                     $query->where('period_value', '<=', (Carbon::now()->dayOfWeek() + 1));
-                    $query->whereDoesntHave('transactions', function ($query) {
+                    $query->whereDoesntHave('transactions', function ($query): void {
                         $query->whereBetween('date', [Carbon::now()->startOfWeek(CarbonInterface::SUNDAY), Carbon::now()->endOfWeek()]);
                     });
                 });
-                $query->orWhere(function ($query) {
+                $query->orWhere(function ($query): void {
                     $query->where('period_type', TransactionPromise::MONTHLY);
                     $query->where('period_value', '<=', (Carbon::now()->day));
-                    $query->whereDoesntHave('transactions', function ($query) {
+                    $query->whereDoesntHave('transactions', function ($query): void {
                         $query->whereBetween('date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]);
                     });
                 });
-                $query->orWhere(function ($query) {
+                $query->orWhere(function ($query): void {
                     $query->where('period_type', TransactionPromise::ANNUALLY);
                     $query->where('period_value', '<=', Carbon::now()->month);
-                    $query->whereDoesntHave('transactions', function ($query) {
+                    $query->whereDoesntHave('transactions', function ($query): void {
                         $query->whereBetween('date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()]);
                     });
                 });
-                $query->orWhere(function ($query) {
+                $query->orWhere(function ($query): void {
                     $query->where('period_type', TransactionPromise::INSTALLMENT);
                     $query->where('status', TransactionPromise::PENDING);
-                    $query->whereDoesntHave('transactions', function ($query) {
+                    $query->whereDoesntHave('transactions', function ($query): void {
                         $query->whereBetween('date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]);
                     });
                 });
             })
             ->get();
 
-        return $promises->map(function (TransactionPromise $promise) {
+        return $promises->map(function (TransactionPromise $transactionPromise): \App\Models\TransactionPromise {
 
-            switch ($promise->period_type) {
+            switch ($transactionPromise->period_type) {
                 case TransactionPromise::DAILY:
-                    $promise->date = Carbon::now()->format('Y-m-d');
+                    $transactionPromise->date = Carbon::now()->format('Y-m-d');
 
-                    return $promise;
+                    return $transactionPromise;
                 case TransactionPromise::WEEKLY:
-                    $promise->date = Carbon::now()->startOfWeek(CarbonInterface::SUNDAY)->addDays((int) ($promise->period_value - 1))->format('Y-m-d');
+                    $transactionPromise->date = Carbon::now()->startOfWeek(CarbonInterface::SUNDAY)->addDays((int) ($transactionPromise->period_value - 1))->format('Y-m-d');
 
-                    return $promise;
+                    return $transactionPromise;
                 case TransactionPromise::MONTHLY:
-                    $promise->date = Carbon::now()->startOfMonth()->addDays((int) $promise->period_value - 1)->format('Y-m-d');
+                    $transactionPromise->date = Carbon::now()->startOfMonth()->addDays((int) $transactionPromise->period_value - 1)->format('Y-m-d');
 
-                    return $promise;
+                    return $transactionPromise;
                 case TransactionPromise::ANNUALLY:
-                    $promise->date = Carbon::now()
+                    $transactionPromise->date = Carbon::now()
                         ->startOfYear()
-                        ->addMonths((int) $promise->period_value - 1)
+                        ->addMonths((int) $transactionPromise->period_value - 1)
                         ->format('Y-m-d');
 
-                    return $promise;
+                    return $transactionPromise;
                 case TransactionPromise::INSTALLMENT:
-                    $promise->date = Carbon::now()->startOfMonth()->format('Y-m-d');
+                    $transactionPromise->date = Carbon::now()->startOfMonth()->format('Y-m-d');
 
-                    return $promise;
+                    return $transactionPromise;
             }
 
-            return $promise;
+            return $transactionPromise;
         });
     }
 

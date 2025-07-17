@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\TransactionPromise;
 
 class ExpensesController extends TransactionsController
 {
-    protected string $indexRoute = 'expenses.index';
+    protected ?string $indexRoute = 'expenses.index';
 
     protected int $type = TransactionPromise::EXPENSE;
 

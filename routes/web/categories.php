@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\GetCategoriesToMigrateFromController;
 use App\Http\Controllers\ListExpenseCategoriesController;
 use App\Http\Controllers\ListIncomeCategoriesController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'categorias'], function () {
+Route::group(['prefix' => 'categorias'], function (): void {
     Route::post('/', [CategoriesController::class, 'store'])->name('categories.store');
     Route::patch('/{category}', [CategoriesController::class, 'update'])->name('categories.update');
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Actions\Database\SaveModelAction;
@@ -30,15 +32,15 @@ abstract class TransactionsController extends Controller
     protected string $indexComponent;
 
     public function __construct(
-        TransactionPromisesService $transactionsService,
-        TransactionsService $transactionService,
-        TransactionValidator $validator,
+        TransactionPromisesService $transactionPromisesService,
+        TransactionsService $transactionsService,
+        TransactionValidator $transactionValidator,
         SaveModelAction $saveModelAction,
         CategoriesService $categoriesService,
     ) {
-        $this->promisesService = $transactionsService;
-        $this->transactionService = $transactionService;
-        $this->validator = $validator;
+        $this->promisesService = $transactionPromisesService;
+        $this->transactionService = $transactionsService;
+        $this->validator = $transactionValidator;
         $this->saveModelAction = $saveModelAction;
         $this->categoriesService = $categoriesService;
     }

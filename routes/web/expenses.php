@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\AddExpenseFromDashboardController;
 use App\Http\Controllers\ExpensesController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('despesas')->group(function () {
+Route::prefix('despesas')->group(function (): void {
     Route::get('/', [ExpensesController::class, 'index'])->name('expenses.index');
     Route::patch('/{transaction}', [ExpensesController::class, 'update'])->name('expenses.update');
     Route::post('/', [ExpensesController::class, 'store'])->name('expenses.store');

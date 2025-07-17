@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Actions\Database\SaveModelAction;
@@ -15,28 +17,11 @@ abstract class Controller
 
     protected BaseValidator $validator;
 
-    protected string $indexRoute;
+    protected ?string $indexRoute = null;
 
     public function baseStore(Model $model, array $data): RedirectResponse
     {
-        try {
-            $this->saveModelAction
-                ->setModel($model)
-                ->setData($data)
-                ->setValidator($this->validator)
-                ->validateData(ValidationType::CREATE)
-                ->execute();
-
-            if (! $this->indexRoute) {
-                return redirect()->back();
-            }
-
-            return redirect()->route($this->indexRoute);
-        } catch (ValidationException $exception) {
-            return redirect()->back()
-                ->withErrors($exception->errors())
-                ->withInput();
-        }
+        return $this->save($model, $data, ValidationType::CREATE);
     }
 
     public function baseUpdate(Model $model, array $data): RedirectResponse
@@ -45,22 +30,27 @@ abstract class Controller
             abort(403);
         }
 
+        return $this->save($model, $data, ValidationType::UPDATE);
+    }
+
+    public function save(Model $model, array $data, ValidationType $validationType): RedirectResponse
+    {
         try {
             $this->saveModelAction
                 ->setModel($model)
                 ->setData($data)
                 ->setValidator($this->validator)
-                ->validateData(ValidationType::UPDATE)
+                ->validateData($validationType)
                 ->execute();
 
-            if (! $this->indexRoute) {
+            if (is_null($this->indexRoute)) {
                 return redirect()->back();
             }
 
             return redirect()->route($this->indexRoute);
-        } catch (ValidationException $exception) {
+        } catch (ValidationException $validationException) {
             return redirect()->back()
-                ->withErrors($exception->errors())
+                ->withErrors($validationException->errors())
                 ->withInput();
         }
     }

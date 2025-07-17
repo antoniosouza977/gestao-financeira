@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Actions\Database\SaveModelAction;
@@ -12,7 +14,7 @@ class IncomePromisesController extends TransactionPromisesController
 
     protected BaseValidator $validator;
 
-    protected string $indexRoute = 'income-promises.index';
+    protected ?string $indexRoute = 'income-promises.index';
 
     protected string $componentPath = 'IncomePromises';
 

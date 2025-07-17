@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -8,13 +10,13 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function (): void {
 
-    require 'web/incomePromises.php';
-    require 'web/expensePromises.php';
-    require 'web/categories.php';
-    require 'web/expenses.php';
-    require 'web/incomes.php';
+    require __DIR__.'/web/incomePromises.php';
+    require __DIR__.'/web/expensePromises.php';
+    require __DIR__.'/web/categories.php';
+    require __DIR__.'/web/expenses.php';
+    require __DIR__.'/web/incomes.php';
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

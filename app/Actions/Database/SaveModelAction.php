@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Database;
 
 use App\Actions\Action;
@@ -15,7 +17,7 @@ class SaveModelAction implements Action
 {
     private ?Model $model;
 
-    private ?BaseValidator $validator;
+    private ?BaseValidator $baseValidator;
 
     private array $data = [];
 
@@ -41,9 +43,9 @@ class SaveModelAction implements Action
         return $this;
     }
 
-    public function setValidator(BaseValidator $validator): SaveModelAction
+    public function setValidator(BaseValidator $baseValidator): SaveModelAction
     {
-        $this->validator = $validator;
+        $this->baseValidator = $baseValidator;
 
         return $this;
     }
@@ -51,13 +53,13 @@ class SaveModelAction implements Action
     /**
      * @throws ValidationException
      */
-    public function validateData(ValidationType $type): SaveModelAction
+    public function validateData(ValidationType $validationType): SaveModelAction
     {
-        if (! $this->validator instanceof Validator) {
+        if (! $this->baseValidator instanceof Validator) {
             throw new BadMethodCallException('Validator não definido');
         }
 
-        $this->validatedData = $this->validator->validate($this->data, $type);
+        $this->validatedData = $this->baseValidator->validate($this->data, $validationType);
         $this->hasValidated = true;
 
         return $this;

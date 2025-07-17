@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Actions\Database\SaveModelAction;
@@ -20,19 +22,17 @@ abstract class TransactionPromisesController extends Controller
 
     protected CategoriesService $categoriesService;
 
-    protected string $indexRoute = '';
-
     protected string $componentPath;
 
     protected int $type;
 
     public function __construct(
         SaveModelAction $saveModelAction,
-        TransactionPromiseValidator $validator,
+        TransactionPromiseValidator $transactionPromiseValidator,
         CategoriesService $categoriesService,
     ) {
         $this->saveModelAction = $saveModelAction;
-        $this->validator = $validator;
+        $this->validator = $transactionPromiseValidator;
         $this->categoriesService = $categoriesService;
     }
 
@@ -68,17 +68,17 @@ abstract class TransactionPromisesController extends Controller
         return inertia($this->componentPath.'/Form', compact('promise', 'categories'));
     }
 
-    public function update(Request $request, TransactionPromise $promise): RedirectResponse
+    public function update(Request $request, TransactionPromise $transactionPromise): RedirectResponse
     {
         $data = $request->only(['category_id', 'value', 'description', 'type', 'period_type', 'period_value']);
         $data['type'] = $this->type;
 
-        return $this->baseUpdate($promise, $data);
+        return $this->baseUpdate($transactionPromise, $data);
     }
 
-    public function destroy(TransactionPromise $promise): RedirectResponse
+    public function destroy(TransactionPromise $transactionPromise): RedirectResponse
     {
-        $promise->delete();
+        $transactionPromise->delete();
 
         return redirect()->route($this->indexRoute);
     }

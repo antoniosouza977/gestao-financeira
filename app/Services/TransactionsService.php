@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Models\Transaction;
@@ -17,7 +19,7 @@ class TransactionsService
         $this->transactionBuilder = $transactionBuilder;
     }
 
-    public function paginatedUserTransactions(string $type, array $filters): Collection|LengthAwarePaginator
+    public function paginatedUserTransactions(int $type, array $filters): Collection|LengthAwarePaginator
     {
         $filters['type'] = $type;
 
@@ -43,7 +45,7 @@ class TransactionsService
             ->get();
     }
 
-    public function currentMonthTotal($type): float
+    public function currentMonthTotal(int $type): float
     {
         $total = $this->getMonthlyTransactionsBuilder($type)->get()->sum('value');
 
