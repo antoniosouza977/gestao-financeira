@@ -1,66 +1,97 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Gestão Financeira Pessoal
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este é um projeto de aplicação web para gestão financeira pessoal, desenvolvido com Laravel e Vue.js, e orquestrado com Docker.
 
-## About Laravel
+## Configuração para Desenvolvimento
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Siga os passos abaixo para configurar e rodar o projeto em sua máquina de desenvolvimento.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Pré-requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Certifique-se de ter os seguintes softwares instalados:
 
-## Learning Laravel
+*   **Docker:** Para rodar os serviços da aplicação em contêineres.
+*   **Docker Compose:** Para orquestrar os contêineres Docker.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Primeiros Passos
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1.  **Clone o repositório:**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    ```bash
+    git clone https://github.com/antoniosouza977/gestao-financeira.git
+    cd gestao-financeira
+    ```
 
-## Laravel Sponsors
+2.  **Crie o arquivo de variáveis de ambiente:**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    Copie o arquivo de exemplo `.env.example` para `.env`.
 
-### Premium Partners
+    ```bash
+    cp .env.example .env
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+    O script `start.sh` irá automaticamente configurar as variáveis `VITE_HMR_HOST` e `VITE_HMR_PORT` no seu arquivo `.env` para o IP da sua máquina, o que é essencial para o Hot Module Replacement (HMR) do Vite funcionar corretamente dentro do ambiente Docker.
 
-## Contributing
+3.  **Inicie a aplicação com Docker Compose:**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    Execute o script `start.sh`. Este script irá:
+    *   Definir as permissões necessárias para os diretórios `storage` e `bootstrap`.
+    *   Parar quaisquer contêineres Docker Compose em execução.
+    *   Atualizar as variáveis `VITE_HMR_HOST` e `VITE_HMR_PORT` no seu arquivo `.env`.
+    *   Construir (se necessário) e iniciar os serviços Docker definidos no `compose.yml` em modo detached.
 
-## Code of Conduct
+    ```bash
+    ./start.sh
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    Aguarde alguns minutos para que os serviços sejam inicializados e as dependências sejam instaladas dentro dos contêineres.
 
-## Security Vulnerabilities
+4.  **Instale as dependências do Composer:**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    Execute o Composer dentro do contêiner PHP para instalar as dependências do Laravel:
 
-## License
+    ```bash
+    docker compose exec app composer install
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+5.  **Gere a chave da aplicação:**
+
+    ```bash
+    docker compose exec app php artisan key:generate
+    ```
+
+6.  **Execute as migrações do banco de dados:**
+
+    ```bash
+    docker compose exec app php artisan migrate
+    ```
+
+7.  **Opcional: Popule o banco de dados com dados de exemplo (seed):**
+
+    ```bash
+    docker compose exec app php artisan db:seed
+    ```
+
+8.  **Instale as dependências do Node.js e compile os assets:**
+
+    Execute o npm dentro do contêiner Node.js para instalar as dependências do frontend e iniciar o servidor de desenvolvimento do Vite:
+
+    ```bash
+    docker compose exec node npm install
+    docker compose exec node npm run dev
+    ```
+    Mantenha este comando rodando em um terminal separado para que o HMR funcione.
+
+### Acessando a Aplicação
+
+Após seguir todos os passos, a aplicação estará disponível em seu navegador.
+
+*   **Frontend:** `http://localhost` (ou o IP da sua máquina, dependendo da sua configuração Docker e do `VITE_HMR_HOST`)
+
+### Parando a Aplicação
+
+Para parar todos os serviços Docker da aplicação, execute:
+
+```bash
+docker compose down
+```
