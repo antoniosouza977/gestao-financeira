@@ -8,7 +8,6 @@ use Illuminate\Http\JsonResponse;
 
 class GetCategoriesToMigrateFromController extends Controller
 {
-
     private CategoriesService $categoriesService;
 
     public function __construct(CategoriesService $categoriesService)

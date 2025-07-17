@@ -15,24 +15,27 @@ use Inertia\Response;
 
 abstract class TransactionsController extends Controller
 {
-
     protected TransactionPromisesService $promisesService;
+
     protected TransactionsService $transactionService;
+
     protected BaseValidator $validator;
+
     protected SaveModelAction $saveModelAction;
+
     protected CategoriesService $categoriesService;
+
     protected int $type;
+
     protected string $indexComponent;
 
-    public function __construct
-    (
+    public function __construct(
         TransactionPromisesService $transactionsService,
-        TransactionsService        $transactionService,
-        TransactionValidator       $validator,
-        SaveModelAction            $saveModelAction,
-        CategoriesService          $categoriesService,
-    )
-    {
+        TransactionsService $transactionService,
+        TransactionValidator $validator,
+        SaveModelAction $saveModelAction,
+        CategoriesService $categoriesService,
+    ) {
         $this->promisesService = $transactionsService;
         $this->transactionService = $transactionService;
         $this->validator = $validator;
@@ -54,13 +57,14 @@ abstract class TransactionsController extends Controller
     {
         $data = $request->only(['value', 'description', 'date', 'category_id', 'transaction_promise_id']);
         $data['type'] = $this->type;
-        return $this->baseStore(new Transaction(), $data);
-    }
 
+        return $this->baseStore(new Transaction, $data);
+    }
 
     public function update(Transaction $transaction, Request $request): RedirectResponse
     {
         $data = $request->only(['value', 'description', 'date', 'category_id']);
+
         return $this->baseUpdate($transaction, $data);
     }
 
@@ -74,6 +78,4 @@ abstract class TransactionsController extends Controller
 
         return redirect()->route($this->indexRoute);
     }
-
-
 }

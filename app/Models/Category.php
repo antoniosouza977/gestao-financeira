@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
 class Category extends Model
 {
     use HasFactory;
 
-    public const INCOME  = 1;
+    public const INCOME = 1;
+
     public const EXPENSE = 2;
 
     public $timestamps = false;
@@ -35,5 +35,4 @@ class Category extends Model
     {
         return $this->hasMany(TransactionPromise::class);
     }
-
 }

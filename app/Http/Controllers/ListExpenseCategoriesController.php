@@ -9,7 +9,6 @@ use Inertia\ResponseFactory;
 
 class ListExpenseCategoriesController extends Controller
 {
-
     private CategoriesService $categoriesService;
 
     public function __construct(CategoriesService $categoriesService)

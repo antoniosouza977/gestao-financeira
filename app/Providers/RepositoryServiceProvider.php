@@ -21,6 +21,6 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(\App\Repositories\IncomeRepository::class, \App\Repositories\IncomeRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\IncomeCategoryRepository::class, \App\Repositories\IncomeCategoryRepositoryEloquent::class);
-        //:end-bindings:
+        // :end-bindings:
     }
 }

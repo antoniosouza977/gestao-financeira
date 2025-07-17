@@ -9,7 +9,6 @@ use Illuminate\Validation\ValidationException;
 
 abstract class BaseValidator implements Validator
 {
-
     /**
      * @throws ValidationException
      */

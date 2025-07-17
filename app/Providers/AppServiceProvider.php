@@ -15,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Inertia::share([
             'previousUrl' => function () {
-                if (url()->previous() === route('login') || url()->previous() === '') return 'empty';
+                if (url()->previous() === route('login') || url()->previous() === '') {
+                    return 'empty';
+                }
 
                 if (url()->previous() === url()->current()) {
                     return dirname(url()->previous());

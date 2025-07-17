@@ -6,7 +6,6 @@ use Illuminate\Validation\Rule;
 
 class CategoryValidator extends BaseValidator
 {
-
     public function attributes(): array
     {
         return [
@@ -30,7 +29,7 @@ class CategoryValidator extends BaseValidator
                 'required',
                 'exists:users,id',
                 Rule::exists('users', 'id')
-                    ->where('id', auth()->id())
+                    ->where('id', auth()->id()),
             ],
             'name' => 'required|max:255',
             'type' => 'required|digits_between:1,2',

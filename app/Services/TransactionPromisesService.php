@@ -2,16 +2,13 @@
 
 namespace App\Services;
 
-use App\Models\Transaction;
 use App\Models\TransactionPromise;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 class TransactionPromisesService
 {
-
     public function missingConfirmation(string $type): Collection
     {
         $promises = TransactionPromise::query()
@@ -61,21 +58,26 @@ class TransactionPromisesService
             switch ($promise->period_type) {
                 case TransactionPromise::DAILY:
                     $promise->date = Carbon::now()->format('Y-m-d');
+
                     return $promise;
                 case TransactionPromise::WEEKLY:
-                    $promise->date = Carbon::now()->startOfWeek(CarbonInterface::SUNDAY)->addDays((int)($promise->period_value - 1))->format('Y-m-d');
+                    $promise->date = Carbon::now()->startOfWeek(CarbonInterface::SUNDAY)->addDays((int) ($promise->period_value - 1))->format('Y-m-d');
+
                     return $promise;
                 case TransactionPromise::MONTHLY:
-                    $promise->date = Carbon::now()->startOfMonth()->addDays((int)$promise->period_value - 1)->format('Y-m-d');
+                    $promise->date = Carbon::now()->startOfMonth()->addDays((int) $promise->period_value - 1)->format('Y-m-d');
+
                     return $promise;
                 case TransactionPromise::ANNUALLY:
                     $promise->date = Carbon::now()
                         ->startOfYear()
-                        ->addMonths((int)$promise->period_value - 1)
+                        ->addMonths((int) $promise->period_value - 1)
                         ->format('Y-m-d');
+
                     return $promise;
                 case TransactionPromise::INSTALLMENT:
                     $promise->date = Carbon::now()->startOfMonth()->format('Y-m-d');
+
                     return $promise;
             }
 
@@ -99,5 +101,4 @@ class TransactionPromisesService
 
         return round($total, 2);
     }
-
 }

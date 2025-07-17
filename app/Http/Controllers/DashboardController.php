@@ -13,16 +13,16 @@ use Inertia\Response;
 class DashboardController extends Controller
 {
     private TransactionsService $transactionService;
+
     private TransactionPromisesService $transactionPromisesService;
+
     private CategoriesService $categoriesService;
 
-    public function __construct
-    (
+    public function __construct(
         TransactionsService $transactionService,
         TransactionPromisesService $transactionPromisesService,
         CategoriesService $categoriesService
-    )
-    {
+    ) {
         $this->transactionService = $transactionService;
         $this->transactionPromisesService = $transactionPromisesService;
         $this->categoriesService = $categoriesService;
@@ -36,10 +36,10 @@ class DashboardController extends Controller
         $incomesTotal = $this->transactionService->currentMonthTotal(Transaction::INCOME);
         $expensesTotal = $this->transactionService->currentMonthTotal(Transaction::EXPENSE);
 
-        $wallet = round($incomesTotal - $expensesTotal,2);
+        $wallet = round($incomesTotal - $expensesTotal, 2);
         $expensePromisesTotal = $this->transactionPromisesService->totalCurrentMonthPromises(Transaction::EXPENSE);
 
-        $latestsExpenses = $this->transactionService->getLatestTransactions(Transaction::EXPENSE,6);
+        $latestsExpenses = $this->transactionService->getLatestTransactions(Transaction::EXPENSE, 6);
         $categories = $this->categoriesService->getAll(Category::EXPENSE);
 
         return inertia()->render('Dashboard', compact('incomesTotal', 'expensesTotal', 'wallet', 'expensePromisesTotal', 'latestsExpenses', 'startPeriod', 'endPeriod', 'categories'));

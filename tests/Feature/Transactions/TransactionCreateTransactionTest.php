@@ -2,6 +2,7 @@
 
 use App\Models\Transaction;
 use App\Models\User;
+
 use function Pest\Laravel\actingAs;
 
 test('user cant create a zero value transaction', function () {
@@ -9,7 +10,7 @@ test('user cant create a zero value transaction', function () {
 
     actingAs($user)
         ->post(route('expenses.store'), [
-            'date'  => now()->format('Y-m-d'),
+            'date' => now()->format('Y-m-d'),
             'value' => 0,
         ])
         ->assertStatus(302)
@@ -17,7 +18,7 @@ test('user cant create a zero value transaction', function () {
 
     actingAs($user)
         ->post(route('incomes.store'), [
-            'date'  => now()->format('Y-m-d'),
+            'date' => now()->format('Y-m-d'),
             'value' => 0,
         ])
         ->assertStatus(302)
@@ -29,16 +30,16 @@ test('user cant create a negative value transaction', function () {
 
     actingAs($user)
         ->post(route('expenses.store'), [
-            'date'  => now()->format('Y-m-d'),
-            'value' => - 1,
+            'date' => now()->format('Y-m-d'),
+            'value' => -1,
         ])
         ->assertStatus(302)
         ->assertSessionHasErrors(['value']);
 
     actingAs($user)
         ->post(route('incomes.store'), [
-            'date'  => now()->format('Y-m-d'),
-            'value' => - 1,
+            'date' => now()->format('Y-m-d'),
+            'value' => -1,
         ])
         ->assertStatus(302)
         ->assertSessionHasErrors(['value']);
@@ -49,8 +50,8 @@ test('user can create a transaction', function () {
 
     actingAs($user)
         ->post(route('expenses.store'), [
-            'date'  => now()->format('Y-m-d'),
-            'value' => "10.50",
+            'date' => now()->format('Y-m-d'),
+            'value' => '10.50',
         ])
         ->assertStatus(302)
         ->assertSessionHasNoErrors();
@@ -58,8 +59,8 @@ test('user can create a transaction', function () {
 
     actingAs($user)
         ->post(route('incomes.store'), [
-            'date'  => now()->format('Y-m-d'),
-            'value' => "10.50",
+            'date' => now()->format('Y-m-d'),
+            'value' => '10.50',
         ])
         ->assertStatus(302)
         ->assertSessionHasNoErrors();

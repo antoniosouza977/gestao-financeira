@@ -13,11 +13,14 @@ use Illuminate\Validation\ValidationException;
 
 class SaveModelAction implements Action
 {
-
     private ?Model $model;
+
     private ?BaseValidator $validator;
+
     private array $data = [];
+
     private array $validatedData = [];
+
     private bool $hasValidated = false;
 
     public function setModel(Model $model): SaveModelAction
@@ -34,6 +37,7 @@ class SaveModelAction implements Action
         }
 
         $this->data = $data;
+
         return $this;
     }
 
@@ -49,8 +53,8 @@ class SaveModelAction implements Action
      */
     public function validateData(ValidationType $type): SaveModelAction
     {
-        if (!$this->validator instanceof Validator) {
-            throw new BadMethodCallException("Validator não definido");
+        if (! $this->validator instanceof Validator) {
+            throw new BadMethodCallException('Validator não definido');
         }
 
         $this->validatedData = $this->validator->validate($this->data, $type);
@@ -61,12 +65,11 @@ class SaveModelAction implements Action
 
     public function execute(): void
     {
-        if (!$this->hasValidated) {
+        if (! $this->hasValidated) {
             throw new BadMethodCallException('Dados válidos estão vazios');
         }
 
         $this->model->fill($this->validatedData);
         $this->model->save();
     }
-
 }

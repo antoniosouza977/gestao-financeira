@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
     {
 
         $user = User::query()->updateOrCreate([
-            'name'  => 'Test',
-            'email' => 'test@example.com'
+            'name' => 'Test',
+            'email' => 'test@example.com',
         ], [
-            'name'     => 'Test',
-            'email'    => 'test@example.com',
+            'name' => 'Test',
+            'email' => 'test@example.com',
             'password' => Hash::make('UDK66mSJOy'),
         ]);
 
@@ -33,12 +33,12 @@ class DatabaseSeeder extends Seeder
 
         $incomeCategories = Category::factory(10)->create([
             'user_id' => $user->id,
-            'type'    => Category::INCOME
+            'type' => Category::INCOME,
         ]);
 
         $expenseCategories = Category::factory(10)->create([
             'user_id' => $user->id,
-            'type'    => Category::EXPENSE
+            'type' => Category::EXPENSE,
         ]);
 
         $categories = $incomeCategories->merge($expenseCategories);
@@ -46,8 +46,8 @@ class DatabaseSeeder extends Seeder
         foreach ($categories as $category) {
             Transaction::factory(5)->create([
                 'category_id' => $category->id,
-                'user_id'     => $user->id,
-                'type'        => $category->type,
+                'user_id' => $user->id,
+                'type' => $category->type,
             ]);
         }
 

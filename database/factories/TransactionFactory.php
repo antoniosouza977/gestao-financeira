@@ -18,9 +18,9 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            'value'       => fake()->randomFloat(2, 1, 9999),
+            'value' => fake()->randomFloat(2, 1, 9999),
             'description' => fake()->words(3, true),
-            'date'        => Carbon::now()->startOfMonth()->addDays(rand(0, 28)),
+            'date' => Carbon::now()->startOfMonth()->addDays(rand(0, 28)),
         ];
     }
 }

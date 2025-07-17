@@ -15,19 +15,22 @@ use Inertia\ResponseFactory;
 abstract class TransactionPromisesController extends Controller
 {
     protected SaveModelAction $saveModelAction;
+
     protected BaseValidator $validator;
+
     protected CategoriesService $categoriesService;
+
     protected string $indexRoute = '';
+
     protected string $componentPath;
+
     protected int $type;
 
-    public function __construct
-    (
-        SaveModelAction             $saveModelAction,
+    public function __construct(
+        SaveModelAction $saveModelAction,
         TransactionPromiseValidator $validator,
-        CategoriesService           $categoriesService,
-    )
-    {
+        CategoriesService $categoriesService,
+    ) {
         $this->saveModelAction = $saveModelAction;
         $this->validator = $validator;
         $this->categoriesService = $categoriesService;
@@ -40,14 +43,14 @@ abstract class TransactionPromisesController extends Controller
             ->where('type', $this->type)
             ->paginate(10);
 
-        return inertia($this->componentPath . '/Index', compact("promises"));
+        return inertia($this->componentPath.'/Index', compact('promises'));
     }
 
     public function create(): Response|ResponseFactory
     {
         $categories = $this->categoriesService->getAll($this->type);
 
-        return inertia($this->componentPath . '/Form', compact("categories"));
+        return inertia($this->componentPath.'/Form', compact('categories'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -55,20 +58,21 @@ abstract class TransactionPromisesController extends Controller
         $data = $request->only(['category_id', 'value', 'description', 'type', 'period_type', 'period_value']);
         $data['type'] = $this->type;
 
-        return $this->baseStore(new TransactionPromise(), $data);
+        return $this->baseStore(new TransactionPromise, $data);
     }
 
     public function edit(TransactionPromise $promise): Response|ResponseFactory
     {
         $categories = $this->categoriesService->getAll($this->type);
 
-        return inertia($this->componentPath . '/Form', compact('promise', 'categories'));
+        return inertia($this->componentPath.'/Form', compact('promise', 'categories'));
     }
 
     public function update(Request $request, TransactionPromise $promise): RedirectResponse
     {
         $data = $request->only(['category_id', 'value', 'description', 'type', 'period_type', 'period_value']);
         $data['type'] = $this->type;
+
         return $this->baseUpdate($promise, $data);
     }
 

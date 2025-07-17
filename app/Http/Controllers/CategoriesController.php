@@ -13,14 +13,15 @@ use Illuminate\Http\Request;
 class CategoriesController extends Controller
 {
     protected BaseValidator $validator;
+
     protected SaveModelAction $saveModelAction;
+
     protected string $indexRoute = '';
 
-    public function __construct
-    (
+    public function __construct(
         CategoryValidator $validator,
-        SaveModelAction   $action)
-    {
+        SaveModelAction $action
+    ) {
         $this->validator = $validator;
         $this->saveModelAction = $action;
     }
@@ -28,12 +29,14 @@ class CategoriesController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $data = $request->only(['name', 'type']);
-        return $this->baseStore(new Category(), $data);
+
+        return $this->baseStore(new Category, $data);
     }
 
     public function update(Category $category, Request $request): RedirectResponse
     {
         $data = $request->only(['name']);
+
         return $this->baseUpdate($category, $data);
     }
 
@@ -59,6 +62,7 @@ class CategoriesController extends Controller
         }
 
         $category->delete();
+
         return redirect()->back();
     }
 }

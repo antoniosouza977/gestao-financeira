@@ -11,5 +11,4 @@ interface Validator
     public function createRules(): array;
 
     public function updateRules(): array;
-
 }

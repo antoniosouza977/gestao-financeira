@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class TransactionsService
 {
-
     private TransactionBuilder $transactionBuilder;
 
     public function __construct(TransactionBuilder $transactionBuilder)
@@ -50,5 +49,4 @@ class TransactionsService
 
         return round($total, 2);
     }
-
 }

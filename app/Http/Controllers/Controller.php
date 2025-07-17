@@ -12,7 +12,9 @@ use Illuminate\Validation\ValidationException;
 abstract class Controller
 {
     protected SaveModelAction $saveModelAction;
+
     protected BaseValidator $validator;
+
     protected string $indexRoute;
 
     public function baseStore(Model $model, array $data): RedirectResponse
@@ -25,7 +27,7 @@ abstract class Controller
                 ->validateData(ValidationType::CREATE)
                 ->execute();
 
-            if (!$this->indexRoute) {
+            if (! $this->indexRoute) {
                 return redirect()->back();
             }
 
@@ -51,7 +53,7 @@ abstract class Controller
                 ->validateData(ValidationType::UPDATE)
                 ->execute();
 
-            if (!$this->indexRoute) {
+            if (! $this->indexRoute) {
                 return redirect()->back();
             }
 

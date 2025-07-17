@@ -11,6 +11,7 @@ class Transaction extends Model
     use HasFactory;
 
     public const INCOME = 1;
+
     public const EXPENSE = 2;
 
     public $timestamps = false;
@@ -28,7 +29,7 @@ class Transaction extends Model
     protected $with = ['category', 'promise'];
 
     protected $casts = [
-        'value'       => 'encrypted',
+        'value' => 'encrypted',
         'description' => 'encrypted',
     ];
 

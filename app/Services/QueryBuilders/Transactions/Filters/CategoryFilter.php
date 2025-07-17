@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 class CategoryFilter implements Filter
 {
-
     public function apply(Builder $builder, $value): void
     {
         if ($value) {

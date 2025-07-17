@@ -14,18 +14,24 @@ class TransactionPromise extends Model
     use HasFactory;
 
     // Types
-    public const INCOME  = 1;
+    public const INCOME = 1;
+
     public const EXPENSE = 2;
 
-    //Status
-    public const PENDING  = 0;
+    // Status
+    public const PENDING = 0;
+
     public const DONE = 1;
 
     // Period Types
-    public const DAILY       = 1;
-    public const WEEKLY      = 2;
-    public const MONTHLY     = 3;
-    public const ANNUALLY    = 4;
+    public const DAILY = 1;
+
+    public const WEEKLY = 2;
+
+    public const MONTHLY = 3;
+
+    public const ANNUALLY = 4;
+
     public const INSTALLMENT = 5;
 
     public $timestamps = false;
@@ -39,13 +45,13 @@ class TransactionPromise extends Model
         'last_confirmation',
         'active',
         'user_id',
-        'category_id'
+        'category_id',
     ];
 
     protected $casts = [
-        'value'       => 'encrypted',
+        'value' => 'encrypted',
         'description' => 'encrypted',
-        'active'      => 'boolean',
+        'active' => 'boolean',
     ];
 
     protected $with = ['category'];
@@ -55,16 +61,16 @@ class TransactionPromise extends Model
     public function getPeriodValueLabelAttribute()
     {
         switch ($this['period_type']) {
-            case self::DAILY;
-            return 'Todos os dias';
-            case self::WEEKLY;
-            return WeekDays::$labels[$this['period_value']];
-            case self::MONTHLY;
-            return "Dia $this[period_value]";
-            case self::ANNUALLY;
-            return Months::$labels[$this['period_value']];
-            case self::INSTALLMENT;
-            return "$this[period_value] parcelas";
+            case self::DAILY:
+                return 'Todos os dias';
+            case self::WEEKLY:
+                return WeekDays::$labels[$this['period_value']];
+            case self::MONTHLY:
+                return "Dia $this[period_value]";
+            case self::ANNUALLY:
+                return Months::$labels[$this['period_value']];
+            case self::INSTALLMENT:
+                return "$this[period_value] parcelas";
         }
     }
 
@@ -82,5 +88,4 @@ class TransactionPromise extends Model
     {
         return $this->hasMany(Transaction::class);
     }
-
 }

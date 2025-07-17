@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class TransactionBuilder implements Builder
 {
-
     public function doQuery(array $filters, bool $paginate = true): Collection|LengthAwarePaginator
     {
         $builder = Transaction::query()
@@ -24,7 +23,7 @@ class TransactionBuilder implements Builder
         $transactionFilters = $this->filterList();
 
         foreach ($filters as $field => $value) {
-            if (key_exists($field, $transactionFilters) && $value !== null) {
+            if (array_key_exists($field, $transactionFilters) && $value !== null) {
                 /** @var Filter $filter */
                 $filter = app($transactionFilters[$field]);
                 $filter->apply($builder, $value);
@@ -41,9 +40,9 @@ class TransactionBuilder implements Builder
     private function filterList(): array
     {
         return [
-            'start_date'  => PeriodStartFilter::class,
-            'end_date'    => PeriodEndFilter::class,
-            'category_id' => CategoryFilter::class
+            'start_date' => PeriodStartFilter::class,
+            'end_date' => PeriodEndFilter::class,
+            'category_id' => CategoryFilter::class,
         ];
     }
 }
